@@ -3,32 +3,41 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
-		848144A2284CE9B100D06E39 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 848144A1284CE9B100D06E39 /* SceneDelegate.m */; };
-		848144A5284CE9B100D06E39 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848144A4284CE9B100D06E39 /* ViewController.m */; };
-		848144A8284CE9B100D06E39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144A6284CE9B100D06E39 /* Main.storyboard */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
 		848144B0284CE9B400D06E39 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 848144AF284CE9B400D06E39 /* main.m */; };
+		848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145A82851335D00D06E39 /* TTVideoStreamController.m */; };
+		848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145AC2851338500D06E39 /* TTVideoStreamCell.m */; };
+		848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B0285133A500D06E39 /* TTAVPlayerView.m */; };
+		848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B92851C7A900D06E39 /* TTTabBarController.m */; };
+		E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
+		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449D284CE9B100D06E39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8481449E284CE9B100D06E39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		848144A0284CE9B100D06E39 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		848144A1284CE9B100D06E39 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		848144A3284CE9B100D06E39 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		848144A4284CE9B100D06E39 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		848144A7284CE9B100D06E39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		848144A9284CE9B400D06E39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		848144AC284CE9B400D06E39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		848144AE284CE9B400D06E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		848144AF284CE9B400D06E39 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		84814590284DFD4100D06E39 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		848145A72851335D00D06E39 /* TTVideoStreamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTVideoStreamController.h; sourceTree = "<group>"; };
+		848145A82851335D00D06E39 /* TTVideoStreamController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTVideoStreamController.m; sourceTree = "<group>"; };
+		848145AB2851338500D06E39 /* TTVideoStreamCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTVideoStreamCell.h; sourceTree = "<group>"; };
+		848145AC2851338500D06E39 /* TTVideoStreamCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTVideoStreamCell.m; sourceTree = "<group>"; };
+		848145AF285133A500D06E39 /* TTAVPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
+		848145B0285133A500D06E39 /* TTAVPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
+		848145B82851C7A900D06E39 /* TTTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTTabBarController.h; sourceTree = "<group>"; };
+		848145B92851C7A900D06E39 /* TTTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTTabBarController.m; sourceTree = "<group>"; };
+		EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.release.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,17 +45,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07825C3B21F29E18958FDC4E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6DD3AD114DE2F255DA1E073B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */,
+				EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		84814491284CE9B100D06E39 = {
 			isa = PBXGroup;
 			children = (
 				8481449C284CE9B100D06E39 /* Toutiao */,
 				8481449B284CE9B100D06E39 /* Products */,
+				6DD3AD114DE2F255DA1E073B /* Pods */,
+				07825C3B21F29E18958FDC4E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,15 +92,19 @@
 			children = (
 				8481449D284CE9B100D06E39 /* AppDelegate.h */,
 				8481449E284CE9B100D06E39 /* AppDelegate.m */,
-				848144A0284CE9B100D06E39 /* SceneDelegate.h */,
-				848144A1284CE9B100D06E39 /* SceneDelegate.m */,
-				848144A3284CE9B100D06E39 /* ViewController.h */,
-				848144A4284CE9B100D06E39 /* ViewController.m */,
-				848144A6284CE9B100D06E39 /* Main.storyboard */,
 				848144A9284CE9B400D06E39 /* Assets.xcassets */,
 				848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */,
 				848144AE284CE9B400D06E39 /* Info.plist */,
 				848144AF284CE9B400D06E39 /* main.m */,
+				84814590284DFD4100D06E39 /* config.h */,
+				848145A72851335D00D06E39 /* TTVideoStreamController.h */,
+				848145A82851335D00D06E39 /* TTVideoStreamController.m */,
+				848145AB2851338500D06E39 /* TTVideoStreamCell.h */,
+				848145AC2851338500D06E39 /* TTVideoStreamCell.m */,
+				848145AF285133A500D06E39 /* TTAVPlayerView.h */,
+				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
+				848145B82851C7A900D06E39 /* TTTabBarController.h */,
+				848145B92851C7A900D06E39 /* TTTabBarController.m */,
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
@@ -83,9 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 848144B3284CE9B400D06E39 /* Build configuration list for PBXNativeTarget "Toutiao" */;
 			buildPhases = (
+				3AE69B6357E0F1E7CF28C0F7 /* [CP] Check Pods Manifest.lock */,
 				84814496284CE9B100D06E39 /* Sources */,
 				84814497284CE9B100D06E39 /* Frameworks */,
 				84814498284CE9B100D06E39 /* Resources */,
+				7E80EFAF9702A40E83C29675 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,35 +169,70 @@
 			files = (
 				848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */,
 				848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */,
-				848144A8284CE9B100D06E39 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3AE69B6357E0F1E7CF28C0F7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Toutiao-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E80EFAF9702A40E83C29675 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Toutiao/Pods-Toutiao-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Toutiao/Pods-Toutiao-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Toutiao/Pods-Toutiao-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		84814496284CE9B100D06E39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				848144A5284CE9B100D06E39 /* ViewController.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
+				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
-				848144A2284CE9B100D06E39 /* SceneDelegate.m in Sources */,
+				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,
+				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
+				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		848144A6284CE9B100D06E39 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				848144A7284CE9B100D06E39 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -288,6 +358,7 @@
 		};
 		848144B4284CE9B400D06E39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -306,6 +377,7 @@
 		};
 		848144B5284CE9B400D06E39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
