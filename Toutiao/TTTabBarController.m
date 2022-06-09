@@ -7,6 +7,8 @@
 
 #import "TTTabBarController.h"
 #import "TTVideoStreamController.h"
+#import "TTLoginController.h"
+#import "TTPagerViewController.h"
 
 @interface TTTabBarController ()
 
@@ -28,7 +30,7 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor];
 
     // 创建子控制器 - 主页
-    UIViewController *vcHomePage = [[TTVideoStreamController alloc] init];
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"]];
     vcHomePage.tabBarItem.title = @"主页";
     vcHomePage.tabBarItem.image = [UIImage imageNamed:@"homepage"];
     UIImage *imageHomePage = [UIImage imageNamed:@"homepage_highlighted"];
@@ -46,19 +48,22 @@
     vcUpload.tabBarItem.selectedImage = imageUpload;
     [vcUpload.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
 
-    // 创建子控制器 - 我的
-    UIViewController *vcMine = [[UIViewController alloc] init];
-    vcMine.tabBarItem.title = @"我的";
-    vcMine.tabBarItem.image = [UIImage imageNamed:@"mine"];
+    // 创建Navigation控制器 - 我的
+    UINavigationController *navMine = UINavigationController.new;
+    navMine.tabBarItem.title = @"我的";
+    navMine.tabBarItem.image = [UIImage imageNamed:@"mine"];
     UIImage *imageMine = [UIImage imageNamed:@"mine_highlighted"];
     // 设置渲染模式 - 保持原始的渲染
     imageMine = [imageMine imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    vcMine.tabBarItem.selectedImage = imageMine;
-    [vcMine.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
+    navMine.tabBarItem.selectedImage = imageMine;
+    [navMine.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
     
     [self addChildViewController:vcHomePage];
     [self addChildViewController:vcUpload];
-    [self addChildViewController:vcMine];
+    [self addChildViewController:navMine];
+    
+    // 到时候把个人主页挂到这里
+    navMine.viewControllers = @[TTLoginController.new];
 }
 
 
