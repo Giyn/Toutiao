@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F250599285247B200F10F26 /* TTLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F25058A285247B200F10F26 /* TTLoginController.m */; };
-		0F25059A285247B200F10F26 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F25058B285247B200F10F26 /* UIView+Border.m */; };
-		0F25059B285247B200F10F26 /* TTRegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F25058C285247B200F10F26 /* TTRegisterView.m */; };
-		0F25059C285247B200F10F26 /* TTInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F25058D285247B200F10F26 /* TTInputField.m */; };
-		0F25059D285247B200F10F26 /* TTRegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F250590285247B200F10F26 /* TTRegisterController.m */; };
-		0F25059E285247B200F10F26 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F250591285247B200F10F26 /* TTPagerViewController.m */; };
-		0F25059F285247B200F10F26 /* TTSliderNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F250595285247B200F10F26 /* TTSliderNavView.m */; };
-		0F2505A0285247B200F10F26 /* TTLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F250598285247B200F10F26 /* TTLoginView.m */; };
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
@@ -23,26 +15,18 @@
 		848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145AC2851338500D06E39 /* TTVideoStreamCell.m */; };
 		848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B0285133A500D06E39 /* TTAVPlayerView.m */; };
 		848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B92851C7A900D06E39 /* TTTabBarController.m */; };
+		8481461A2852715800D06E39 /* TTLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481460D2852715600D06E39 /* TTLoginView.m */; };
+		8481461B2852715800D06E39 /* TTLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146102852715600D06E39 /* TTLoginController.m */; };
+		8481461C2852715800D06E39 /* TTRegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146122852715600D06E39 /* TTRegisterView.m */; };
+		8481461D2852715800D06E39 /* TTSliderNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146152852715700D06E39 /* TTSliderNavView.m */; };
+		8481461E2852715800D06E39 /* TTInputField.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146162852715700D06E39 /* TTInputField.m */; };
+		8481461F2852715800D06E39 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146172852715700D06E39 /* UIView+Border.m */; };
+		848146202852715800D06E39 /* TTRegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146182852715700D06E39 /* TTRegisterController.m */; };
+		848146212852715800D06E39 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146192852715700D06E39 /* TTPagerViewController.m */; };
 		E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0F250589285247B200F10F26 /* TTRegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTRegisterView.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTRegisterView.h"; sourceTree = "<group>"; };
-		0F25058A285247B200F10F26 /* TTLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTLoginController.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTLoginController.m"; sourceTree = "<group>"; };
-		0F25058B285247B200F10F26 /* UIView+Border.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Border.m"; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/UIView+Border.m"; sourceTree = "<group>"; };
-		0F25058C285247B200F10F26 /* TTRegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTRegisterView.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTRegisterView.m"; sourceTree = "<group>"; };
-		0F25058D285247B200F10F26 /* TTInputField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTInputField.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTInputField.m"; sourceTree = "<group>"; };
-		0F25058E285247B200F10F26 /* TTPagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTPagerViewController.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTPagerViewController.h"; sourceTree = "<group>"; };
-		0F25058F285247B200F10F26 /* TTLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTLoginView.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTLoginView.h"; sourceTree = "<group>"; };
-		0F250590285247B200F10F26 /* TTRegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTRegisterController.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTRegisterController.m"; sourceTree = "<group>"; };
-		0F250591285247B200F10F26 /* TTPagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTPagerViewController.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTPagerViewController.m"; sourceTree = "<group>"; };
-		0F250592285247B200F10F26 /* TTLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTLoginController.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTLoginController.h"; sourceTree = "<group>"; };
-		0F250593285247B200F10F26 /* TTRegisterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTRegisterController.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTRegisterController.h"; sourceTree = "<group>"; };
-		0F250594285247B200F10F26 /* TTInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTInputField.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTInputField.h"; sourceTree = "<group>"; };
-		0F250595285247B200F10F26 /* TTSliderNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTSliderNavView.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTSliderNavView.m"; sourceTree = "<group>"; };
-		0F250596285247B200F10F26 /* UIView+Border.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Border.h"; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/UIView+Border.h"; sourceTree = "<group>"; };
-		0F250597285247B200F10F26 /* TTSliderNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTSliderNavView.h; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTSliderNavView.h"; sourceTree = "<group>"; };
-		0F250598285247B200F10F26 /* TTLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTLoginView.m; path = "../../../../Downloads/toutiao-ios-toutiao-Toutiao-feat/homepage/Toutiao/TTLoginView.m"; sourceTree = "<group>"; };
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +45,22 @@
 		848145B0285133A500D06E39 /* TTAVPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
 		848145B82851C7A900D06E39 /* TTTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTTabBarController.h; sourceTree = "<group>"; };
 		848145B92851C7A900D06E39 /* TTTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTTabBarController.m; sourceTree = "<group>"; };
+		8481460A2852715600D06E39 /* TTRegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTRegisterView.h; sourceTree = "<group>"; };
+		8481460B2852715600D06E39 /* TTInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTInputField.h; sourceTree = "<group>"; };
+		8481460C2852715600D06E39 /* TTRegisterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTRegisterController.h; sourceTree = "<group>"; };
+		8481460D2852715600D06E39 /* TTLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTLoginView.m; sourceTree = "<group>"; };
+		8481460E2852715600D06E39 /* TTPagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPagerViewController.h; sourceTree = "<group>"; };
+		8481460F2852715600D06E39 /* TTSliderNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSliderNavView.h; sourceTree = "<group>"; };
+		848146102852715600D06E39 /* TTLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTLoginController.m; sourceTree = "<group>"; };
+		848146112852715600D06E39 /* UIView+Border.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Border.h"; sourceTree = "<group>"; };
+		848146122852715600D06E39 /* TTRegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTRegisterView.m; sourceTree = "<group>"; };
+		848146132852715600D06E39 /* TTLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTLoginController.h; sourceTree = "<group>"; };
+		848146142852715700D06E39 /* TTLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTLoginView.h; sourceTree = "<group>"; };
+		848146152852715700D06E39 /* TTSliderNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSliderNavView.m; sourceTree = "<group>"; };
+		848146162852715700D06E39 /* TTInputField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTInputField.m; sourceTree = "<group>"; };
+		848146172852715700D06E39 /* UIView+Border.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Border.m"; sourceTree = "<group>"; };
+		848146182852715700D06E39 /* TTRegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTRegisterController.m; sourceTree = "<group>"; };
+		848146192852715700D06E39 /* TTPagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPagerViewController.m; sourceTree = "<group>"; };
 		EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.release.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,22 +114,22 @@
 		8481449C284CE9B100D06E39 /* Toutiao */ = {
 			isa = PBXGroup;
 			children = (
-				0F250594285247B200F10F26 /* TTInputField.h */,
-				0F25058D285247B200F10F26 /* TTInputField.m */,
-				0F250592285247B200F10F26 /* TTLoginController.h */,
-				0F25058A285247B200F10F26 /* TTLoginController.m */,
-				0F25058F285247B200F10F26 /* TTLoginView.h */,
-				0F250598285247B200F10F26 /* TTLoginView.m */,
-				0F25058E285247B200F10F26 /* TTPagerViewController.h */,
-				0F250591285247B200F10F26 /* TTPagerViewController.m */,
-				0F250593285247B200F10F26 /* TTRegisterController.h */,
-				0F250590285247B200F10F26 /* TTRegisterController.m */,
-				0F250589285247B200F10F26 /* TTRegisterView.h */,
-				0F25058C285247B200F10F26 /* TTRegisterView.m */,
-				0F250597285247B200F10F26 /* TTSliderNavView.h */,
-				0F250595285247B200F10F26 /* TTSliderNavView.m */,
-				0F250596285247B200F10F26 /* UIView+Border.h */,
-				0F25058B285247B200F10F26 /* UIView+Border.m */,
+				8481460B2852715600D06E39 /* TTInputField.h */,
+				848146162852715700D06E39 /* TTInputField.m */,
+				848146132852715600D06E39 /* TTLoginController.h */,
+				848146102852715600D06E39 /* TTLoginController.m */,
+				848146142852715700D06E39 /* TTLoginView.h */,
+				8481460D2852715600D06E39 /* TTLoginView.m */,
+				8481460E2852715600D06E39 /* TTPagerViewController.h */,
+				848146192852715700D06E39 /* TTPagerViewController.m */,
+				8481460C2852715600D06E39 /* TTRegisterController.h */,
+				848146182852715700D06E39 /* TTRegisterController.m */,
+				8481460A2852715600D06E39 /* TTRegisterView.h */,
+				848146122852715600D06E39 /* TTRegisterView.m */,
+				8481460F2852715600D06E39 /* TTSliderNavView.h */,
+				848146152852715700D06E39 /* TTSliderNavView.m */,
+				848146112852715600D06E39 /* UIView+Border.h */,
+				848146172852715700D06E39 /* UIView+Border.m */,
 				8481449D284CE9B100D06E39 /* AppDelegate.h */,
 				8481449E284CE9B100D06E39 /* AppDelegate.m */,
 				848144A9284CE9B400D06E39 /* Assets.xcassets */,
@@ -261,20 +261,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8481461F2852715800D06E39 /* UIView+Border.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
-				0F25059B285247B200F10F26 /* TTRegisterView.m in Sources */,
+				8481461C2852715800D06E39 /* TTRegisterView.m in Sources */,
 				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
+				8481461B2852715800D06E39 /* TTLoginController.m in Sources */,
+				8481461A2852715800D06E39 /* TTLoginView.m in Sources */,
 				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,
-				0F25059A285247B200F10F26 /* UIView+Border.m in Sources */,
-				0F250599285247B200F10F26 /* TTLoginController.m in Sources */,
+				848146212852715800D06E39 /* TTPagerViewController.m in Sources */,
+				848146202852715800D06E39 /* TTRegisterController.m in Sources */,
+				8481461E2852715800D06E39 /* TTInputField.m in Sources */,
+				8481461D2852715800D06E39 /* TTSliderNavView.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
-				0F25059E285247B200F10F26 /* TTPagerViewController.m in Sources */,
-				0F25059F285247B200F10F26 /* TTSliderNavView.m in Sources */,
-				0F2505A0285247B200F10F26 /* TTLoginView.m in Sources */,
 				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
-				0F25059D285247B200F10F26 /* TTRegisterController.m in Sources */,
-				0F25059C285247B200F10F26 /* TTInputField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
