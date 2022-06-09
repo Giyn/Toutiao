@@ -1,0 +1,8 @@
+Pods/
+.DS_Store
+.idea/
+Toutiao.xcscheme
+xcsschememanagement.plist
+UserInterfaceState.xcuserstate
+xcschememanagement.plist
+Podfile.lock
