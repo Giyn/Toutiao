@@ -1,6 +1,0 @@
-framework module Pods_Toutiao {
-  umbrella header "Pods-Toutiao-umbrella.h"
-
-  export *
-  module * { export * }
-}
