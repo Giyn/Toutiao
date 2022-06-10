@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) UILabel *videoTitle;
 @property (nonatomic, weak) UIView *videoContainer;
 
-- (void) settingFrame;
+- (void) settingFrame;  // 设置控件位置的方法
 @end
 
 NS_ASSUME_NONNULL_END

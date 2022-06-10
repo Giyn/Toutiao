@@ -95,26 +95,6 @@
     [self.backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.searchBtn addTarget:self action:@selector(searchClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    // frame布局----
-    //    self.searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-    //    self.searchView.backgroundColor = [UIColor grayColor];
-    //    [self.view addSubview:self.searchView];
-    //
-    //    self.searBar = [[UISearchBar alloc]initWithFrame:CGRectMake(50, 4, self.view.frame.size.width - 100, 32)];
-    //    [[[self.searBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
-    //    [self.searchView addSubview:self.searBar];
-    //
-    //    // 设置返回btn
-    //    self.backBtn = [[UIButton alloc]initWithFrame:CGRectMake(8, 2, 37, 36)];
-    //    [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
-    //    [self.searchView addSubview:self.backBtn];
-    //    [self.backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    //    // 设置搜索键
-    //    self.searBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.searBar.frame)+5, 2, 37, 36)];
-    //    [self.searBtn setTitle:@"搜索" forState:UIControlStateNormal];
-    //    [self.searchView addSubview:self.searBtn];
-    //    [self.searBtn addTarget:self action:@selector(searchClicked) forControlEvents:UIControlEventTouchUpInside];
-    //
 }
 
 -(void) viewWillAppear:(BOOL)animated{
