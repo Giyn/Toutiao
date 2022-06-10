@@ -101,6 +101,7 @@
     [super viewWillAppear:animated];
 }
 
+// 搜索键的点击事件
 - (void)searchClicked{
     NSLog(@"搜索");
     UIViewController *vc = [UIViewController new];
@@ -108,6 +109,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+// 返回键点击事件
 - (void)backBtnClicked{
     [self.navigationController popViewControllerAnimated:YES];
 }
