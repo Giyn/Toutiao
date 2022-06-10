@@ -27,7 +27,9 @@
         [self initSliderLabel];
         // 设置容器
         _container.showsHorizontalScrollIndicator = NO;
-        _container.automaticallyAdjustsScrollIndicatorInsets = NO;
+        if (@available(iOS 13.0, *)) {
+            _container.automaticallyAdjustsScrollIndicatorInsets = NO;
+        }
     }
     return self;
 }
@@ -35,7 +37,11 @@
 // 初始化指示器滑块
 - (void)initSliderLabel {
     _sliderLabel = UILabel.new;
-    _sliderLabel.backgroundColor = UIColor.systemRedColor;
+    if (@available(iOS 13.0, *)) {
+        _sliderLabel.backgroundColor = UIColor.systemRedColor;
+    } else {
+        _sliderLabel.backgroundColor = UIColor.redColor;
+    }
     // 圆角
     [_sliderLabel.layer setCornerRadius:2];
     [_sliderLabel setClipsToBounds:YES];
@@ -46,13 +52,17 @@
 - (void)initButtonsWithTitles:(NSArray <NSString *> *)buttonTitles {
     NSMutableArray <UIButton *> *tmpButtonArray = @[].mutableCopy;
     [buttonTitles enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        UIButton *button = UIButton.new;
+        UIButton *button;
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitle:obj forState:UIControlStateNormal];
         // 设置按钮未选中状态
         [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         // 设置按钮选中状态
-        [button setTitleColor:UIColor.redColor forState:UIControlStateSelected];
+        if (@available(iOS 13.0, *)) {
+            [button setTitleColor:UIColor.systemRedColor forState:UIControlStateSelected];
+        } else {
+            [button setTitleColor:UIColor.redColor forState:UIControlStateSelected];
+        }
         [tmpButtonArray addObject:button];
         [_container addSubview:button];
         // tag添加偏移量1000
