@@ -94,7 +94,6 @@
     // 监听btn
     [self.backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.searchBtn addTarget:self action:@selector(searchClicked) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 
 -(void) viewWillAppear:(BOOL)animated{

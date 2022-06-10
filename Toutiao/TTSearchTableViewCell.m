@@ -37,7 +37,7 @@
         // 3 视频标题
         UILabel *videoTitle = [[UILabel alloc] init];
         videoTitle.font = videoTitleFont;
-        videoTitle.numberOfLines = 1;   // 显示2行后自动换行
+        videoTitle.numberOfLines = 2;   // 显示2行后自动换行
         [self.contentView addSubview:videoTitle];
         self.videoTitle = videoTitle;
         
@@ -75,7 +75,6 @@
         make.height.equalTo(usrNameSize.height);
     }];
     
-    
     // 视频标题
     //动态计算宽高
     CGSize titleSize = [self sizeWithText:self.videoTitle.text andMaxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 2*margin, MAXFLOAT) andFont:videoTitleFont];
@@ -95,6 +94,7 @@
         make.height.equalTo(180);
         make.top.equalTo(self.videoTitle.bottom).offset(margin);
     }];
+
 }
 
 // 计算label宽高
