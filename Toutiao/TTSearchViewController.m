@@ -152,9 +152,9 @@
     
     // 创建单元格 cell重用
     static NSString *ID = @"search_cell";
-    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    TTSearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil){
-        cell = [[SearchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[TTSearchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     
     // 设置单元格数据 单元格中添加模型属性 赋值时把模型赋值给单元中的属性就行(数据和frame)
@@ -174,7 +174,7 @@
 
 // 设置选中cell后cell的样式
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    SearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    TTSearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
