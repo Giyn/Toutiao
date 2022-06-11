@@ -30,7 +30,7 @@
 
 - (void)initButtons {
     _registerButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _registerButton.backgroundColor = UIColor.systemBlueColor;
+    _registerButton.backgroundColor = [UIColor colorNamed:@"tt_red"];
     _registerButton.tintColor = UIColor.whiteColor;
     [_registerButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [_registerButton setContentEdgeInsets:UIEdgeInsetsMake(12, 0, 12, 0)];
