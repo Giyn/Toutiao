@@ -24,7 +24,7 @@
 
 - (void)initButtons {
     _loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _loginButton.backgroundColor = UIColor.systemBlueColor;
+    _loginButton.backgroundColor = [UIColor colorNamed:@"tt_red"];
     _loginButton.tintColor = UIColor.whiteColor;
     [_loginButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [_loginButton setContentEdgeInsets:UIEdgeInsetsMake(12, 0, 12, 0)];
@@ -33,6 +33,7 @@
     _registerButton = [UIButton buttonWithType:UIButtonTypeSystem];
 
     [_registerButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    _registerButton.tintColor = [UIColor colorNamed:@"tt_red"];
     [_registerButton.layer setCornerRadius:8];
     [_registerButton setContentEdgeInsets:UIEdgeInsetsMake(12, 0, 12, 0)];
     

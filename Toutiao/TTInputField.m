@@ -33,6 +33,7 @@
     self = [super init];
     if (self) {
         _textField = UITextField.new;
+        _textField.tintColor = [UIColor colorNamed:@"tt_red"];
         _label = UILabel.new;
         _containerView = [[UIStackView alloc]initWithArrangedSubviews:@[_label, _textField]];
         [self setupTextFieldPaddingLeft];
@@ -47,6 +48,7 @@
     self = [super init];
     if (self) {
         _textField = UITextField.new;
+        _textField.tintColor = [UIColor colorNamed:@"tt_red"];
         _label = UILabel.new;
         _containerView = [[UIStackView alloc]initWithArrangedSubviews:@[_label, _textField]];
         [self setupTextFieldPaddingLeft];
@@ -82,6 +84,7 @@
         }];
         [rightButton setImage:image forState:UIControlStateNormal];
     }
+    rightButton.tintColor = [UIColor colorNamed:@"tt_red"];
     [paddingWrapper addArrangedSubview: rightButton];
     _textField.rightView = paddingWrapper;
     [_textField.rightView sizeToFit];

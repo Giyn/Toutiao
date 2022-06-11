@@ -58,11 +58,7 @@
         // 设置按钮未选中状态
         [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         // 设置按钮选中状态
-        if (@available(iOS 13.0, *)) {
-            [button setTitleColor:UIColor.systemRedColor forState:UIControlStateSelected];
-        } else {
-            [button setTitleColor:UIColor.redColor forState:UIControlStateSelected];
-        }
+        [button setTitleColor:[UIColor colorNamed:@"tt_red"] forState:UIControlStateSelected];
         [tmpButtonArray addObject:button];
         [_container addSubview:button];
         // tag添加偏移量1000
