@@ -7,6 +7,7 @@
 
 #import "TTPagerViewController.h"
 #import "TTSliderNavView.h"
+#import "TTSearchViewController.h"
 #import "Masonry.h"
 NSInteger const kTagToIndex = 1000;
 @interface TTPagerViewController () <UIScrollViewDelegate>
@@ -210,6 +211,13 @@ NSInteger const kTagToIndex = 1000;
 
 - (NSInteger)tagFromIndex:(NSInteger)index {
     return index + kTagToIndex;
+}
+
+#pragma mark - searchBar代理方法
+// 点击键盘搜索键后跳转到搜索页面
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 @end
