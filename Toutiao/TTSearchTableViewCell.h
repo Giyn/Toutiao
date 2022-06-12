@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVKit/AVKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) UILabel *usrName;
 @property (nonatomic, weak) UILabel *videoTitle;
 @property (nonatomic, weak) UIView *videoContainer;
+
+@property (nonatomic, strong) AVPlayerViewController *playerVC;
 
 - (void) settingFrame;  // 设置控件位置的方法
 

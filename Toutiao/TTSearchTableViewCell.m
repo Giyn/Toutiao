@@ -10,8 +10,9 @@
 #define MAS_SHORTHAND_GLOBALS
 #import "Masonry.h"
 
-#define nameFont [UIFont systemFontOfSize:14]
-#define videoTitleFont [UIFont systemFontOfSize:16]
+#define nameFont [UIFont systemFontOfSize:16]
+#define videoTitleFont [UIFont systemFontOfSize:18]
+#define heightToWidth 0.5625
 
 @interface TTSearchTableViewCell ()
 @end
@@ -46,6 +47,10 @@
         videoContainer.backgroundColor = [UIColor grayColor];
         [self.contentView addSubview:videoContainer];
         self.videoContainer = videoContainer;
+        
+        // 6 playerVC
+        self.playerVC = [[AVPlayerViewController alloc] init];
+        [self.videoContainer addSubview:self.playerVC.view];
 
     }
     return self;
@@ -75,24 +80,33 @@
         make.height.equalTo(usrNameSize.height);
     }];
     
-    // 视频标题
-    //动态计算宽高
-    CGSize titleSize = [self sizeWithText:self.videoTitle.text andMaxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 2*margin, MAXFLOAT) andFont:videoTitleFont];
+    // 更新view中的frame 因为视频标题用了sizewithattrbutes方法，masonry布局的尺寸有误差
+    [self.contentView layoutIfNeeded];
     
-    [self.videoTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.imgViewIcon.left);
-        make.top.equalTo(self.imgViewIcon.bottom).offset(margin);
-        make.width.equalTo(titleSize.width);
-        make.height.equalTo(titleSize.height);
-    }];
+    // 视频标题
+    CGFloat videoTitleX = margin;
+    CGFloat videoTitleY = CGRectGetMaxY(self.imgViewIcon.frame) + margin;
+    CGSize titleSize = [self sizeWithText:self.videoTitle.text andMaxSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 2*margin, MAXFLOAT) andFont:videoTitleFont]; //动态计算宽高
+    CGFloat videoTitleW = titleSize.width;
+    CGFloat videoTitleH = titleSize.height;
+    self.videoTitle.frame = CGRectMake(videoTitleX, videoTitleY, videoTitleW, videoTitleH);
     
     // 视频
     [self.videoContainer makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imgViewIcon.left);
         make.right.equalTo(self.contentView.right).offset(-margin);
         make.centerX.equalTo(self.contentView.centerX);
-        make.height.equalTo(180);
+        make.height.equalTo(self.videoContainer.width).multipliedBy(0.5625);
         make.top.equalTo(self.videoTitle.bottom).offset(margin);
+        make.bottom.equalTo(self.contentView.bottom).offset(-margin);   // 通过底部约束实现cell行高自适应
+    }];
+    
+    // playerVC
+    [self.playerVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(0);
+        make.top.equalTo(0);
+        make.height.equalTo(self.videoContainer.height);
+        make.width.equalTo(self.videoContainer.width);
     }];
 
 }

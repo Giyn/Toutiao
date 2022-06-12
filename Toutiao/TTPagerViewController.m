@@ -7,11 +7,14 @@
 
 #import "TTPagerViewController.h"
 #import "TTSliderNavView.h"
+#import "TTSearchViewController.h"
 #import "Masonry.h"
 NSInteger const kTagToIndex = 1000;
-@interface TTPagerViewController () <UIScrollViewDelegate>
+@interface TTPagerViewController () <UIScrollViewDelegate, UISearchBarDelegate>
+
 @property (nonatomic, strong) NSArray <UIView *> *childrenArray;
 @property (nonatomic, strong) NSArray <UIViewController *> *childrenVCArray;
+
 - (void)populateWithChildren:(NSArray <UIView *> *)children;
 @end
 
@@ -64,6 +67,8 @@ NSInteger const kTagToIndex = 1000;
         make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
     }];
     _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    // 设置搜索框代理
+    _searchBar.delegate = self;
     // 初始化指示器滑块约束
     [_ttSliderNav mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_searchBar.mas_bottom);
@@ -210,6 +215,13 @@ NSInteger const kTagToIndex = 1000;
 
 - (NSInteger)tagFromIndex:(NSInteger)index {
     return index + kTagToIndex;
+}
+
+#pragma mark - searchBar代理方法
+// 点击键盘搜索键后跳转到搜索页面
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 @end

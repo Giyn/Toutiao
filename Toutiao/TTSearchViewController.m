@@ -7,6 +7,7 @@
 
 #import "TTSearchViewController.h"
 #import "TTSearchTableViewCell.h"
+#import "TTVideoStreamController.h"
 
 #define MAS_SHORTHAND
 #define MAS_SHORTHAND_GLOBALS
@@ -19,13 +20,22 @@
 @property (nonatomic,strong)UISearchBar *searchBar;
 @property (nonatomic,strong)UIButton *backBtn;
 @property (nonatomic,strong)UIButton *searchBtn;
+@property (nonatomic,strong)NSString *searchInput;
 
 @end
 
 @implementation TTSearchViewController
 
+- (instancetype)initWithText:(NSString *)text{
+    if (self = [super init]){
+        self.searchInput = text;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarController.tabBar.hidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     [self setUpSearchView];
     [self setUpSearchTableView];
@@ -42,6 +52,7 @@
     self.searchBar = [[UISearchBar alloc] init];
     [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
     [self.searchView addSubview:self.searchBar];
+    self.searchBar.text = self.searchInput; // 主页跳转传值
     
     // 初始化backBtn
     self.backBtn = [[UIButton alloc] init];
@@ -111,10 +122,10 @@
 
 // 返回键点击事件
 - (void)backBtnClicked{
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-// 设置searchtableview（行高后面可能需要改）
+// 设置searchtableview
 - (void)setUpSearchTableView{
     self.searchTableView = [[UITableView alloc] init];
     self.searchTableView.backgroundColor = [UIColor whiteColor];
@@ -133,7 +144,7 @@
             make.bottom.equalTo(self.view.bottom);
         }];
     }
-    self.searchTableView.rowHeight = 280;   // 行高后面可能需要改
+    
     //self.searchTableView.allowsSelection = NO;  // 禁止cell与用户互动
     self.searchTableView.dataSource = self;
     self.searchTableView.delegate = self;
@@ -148,7 +159,12 @@
 
 // 设置单元格格式
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    // 获取模型数据
+    // 获取模型数据（根据indexpath从模型数组中取出对应的模型）
+    // 以下数据是示例
+    NSURL *url = [NSURL URLWithString:@"https://v-cdn.zjol.com.cn/276982.mp4"];
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url];
+    AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+    //AVPlayer *player = [AVPlayer playerWithPlayerItem:nil];
     
     // 创建单元格 cell重用
     static NSString *ID = @"search_cell";
@@ -161,6 +177,8 @@
     cell.imgViewIcon.image = [UIImage imageNamed:@"icon1"];
     cell.usrName.text = @"用户名";
     cell.videoTitle.text = @"标题标题标题标题标题";
+    cell.playerVC.player = player;
+    
     [cell settingFrame];
     
     // 返回单元格
@@ -168,14 +186,12 @@
 }
 
 #pragma mark - TableView的代理方法
-// 设置cell行高
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//}
-
-// 设置选中cell后cell的样式
+// 设置选中cell后cell的样式--cell选中后不变灰
+// 选中cell后跳转视频播放?
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TTSearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
 }
 
 
