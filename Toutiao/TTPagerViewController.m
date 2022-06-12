@@ -7,12 +7,12 @@
 
 #import "TTPagerViewController.h"
 #import "TTSliderNavView.h"
+#import "TTVideoStreamController.h"
+#import "TTAVPlayerView.h"
 #import "Masonry.h"
 NSInteger const kTagToIndex = 1000;
 @interface TTPagerViewController () <UIScrollViewDelegate>
 @property (nonatomic, strong) NSArray <UIView *> *childrenArray;
-@property (nonatomic, strong) NSArray <UIViewController *> *childrenVCArray;
-- (void)populateWithChildren:(NSArray <UIView *> *)children;
 @end
 
 @implementation TTPagerViewController
@@ -28,11 +28,13 @@ NSInteger const kTagToIndex = 1000;
     return self;
 }
 
-- (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles {
-    self = [super init];
+- (instancetype)initWithChildrenVCArray:(NSArray<UIViewController *> *)childrenVCArray titles:(NSArray<NSString *> *)titles showSearchBar:(BOOL)showSearchBar onPageLeave:(OnPageLeave)onPageLeave onPageEnter:(OnPageEnter)onPageEnter {
     if (self) {
         _childrenVCArray = childrenVCArray;
-        _searchBar = UISearchBar.new;
+        _showSearchBar = showSearchBar;
+        if (_showSearchBar) {
+            _searchBar = UISearchBar.new;
+        }
         NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
         for (UIViewController *vc in childrenVCArray) {
             [childrenArray addObject:vc.view];
@@ -40,6 +42,53 @@ NSInteger const kTagToIndex = 1000;
         _childrenArray = childrenArray;
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
+        _onPageLeave = onPageLeave;
+        _onPageEnter = onPageEnter;
+    }
+    return self;
+}
+
+- (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar{
+    self = [super init];
+    if (self) {
+        _childrenVCArray = childrenVCArray;
+        _showSearchBar = showSearchBar;
+        if (_showSearchBar) {
+            _searchBar = UISearchBar.new;
+        }
+        NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
+        for (UIViewController *vc in childrenVCArray) {
+            [childrenArray addObject:vc.view];
+        }
+        _childrenArray = childrenArray;
+        // 初始化按钮
+        _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
+        _onPageLeave = ^(NSInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
+            __strong typeof(weakVC) strongVC = weakVC;
+            if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+                return;
+            }
+            TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
+            UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+            if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
+                TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+                TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+                [ttAVPlayerView pause];
+            }
+        };
+        _onPageEnter = ^(NSInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
+            __strong typeof(weakVC) strongVC = weakVC;
+            if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+                return;
+            }
+            TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
+            UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+            if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
+                TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+                TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+                [ttAVPlayerView play];
+            }
+        };
     }
     return self;
 }
@@ -55,21 +104,30 @@ NSInteger const kTagToIndex = 1000;
     CGSize contentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width * _childrenArray.count, 0);
     [_container setContentSize:contentSize];
     // 添加搜索框
-    [self.view addSubview: _searchBar];
-    // 初始化搜索框，设置安全区域边距
-    [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(self.view);
-        make.height.mas_equalTo(50);
-        make.centerX.mas_equalTo(self.view);
-        make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
-    }];
-    _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    if (_showSearchBar) {
+        [self.view addSubview: _searchBar];
+        // 初始化搜索框，设置安全区域边距
+        [_searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(self.view);
+            make.height.mas_equalTo(50);
+            make.centerX.mas_equalTo(self.view);
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        }];
+        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    }
     // 初始化指示器滑块约束
     [_ttSliderNav mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_searchBar.mas_bottom);
-        make.width.mas_equalTo(_searchBar.mas_width).offset(-40);
-        make.centerX.mas_equalTo(_searchBar);
-        make.height.mas_equalTo(_searchBar);
+        if (_showSearchBar) {
+            make.top.mas_equalTo(_searchBar.mas_bottom);
+            make.width.mas_equalTo(_searchBar.mas_width).offset(-40);
+            make.centerX.mas_equalTo(_searchBar);
+            make.height.mas_equalTo(_searchBar);
+        } else {
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
+            make.width.mas_equalTo(self.view.mas_width).offset(-40);
+            make.centerX.mas_equalTo(self.view);
+            make.height.mas_equalTo(50);
+        }
     }];
     // 初始化选中第一个按钮
     [_ttSliderNav.buttonArray.firstObject setSelected:YES];
@@ -78,6 +136,17 @@ NSInteger const kTagToIndex = 1000;
         [obj addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventTouchUpInside];
     }];
     [_ttSliderNav setupSubViews];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [_childrenVCArray enumerateObjectsUsingBlock:^(UIViewController * _Nonnull childVC, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([childVC isKindOfClass:TTVideoStreamController.class]) {
+            TTVideoStreamController *ttVideoVC = (TTVideoStreamController *)childVC;
+//            if (idx != 0) {
+                [ttVideoVC.avPlayerView pause];
+//            }
+        }
+    }];
 }
 
 - (void)populateWithChildren:(NSArray<UIView *> *)children {
@@ -115,9 +184,11 @@ NSInteger const kTagToIndex = 1000;
     if (_currentIndex == nextIndex || !_ttSliderNav.canInteract) {
         return;
     }
-    [self slideAnimationWithTag:sender.tag];
-    // 更新当前容器页面下表
-    _currentIndex = nextIndex;
+    // 取消先前激活按钮
+    UIButton *currentSelectedButton = [_ttSliderNav buttonWithTag: [self tagFromIndex:_currentIndex]];
+    NSLog(@"%@", currentSelectedButton.description);
+    [currentSelectedButton setSelected:NO];
+    [self animateWithTag:sender.tag];
     // 设置为按钮点击状态，防止动画冲突
     _ttSliderNav.isButtonClicked = YES;
     // 容器滚动动画
@@ -154,15 +225,18 @@ NSInteger const kTagToIndex = 1000;
     }];
     // 选中对应按钮
     [[_ttSliderNav buttonWithTag:tag]setSelected:YES];
-}
-
-// 取消全部按钮的激活状态，之后执行动画
-- (void)slideAnimationWithTag:(NSInteger)tag {
-    [_ttSliderNav.buttonArray enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [obj setSelected:NO];
-    }];
-    [self animateWithTag:tag];
     NSLog(@"scroll end: %zd", _currentIndex);
+    // 更新下标
+    NSInteger nextIndex = [self indexFromTag:tag];
+    NSInteger currentIdx = _currentIndex;
+    __weak typeof(self) weakSelf = self;
+    if (_onPageLeave) {
+        _onPageLeave(currentIdx, weakSelf);
+    }
+    _currentIndex = nextIndex;
+    if (_onPageEnter) {
+        _onPageEnter(nextIndex, weakSelf);
+    }
 }
 
 #pragma mark - ScrollView委托方法
@@ -191,16 +265,9 @@ NSInteger const kTagToIndex = 1000;
     // 取消激活
     [[_ttSliderNav buttonWithTag:previousTag]setSelected:NO];
     // 根据容器滑动偏移量计算下一个页面对应的按钮tag
-    NSInteger tag = [self tagFromIndex:(NSInteger) (scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width)];
+    NSInteger nextTag = [self tagFromIndex:(NSInteger) (scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width)];
     // 开始动画
-    [self animateWithTag:tag];
-    // 计算下一个页面对应容器下标
-    NSInteger nextIndex = [self indexFromTag:tag];
-    NSLog(@"scroll start: %zd", _currentIndex);
-    // 更新下标
-    _currentIndex = nextIndex;
-    //
-    [self slideAnimationWithTag:tag];
+    [self animateWithTag:nextTag];
 }
 
 #pragma mark - 转换tag和index
