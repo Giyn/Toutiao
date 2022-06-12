@@ -59,6 +59,8 @@
     imageMine = [imageMine imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     navMine.tabBarItem.selectedImage = imageMine;
     [navMine.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
+
+    navMine.navigationBar.tintColor = [UIColor colorNamed:@"tt_red"];
     
     [self addChildViewController:navcHomePage];
     [self addChildViewController:vcUpload];

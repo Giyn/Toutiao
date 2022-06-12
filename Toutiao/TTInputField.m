@@ -10,9 +10,7 @@
 #import "UIView+Border.h"
 
 @interface TTInputField ()
-
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) UIView *bottomMargin;
 @end
 @implementation TTInputField
 
@@ -35,6 +33,7 @@
     self = [super init];
     if (self) {
         _textField = UITextField.new;
+        _textField.tintColor = [UIColor colorNamed:@"tt_red"];
         _label = UILabel.new;
         _containerView = [[UIStackView alloc]initWithArrangedSubviews:@[_label, _textField]];
         [self setupTextFieldPaddingLeft];
@@ -49,6 +48,7 @@
     self = [super init];
     if (self) {
         _textField = UITextField.new;
+        _textField.tintColor = [UIColor colorNamed:@"tt_red"];
         _label = UILabel.new;
         _containerView = [[UIStackView alloc]initWithArrangedSubviews:@[_label, _textField]];
         [self setupTextFieldPaddingLeft];
@@ -68,8 +68,25 @@
 }
 
 - (void)setupTextFieldVisibilityButton {
-    UIImage *image = [UIImage systemImageNamed:@"eye"];
-    _textField.rightView = [UIButton systemButtonWithImage:image target:self action: @selector(toggleVisibility)];
+    UIImage *image = [UIImage imageNamed:@"eye"];
+    UIStackView *paddingWrapper = UIStackView.new;
+    [paddingWrapper mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(30);
+    }];
+    UIButton *rightButton;
+    if (@available(iOS 13.0, *)) {
+        rightButton = [UIButton systemButtonWithImage:image target:self action: @selector(toggleVisibility)];
+    } else {
+        rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(30);
+            make.height.mas_equalTo(26);
+        }];
+        [rightButton setImage:image forState:UIControlStateNormal];
+    }
+    rightButton.tintColor = [UIColor colorNamed:@"tt_red"];
+    [paddingWrapper addArrangedSubview: rightButton];
+    _textField.rightView = paddingWrapper;
     [_textField.rightView sizeToFit];
     _textField.rightViewMode = UITextFieldViewModeAlways;
 }

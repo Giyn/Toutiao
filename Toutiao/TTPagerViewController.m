@@ -10,11 +10,12 @@
 #import "TTSearchViewController.h"
 #import "Masonry.h"
 NSInteger const kTagToIndex = 1000;
-@interface TTPagerViewController () <UIScrollViewDelegate>
-@property (nonatomic, strong) NSArray <UITableView *> *childrenArray;
+@interface TTPagerViewController () <UIScrollViewDelegate, UISearchBarDelegate>
 
+@property (nonatomic, strong) NSArray <UIView *> *childrenArray;
 @property (nonatomic, strong) NSArray <UIViewController *> *childrenVCArray;
-- (void)populateWithChildren:(NSArray <UITableView *> *)children;
+
+- (void)populateWithChildren:(NSArray <UIView *> *)children;
 @end
 
 @implementation TTPagerViewController
@@ -33,8 +34,9 @@ NSInteger const kTagToIndex = 1000;
 - (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles {
     self = [super init];
     if (self) {
+        _childrenVCArray = childrenVCArray;
         _searchBar = UISearchBar.new;
-        NSMutableArray <UITableView *> *childrenArray = [NSMutableArray array];
+        NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
         for (UIViewController *vc in childrenVCArray) {
             [childrenArray addObject:vc.view];
         }
@@ -65,6 +67,8 @@ NSInteger const kTagToIndex = 1000;
         make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop);
     }];
     _searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    // 设置搜索框代理
+    _searchBar.delegate = self;
     // 初始化指示器滑块约束
     [_ttSliderNav mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_searchBar.mas_bottom);
@@ -81,10 +85,10 @@ NSInteger const kTagToIndex = 1000;
     [_ttSliderNav setupSubViews];
 }
 
-- (void)populateWithChildren:(NSArray<UITableView *> *)children {
+- (void)populateWithChildren:(NSArray<UIView *> *)children {
     // 遍历children数组添加视图到滑动容器
     __block BOOL containsNilObj = NO;
-    [children enumerateObjectsUsingBlock:^(UITableView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [children enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj == nil) {
             containsNilObj = YES;
             *stop = YES;
@@ -138,7 +142,7 @@ NSInteger const kTagToIndex = 1000;
     CGFloat sliderWidth = _ttSliderNav.sliderLabel.frame.size.width;
     // 滑动指示器
     UILabel *sliderLabel = self->_ttSliderNav.sliderLabel;
-    UIScrollView *sliderContainer = (UIScrollView *)_ttSliderNav.container;
+    UIScrollView *sliderContainer = _ttSliderNav.container;
     // 禁止动画结束前交互
     _ttSliderNav.canInteract = false;
     [UIView animateWithDuration:0.3 animations:^{
@@ -192,7 +196,7 @@ NSInteger const kTagToIndex = 1000;
     // 取消激活
     [[_ttSliderNav buttonWithTag:previousTag]setSelected:NO];
     // 根据容器滑动偏移量计算下一个页面对应的按钮tag
-    NSInteger tag = [self tagFromIndex:scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width];
+    NSInteger tag = [self tagFromIndex:(NSInteger) (scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width)];
     // 开始动画
     [self animateWithTag:tag];
     // 计算下一个页面对应容器下标
