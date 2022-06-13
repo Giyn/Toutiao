@@ -8,8 +8,10 @@
 #import "TTRegisterController.h"
 #import "TTInputField.h"
 #import "TTRegisterView.h"
-
 #import "Masonry.h"
+#import "AFNetworking.h"
+#import "MJExtension.h"
+#import "TTBaseResponse.h"
 
 NSUInteger const kRegisterViewUsernameFieldTag = 111;
 NSUInteger const kRegisterViewEmailFieldTag = 222;
@@ -21,6 +23,8 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
 
 @interface TTRegisterController () <UITextFieldDelegate>
 @property (nonatomic, strong) TTRegisterView *registerView;
+@property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizer;
+@property (nonatomic, assign) BOOL isPerformingRequest;
 @end
 
 @implementation TTRegisterController
@@ -37,9 +41,12 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
     _registerView.emailInputField.tag = kRegisterViewEmailFieldTag;
     _registerView.passwordInputField.tag = kRegisterViewPasswordFieldTag;
 
-    [_registerView.registerButton addTarget:self action:@selector(isInputLegal) forControlEvents:UIControlEventTouchUpInside];
+    [_registerView.registerButton addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationController setNavigationBarHidden:false];
     self.navigationItem.title = @"注册";
+    _gestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
+    [self.view addGestureRecognizer:_gestureRecognizer];
+    _gestureRecognizer.cancelsTouchesInView = NO;
 }
 - (void)viewWillLayoutSubviews {
 
@@ -70,13 +77,18 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
             
         case kRegisterViewPasswordFieldTag:
             [textField resignFirstResponder];
-            NSLog(@"登录");
+            [self registerAction];
             break;
             
         default:
             NSLog(@"%@", @(textField.tag));
     }
     return YES;
+}
+
+#pragma mark - 收起键盘
+- (void)dismissKeyboard {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - 校验表单
@@ -102,6 +114,21 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
     return YES;
 }
 
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message redirectToPrev:(BOOL)redirectToPrev {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action;
+    if (redirectToPrev) {
+        action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self navToPrev];
+        }];
+    } else {
+        action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    }
+    
+    [alertController addAction:action];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 - (BOOL)isInputLegal {
     BOOL isUsernameEmpty = [_registerView.usernameInputField.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0;
@@ -129,10 +156,7 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
         } else if (!isPasswordValid) {
             errorMessage = @"输入的密码应该包含大小写和数字, 且长度在8到30个字符以内";
         }
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入错误" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:action];
-        [self presentViewController:alertController animated:YES completion:nil];
+        [self showAlertWithTitle:@"输入错误" message:errorMessage redirectToPrev:NO];
         return NO;
     }
 }
@@ -152,15 +176,68 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
     }
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - 注册事件
+- (void)registerAction {
+    if (![self isInputLegal]) {
+        NSLog(@"Illegal input username: %@, email: %@, password: %@", _registerView.usernameInputField.textField.text, _registerView.emailInputField.textField.text, _registerView.passwordInputField.textField.text);
+        return;
+    }
+    if (_isPerformingRequest) {
+        [self showAlertWithTitle:@"网络繁忙" message:@"正在请求中，请稍后再试" redirectToPrev:NO];
+    }
+    [self performRegisterRequest];
 }
-*/
+
+#pragma mark - 网络请求
+- (void)performRegisterRequest {
+    NSString *username = _registerView.usernameInputField.textField.text;
+    NSString *email = _registerView.emailInputField.textField.text;
+    NSString *password = _registerView.passwordInputField.textField.text;
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc]initWithSessionConfiguration:config];
+    
+    NSString *registerEndpoint = @"http://47.96.114.143:62318/api/user/register";
+    NSMutableDictionary *mutableDict = NSMutableDictionary.new;
+    mutableDict[@"account"] = username;
+    mutableDict[@"name"] = username;
+    mutableDict[@"password"] = password;
+    mutableDict[@"mail"] = email;
+    
+    self.isPerformingRequest = YES;
+    NSURLRequest *request = [[AFJSONRequestSerializer serializer]requestWithMethod:@"POST" URLString:registerEndpoint parameters:mutableDict.copy error:nil];
+    __weak typeof(self) weakSelf = self;
+    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        TTBaseResponse *baseResponse = [TTBaseResponse mj_objectWithKeyValues:responseObject];
+        NSLog(@"%@ %@", response, responseObject);
+        
+        if (![baseResponse.success isEqualToString:@"1"]) {
+            [strongSelf showAlertWithTitle:@"注册失败" message:baseResponse.message redirectToPrev:NO];
+            return;
+        } else {
+            [strongSelf showAlertWithTitle:@"注册成功" message:@"即将前往登录界面" redirectToPrev:YES];
+        }
+        strongSelf.isPerformingRequest = NO;
+    }];
+    [dataTask resume];
+}
+
+#pragma mark - 跳转到上一级页面
+- (void)navToPrev {
+    UINavigationController *navVC = self.navigationController;
+    __block NSInteger currentVCIndex;
+    [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isEqual:self]) {
+                currentVCIndex = idx;
+                *stop = YES;
+                return;
+            }
+    }];
+    if (currentVCIndex == 0) {
+        return;
+    }
+    [navVC popToViewController:navVC.viewControllers[currentVCIndex-1] animated:YES];
+}
 
 @end
