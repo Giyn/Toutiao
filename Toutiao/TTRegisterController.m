@@ -5,21 +5,18 @@
 //  Created by 肖扬 on 2022/6/6.
 //
 
+#import <AFNetworking/AFURLSessionManager.h>
+#import <MJExtension/NSObject+MJKeyValue.h>
 #import "TTRegisterController.h"
 #import "TTInputField.h"
 #import "TTRegisterView.h"
 #import "Masonry.h"
-#import "AFNetworking.h"
-#import "MJExtension.h"
 #import "TTBaseResponse.h"
+#import "config.h"
 
 NSUInteger const kRegisterViewUsernameFieldTag = 111;
 NSUInteger const kRegisterViewEmailFieldTag = 222;
 NSUInteger const kRegisterViewPasswordFieldTag = 333;
-NSUInteger const kRegisterViewValidPasswordLength = 30;
-NSString * const kRegisterViewUsernameRegex = @"[A-Za-z0-9]+";
-NSString * const kRegisterViewEmailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}";
 
 @interface TTRegisterController () <UITextFieldDelegate>
 @property (nonatomic, strong) TTRegisterView *registerView;
@@ -93,16 +90,16 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
 
 #pragma mark - 校验表单
 - (BOOL)checkUsername:(NSString*)string {
-    return [self checkStringForRegex:string regex:kRegisterViewUsernameRegex];
+    return [self checkStringForRegex:string regex:kUsernameRegex];
 }
 
 - (BOOL)checkEmail:(NSString*)string {
-    return [self checkStringForRegex:string regex:kRegisterViewEmailRegex];
+    return [self checkStringForRegex:string regex:kEmailRegex];
 }
 
 
 - (BOOL)checkPassword:(NSString *)string {
-    return [self checkStringForRegex:string regex:kRegisterViewPasswordRegex];
+    return [self checkStringForRegex:string regex:kPasswordRegex];
     
 }
 
@@ -136,7 +133,7 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
     BOOL isPasswordEmpty = _registerView.passwordInputField.textField.text.length == 0 ;
     BOOL isUsernameValid = [self checkUsername:_registerView.usernameInputField.textField.text];
     BOOL isEmailValid = [self checkEmail:_registerView.emailInputField.textField.text];
-    BOOL isPasswordValid = _registerView.passwordInputField.textField.text.length < kRegisterViewValidPasswordLength && [self checkPassword:_registerView.passwordInputField.textField.text];
+    BOOL isPasswordValid = _registerView.passwordInputField.textField.text.length < kValidPasswordLength && [self checkPassword:_registerView.passwordInputField.textField.text];
     
     BOOL isValid = !isUsernameEmpty && !isEmailEmpty && !isPasswordEmpty && isUsernameValid && isEmailValid && isPasswordValid;
     if (isValid) {
@@ -158,21 +155,6 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
         }
         [self showAlertWithTitle:@"输入错误" message:errorMessage redirectToPrev:NO];
         return NO;
-    }
-}
-
-- (void)resignAllFieldRespondersWithNextResponder:(UITextField *)nextResponder {
-    if (_registerView.usernameInputField.isFirstResponder) {
-        NSLog(@"username, %@", @(_registerView.usernameInputField.resignFirstResponder));
-        [_registerView.usernameInputField resignFirstResponder];
-    }
-    if (_registerView.emailInputField.isFirstResponder) {
-        NSLog(@"email, %@", @(_registerView.usernameInputField.resignFirstResponder));
-        [_registerView.emailInputField resignFirstResponder];
-    }
-    if (_registerView.passwordInputField.isFirstResponder) {
-        NSLog(@"password, %@", @(_registerView.usernameInputField.resignFirstResponder));
-        [_registerView.passwordInputField resignFirstResponder];
     }
 }
 
@@ -226,7 +208,7 @@ NSString * const kRegisterViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]
 #pragma mark - 跳转到上一级页面
 - (void)navToPrev {
     UINavigationController *navVC = self.navigationController;
-    __block NSInteger currentVCIndex;
+    __block NSUInteger currentVCIndex;
     [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([obj isEqual:self]) {
                 currentVCIndex = idx;

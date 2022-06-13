@@ -5,22 +5,18 @@
 //  Created by 肖扬 on 2022/6/6.
 //
 
+#import <AFNetworking/AFURLSessionManager.h>
+#import <MJExtension/NSObject+MJKeyValue.h>
 #import "TTRegisterController.h"
 #import "TTLoginView.h"
 #import "TTInputField.h"
 #import "TTLoginController.h"
 #import "TTLoginResponse.h"
-#import "AFNetworking.h"
+#import "config.h"
 #import "Masonry.h"
-#import "MJExtension.h"
 
 NSUInteger const kLoginViewUsernameFieldTag = 111;
-NSUInteger const kLoginViewEmailFieldTag = 222;
 NSUInteger const kLoginViewPasswordFieldTag = 333;
-NSUInteger const kLoginViewValidPasswordLength = 30;
-NSString * const kLoginViewUsernameRegex = @"[A-Za-z0-9]+";
-NSString * const kLoginViewEmailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}";
 
 @interface TTLoginController () <UITextFieldDelegate>
 @property (nonatomic, strong) TTLoginView *loginView;
@@ -49,14 +45,11 @@ NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{
 }
 
 - (void)viewWillLayoutSubviews {
-
     [_loginView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(self.view);
         make.center.mas_equalTo(self.view);
         make.height.mas_equalTo(270);
     }];
-    
-    
 }
 
 #pragma mark - TextField Delegate
@@ -82,17 +75,7 @@ NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{
 
 #pragma mark - 校验表单
 - (BOOL)checkUsername:(NSString*)string {
-    return [self checkStringForRegex:string regex:kLoginViewUsernameRegex];
-}
-
-- (BOOL)checkEmail:(NSString*)string {
-    return [self checkStringForRegex:string regex:kLoginViewEmailRegex];
-}
-
-
-- (BOOL)checkPassword:(NSString *)string {
-    return [self checkStringForRegex:string regex:kLoginViewPasswordRegex];
-    
+    return [self checkStringForRegex:string regex:kUsernameRegex];
 }
 
 - (BOOL)checkStringForRegex:(NSString *)string regex:(NSString *)regex {
@@ -103,12 +86,11 @@ NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{
     return YES;
 }
 
-
 - (BOOL)isInputLegal {
     BOOL isUsernameEmpty = [_loginView.usernameInputField.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0;
     BOOL isPasswordEmpty = _loginView.passwordInputField.textField.text.length == 0 ;
     BOOL isUsernameValid = [self checkUsername:_loginView.usernameInputField.textField.text];
-    BOOL isPasswordValid = _loginView.passwordInputField.textField.text.length < kLoginViewValidPasswordLength;
+    BOOL isPasswordValid = _loginView.passwordInputField.textField.text.length < kValidPasswordLength;
     
     BOOL isValid = !isUsernameEmpty && !isPasswordEmpty && isUsernameValid && isPasswordValid;
     if (isValid) {
@@ -163,16 +145,6 @@ NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{
     [self.view endEditing:YES];
 }
 
-#pragma mark - 注册按钮事件
-- (void)registerAction {
-    if (![self isInputLegal]) {
-        NSLog(@"Illegal input username: %@,  password: %@", _loginView.usernameInputField.textField.text, _loginView.passwordInputField.textField.text);
-        return;
-    }
-    [self performLoginRequest];
-}
-
-
 #pragma mark - 网络请求
 - (void)performLoginRequest {
     NSString *username = _loginView.usernameInputField.textField.text;
@@ -225,7 +197,7 @@ NSString * const kLoginViewPasswordRegex = @"(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{
 // 跳转到上一级页面
 - (void)navToPrev {
     UINavigationController *navVC = self.navigationController;
-    __block NSInteger currentVCIndex;
+    __block NSUInteger currentVCIndex;
     [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([obj isEqual:self]) {
                 currentVCIndex = idx;
