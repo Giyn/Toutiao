@@ -5,6 +5,8 @@ target 'Toutiao' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   pod 'Masonry'
+  pod 'AFNetworking'
+  pod 'MJExtension'
   # Pods for Toutiao
 
 end

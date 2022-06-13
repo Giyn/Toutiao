@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
 @property (nonatomic, strong) NSArray *urlArray; // 存放视频url
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+//@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 
 @end
@@ -34,10 +34,12 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         for (int i = 0; i < self.urlArray.count; i++) {
             UIImage *image = [self getVideoPreViewImage:[NSURL URLWithString:self.urlArray[i]]];
-            [self.videoImgArray replaceObjectAtIndex:i withObject:image];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
+            if (image != nil) {
+                [self.videoImgArray replaceObjectAtIndex:i withObject:image];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
         }
     });
 }

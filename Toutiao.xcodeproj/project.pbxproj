@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F0E154628574DFD00276B2C /* config.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E154528574DFD00276B2C /* config.m */; };
+		0F458F922856F4F600887C76 /* TTBaseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F912856F4F600887C76 /* TTBaseResponse.m */; };
+		0F458F952857041F00887C76 /* TTLoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F942857041F00887C76 /* TTLoginResponse.m */; };
+		0F458F982857053C00887C76 /* TTLoginData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F972857053C00887C76 /* TTLoginData.m */; };
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
@@ -31,6 +35,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F0E154528574DFD00276B2C /* config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = config.m; sourceTree = "<group>"; };
+		0F458F902856F4F600887C76 /* TTBaseResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTBaseResponse.h; sourceTree = "<group>"; };
+		0F458F912856F4F600887C76 /* TTBaseResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTBaseResponse.m; sourceTree = "<group>"; };
+		0F458F932857041F00887C76 /* TTLoginResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTLoginResponse.h; sourceTree = "<group>"; };
+		0F458F942857041F00887C76 /* TTLoginResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTLoginResponse.m; sourceTree = "<group>"; };
+		0F458F962857053C00887C76 /* TTLoginData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTLoginData.h; sourceTree = "<group>"; };
+		0F458F972857053C00887C76 /* TTLoginData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTLoginData.m; sourceTree = "<group>"; };
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +158,7 @@
 				848144AE284CE9B400D06E39 /* Info.plist */,
 				848144AF284CE9B400D06E39 /* main.m */,
 				84814590284DFD4100D06E39 /* config.h */,
+				0F0E154528574DFD00276B2C /* config.m */,
 				848145A72851335D00D06E39 /* TTVideoStreamController.h */,
 				848145A82851335D00D06E39 /* TTVideoStreamController.m */,
 				848145AB2851338500D06E39 /* TTVideoStreamCell.h */,
@@ -160,7 +172,12 @@
 				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
 				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
-
+				0F458F902856F4F600887C76 /* TTBaseResponse.h */,
+				0F458F912856F4F600887C76 /* TTBaseResponse.m */,
+				0F458F932857041F00887C76 /* TTLoginResponse.h */,
+				0F458F942857041F00887C76 /* TTLoginResponse.m */,
+				0F458F962857053C00887C76 /* TTLoginData.h */,
+				0F458F972857053C00887C76 /* TTLoginData.m */,
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
@@ -277,15 +294,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F458F982857053C00887C76 /* TTLoginData.m in Sources */,
 				8481461F2852715800D06E39 /* UIView+Border.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
-
 				84A168302852E6A300AA5543 /* TTSearchViewController.m in Sources */,
 				84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */,
-
 				8481461C2852715800D06E39 /* TTRegisterView.m in Sources */,
 				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
+				0F458F952857041F00887C76 /* TTLoginResponse.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
+				0F0E154628574DFD00276B2C /* config.m in Sources */,
 				8481461B2852715800D06E39 /* TTLoginController.m in Sources */,
 				8481461A2852715800D06E39 /* TTLoginView.m in Sources */,
 				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,
@@ -294,6 +312,7 @@
 				8481461E2852715800D06E39 /* TTInputField.m in Sources */,
 				8481461D2852715800D06E39 /* TTSliderNavView.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
+				0F458F922856F4F600887C76 /* TTBaseResponse.m in Sources */,
 				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

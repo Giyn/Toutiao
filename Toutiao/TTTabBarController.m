@@ -9,6 +9,7 @@
 #import "TTVideoStreamController.h"
 #import "TTLoginController.h"
 #import "TTPagerViewController.h"
+#import "TTAVPlayerView.h"
 
 @interface TTTabBarController ()
 
@@ -30,9 +31,36 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor];
 
     // 创建子控制器 - 主页
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"]];
+    OnPageEnter onPageEnter = ^(NSInteger currentIndex, __weak UIViewController *weakVC) {
+        __strong typeof(weakVC) strongVC = weakVC;
+        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+            return;
+        }
+        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
+        UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
+            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+            TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+            [ttAVPlayerView play];
+        }
+    };
+    OnPageLeave onPageLeave = ^(NSInteger currentIndex, __weak UIViewController *weakVC) {
+        __strong typeof(weakVC) strongVC = weakVC;
+        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+            return;
+        }
+        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
+        UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
+            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+            TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+            [ttAVPlayerView pause];
+        }
+    };
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:NO onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
     vcHomePage.navigationController.navigationBar.hidden = YES;
+
     vcHomePage.tabBarItem.title = @"主页";
     vcHomePage.tabBarItem.image = [UIImage imageNamed:@"homepage"];
     UIImage *imageHomePage = [UIImage imageNamed:@"homepage_highlighted"];
@@ -61,7 +89,7 @@
     [navMine.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
 
     navMine.navigationBar.tintColor = [UIColor colorNamed:@"tt_red"];
-    
+
     [self addChildViewController:navcHomePage];
     [self addChildViewController:vcUpload];
     [self addChildViewController:navMine];
