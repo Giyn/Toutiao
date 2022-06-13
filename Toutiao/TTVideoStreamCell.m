@@ -14,14 +14,9 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.contentView.backgroundColor = [UIColor blackColor];
 
-        self.bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-kTabBarHeight)];
-        self.bgImageView.tag = 100;
+        self.bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kTabBarHeight)];
         self.bgImageView.image = [UIImage imageNamed:@"video_loading"];
         [self.contentView addSubview:self.bgImageView];
-
-        self.middleView = [[UIView alloc] initWithFrame:CGRectMake(kScreenWidth-80, (kScreenHeight-150-kStatusHeight)/2, 80, 50)];
-        self.middleView.tag = 200;
-        [self.contentView addSubview:self.middleView];
     }
 
     return self;

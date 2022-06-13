@@ -141,7 +141,6 @@
         [self.avPlayerView removeFromSuperview];
         self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kTabBarHeight) url:self.urlArray[self.currentIndex] image:self.videoImgArray[self.currentIndex]];
         [cell.contentView addSubview:self.avPlayerView];
-        [cell insertSubview:cell.middleView belowSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
 
@@ -151,11 +150,9 @@
             if (isFull) {
                 self.tabBarController.tabBar.hidden = YES;
                 self.tableView.scrollEnabled = NO;
-                cell.middleView.hidden = YES;
             } else {
                 self.tabBarController.tabBar.hidden = NO;
                 self.tableView.scrollEnabled = YES;
-                cell.middleView.hidden = NO;
                 cell.bgImageView.hidden = NO;
             }
         };
