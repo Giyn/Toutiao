@@ -30,7 +30,7 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor];
 
     // 创建子控制器 - 主页
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"]];
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, UIViewController.new] titles:@[@"第一页", @"第二页", @"第三页"]];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
     vcHomePage.navigationController.navigationBar.hidden = YES;
     vcHomePage.tabBarItem.title = @"主页";

@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TTVideoStreamCell : UITableViewCell
 
-@property (nonatomic, strong) UIImageView *bgImageView;
+@property (nonatomic, strong) UIImageView *bgImageView; // loading界面
 
 @end
 
