@@ -220,6 +220,7 @@ NSInteger const kTagToIndex = 1000;
 #pragma mark - searchBar代理方法
 // 点击键盘搜索键后跳转到搜索页面
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [self.searchBar resignFirstResponder];  // 收起键盘
     TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
     [self.navigationController pushViewController:searchVC animated:YES];
 }
