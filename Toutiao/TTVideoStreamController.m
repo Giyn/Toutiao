@@ -71,7 +71,6 @@
     self.tableView.rowHeight = self.tableView.frame.size.height;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
 
     if (@available(ios 11.0,*)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
@@ -168,34 +167,14 @@
     return videoImage;
 }
 
+// 长按加速播放，释放后恢复
 - (void)imglongTapClick:(UILongPressGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"头条视频版" message:@"请选择您的操作" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *rate_0_5 = [UIAlertAction actionWithTitle:@"倍速播放: 0.5倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 0.5;
-        }];
-        UIAlertAction *rate_1_0 = [UIAlertAction actionWithTitle:@"倍速播放: 正常" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 1.0;
-        }];
-        UIAlertAction *rate_1_5 = [UIAlertAction actionWithTitle:@"倍速播放: 1.5倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 1.5;
-        }];
-        UIAlertAction *rate_2_0 = [UIAlertAction actionWithTitle:@"倍速播放: 2倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    if (self.avPlayerView.startVideoBtn.selected == NO) {
+        if (gesture.state == UIGestureRecognizerStateBegan) {
             self.avPlayerView.player.rate = 2.0;
-        }];
-        UIAlertAction *save = [UIAlertAction actionWithTitle:@"保存视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"保存视频");
-        }];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"取消");
-        }];
-        [sheet addAction:rate_0_5];
-        [sheet addAction:rate_1_0];
-        [sheet addAction:rate_1_5];
-        [sheet addAction:rate_2_0];
-        [sheet addAction:save];
-        [sheet addAction:cancel];
-        [self presentViewController:sheet animated:YES completion:nil];
+        } else {
+            self.avPlayerView.player.rate = 1.0;
+        }
     }
 }
 
