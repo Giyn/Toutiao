@@ -7,7 +7,6 @@
 
 #import "TTAVPlayerView.h"
 #import "config.h"
-#import "Masonry.h"
 
 @implementation TTAVPlayerView
 
@@ -17,10 +16,12 @@
         self.smallFrame = frame;
         self.bigFrame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 
+        CGFloat height = frame.size.height;
+        CGFloat width = frame.size.width;
+
         // 占位，视频第一帧图片
-        UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kTabBarHeight)];
+        UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height-kTabBarHeight)];
         bgImageView.image = image;
-        bgImageView.contentMode = UIViewContentModeScaleAspectFit; // 自适应填充
         bgImageView.userInteractionEnabled = YES;
         [self addSubview:bgImageView];
 
@@ -32,46 +33,52 @@
         self.avLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
         self.avLayer.backgroundColor = [UIColor blackColor].CGColor;
         self.avLayer.videoGravity = AVLayerVideoGravityResizeAspect; // 屏幕自适应
+        self.avLayer.frame = CGRectMake(0, 0, bgImageView.frame.size.width, bgImageView.frame.size.height);
         [bgImageView.layer addSublayer:self.avLayer];
 
-        self.sliderView = [[UIView alloc] init];
-        self.sliderView.backgroundColor = [UIColor grayColor];
+        self.sliderView = [[UIView alloc] initWithFrame:CGRectMake(0, height-kTabBarHeight, width, 30)];
         self.sliderView.hidden = YES;
-        self.sliderView.alpha = 0.6;
         [self addSubview:self.sliderView];
 
+        self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.sliderView.frame.size.height, width, 30)];
+        self.bottomView.backgroundColor = [UIColor grayColor];
+        self.bottomView.alpha = 0.6;
+        [self.sliderView addSubview:self.bottomView];
+
         self.startVideoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.startVideoBtn.frame = CGRectMake(0, 0, 30, 30);
         [self.startVideoBtn setImage:[UIImage imageNamed:@"video_pause_btn"] forState:normal];
         [self.startVideoBtn addTarget:self action:@selector(actStartVideo:) forControlEvents:UIControlEventTouchUpInside];
-        [self.sliderView addSubview:self.startVideoBtn];
+        [self.bottomView addSubview:self.startVideoBtn];
 
-        self.currentTimeLabel = [[UILabel alloc] init];
+        self.currentTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 0, 50, 50)];
         self.currentTimeLabel.textColor = [UIColor whiteColor];
         self.currentTimeLabel.text = @"00:00";
         self.currentTimeLabel.font = [UIFont systemFontOfSize:14];
         self.currentTimeLabel.textAlignment = 1;
-        [self.sliderView addSubview:self.currentTimeLabel];
+        [self.bottomView addSubview:self.currentTimeLabel];
 
-        self.slider = [[UISlider alloc] init];
+        self.slider = [[UISlider alloc] initWithFrame:CGRectMake(100, 0, kScreenWidth-200, 50)];
         self.slider.minimumValue = 0;
         self.slider.minimumTrackTintColor = [UIColor whiteColor];
         self.slider.maximumTrackTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
         [self.slider addTarget:self action:@selector(avSliderAction) forControlEvents:
         UIControlEventTouchUpInside|UIControlEventTouchCancel|UIControlEventTouchUpOutside];
         [self.slider setThumbImage:[UIImage imageNamed:@"slider"] forState:normal];
-        [self.sliderView addSubview:self.slider];
+        [self.bottomView addSubview:self.slider];
 
-        self.countTimeLabel = [[UILabel alloc] init];
+        self.countTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.slider.frame), 0, 50, 50)];
         self.countTimeLabel.textColor = [UIColor whiteColor];
         self.countTimeLabel.text = @"00:00";
         self.countTimeLabel.font = [UIFont systemFontOfSize:14];
         self.countTimeLabel.textAlignment = 1;
-        [self.sliderView addSubview:self.countTimeLabel];
+        [self.bottomView addSubview:self.countTimeLabel];
 
         self.changeFullScreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.changeFullScreenBtn.frame = CGRectMake(CGRectGetMaxX(self.countTimeLabel.frame), 0, 50, 50);
         [self.changeFullScreenBtn setImage:[UIImage imageNamed:@"full_screen"] forState:normal];
         [self.changeFullScreenBtn addTarget:self action:@selector(actChange:) forControlEvents:UIControlEventTouchUpInside];
-        [self.sliderView addSubview:self.changeFullScreenBtn];
+        [self.bottomView addSubview:self.changeFullScreenBtn];
         self.changeFullScreenBtn.selected = NO;
 
         WEAKBLOCK(self);
@@ -121,37 +128,26 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    [self.sliderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(kScreenWidth);
-    }];
-    [self.startVideoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(0);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
-    }];
-    [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(50);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
-    }];
-    [self.slider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(100);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(kScreenWidth-200);
-    }];
-    [self.countTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_offset(-50);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
-    }];
+    self.avLayer.frame = self.bounds;
+    self.sliderView.frame = self.bounds;
 
-    [self.changeFullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_offset(0);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
-    }];
+    CGFloat topY = !self.isFullScreen?0:0;
+
+    CGFloat leftX = !self.isFullScreen?0:NavigationHeight;
+
+    CGFloat spaceWidth = !self.isFullScreen?0:30;
+
+    self.bottomView.frame = CGRectMake(0, self.sliderView.frame.size.height-topY-50, self.sliderView.frame.size.width, 50);
+
+    self.startVideoBtn.frame = CGRectMake(leftX, 0, 50, 50);
+
+    self.currentTimeLabel.frame = CGRectMake(leftX+50, 0, 50, 50);
+
+    self.slider.frame = CGRectMake(CGRectGetMaxX(self.currentTimeLabel.frame), 0, self.sliderView.frame.size.width-100-spaceWidth-CGRectGetMaxX(self.currentTimeLabel.frame), 50);
+
+    self.countTimeLabel.frame = CGRectMake(self.sliderView.frame.size.width-100-spaceWidth, 0, 50, 50);
+
+    self.changeFullScreenBtn.frame = CGRectMake(self.sliderView.frame.size.width-50-spaceWidth, 0, 50, 50);
 }
 
 // 观察currentIndex变化
