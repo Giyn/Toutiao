@@ -21,9 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TTSliderNavView *ttSliderNav; /// self.view下滑动指示器
 @property (nonatomic, strong) OnPageLeave onPageLeave; /// 页面切换回调
 @property (nonatomic, strong) OnPageEnter onPageEnter; /// 页面进入回调
-- (void)populateWithChildren:(NSArray <UIView *> *)children;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithChildrenArray:(NSArray <UIView *> *)childrenArray titles:(NSArray <NSString *> *)titles __attribute__((unused));
 - (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar __attribute__((unused));
 - (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar onPageLeave:(OnPageLeave)onPageLeave onPageEnter:(OnPageEnter)onPageEnter;
 @end

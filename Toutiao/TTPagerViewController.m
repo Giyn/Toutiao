@@ -14,7 +14,6 @@
 NSInteger const kTagToIndex = 1000;
 @interface TTPagerViewController () <UIScrollViewDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) NSMutableArray <UIView *> *childrenArray;
 @end
 
 @implementation TTPagerViewController
@@ -145,7 +144,7 @@ NSInteger const kTagToIndex = 1000;
     [_ttSliderNav setupSubViews];
 }
 
-- (void)populateWithChildren:(NSArray<UIView *> *)children {
+- (void)populateWithChildren:(NSArray<UIView *> *)children __attribute__((unused)) {
     // 遍历children数组添加视图到滑动容器
     __block BOOL containsNilObj = NO;
     [children enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -166,21 +165,14 @@ NSInteger const kTagToIndex = 1000;
 
 - (void)addChildrenViewToContainerWithIndex:(NSUInteger)idx {
     // 将对应下标VC视图添加到滑动容器
-    if (!_childrenArray[idx]) {
+    UIView *view = _childrenVCArray[idx].view;
+    if (view.superview == nil) {
         [_container addSubview:_childrenVCArray[idx].view];
         [_childrenVCArray[idx].view mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(UIScreen.mainScreen.bounds.size.width * idx);
             make.top.mas_equalTo(0);
             make.size.mas_equalTo(self.container);
         }];
-    }
-}
-
-- (void)removeChildrenViewToContainerWithIndex:(NSUInteger)idx {
-    // 将对应下标VC视图添加到滑动容器
-    if (_childrenArray[idx]) {
-        [_childrenArray[idx] removeFromSuperview];
-        [_childrenArray removeObjectAtIndex:idx];
     }
 }
 
@@ -249,7 +241,6 @@ NSInteger const kTagToIndex = 1000;
     if (_onPageLeave) {
         _onPageLeave(currentIdx, weakSelf);
     }
-    [self removeChildrenViewToContainerWithIndex: currentIdx];
     _currentIndex = nextIndex;
     if (_onPageEnter) {
         _onPageEnter(nextIndex, weakSelf);
