@@ -37,11 +37,7 @@
 // 初始化指示器滑块
 - (void)initSliderLabel {
     _sliderLabel = UILabel.new;
-    if (@available(iOS 13.0, *)) {
-        _sliderLabel.backgroundColor = UIColor.systemRedColor;
-    } else {
-        _sliderLabel.backgroundColor = UIColor.redColor;
-    }
+    _sliderLabel.backgroundColor = [UIColor colorNamed:@"tt_red"];
     // 圆角
     [_sliderLabel.layer setCornerRadius:2];
     [_sliderLabel setClipsToBounds:YES];

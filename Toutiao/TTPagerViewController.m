@@ -14,21 +14,10 @@
 NSInteger const kTagToIndex = 1000;
 @interface TTPagerViewController () <UIScrollViewDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray <UIView *> *childrenArray;
+@property (nonatomic, strong) NSMutableArray <UIView *> *childrenArray;
 @end
 
 @implementation TTPagerViewController
-
-- (instancetype)initWithChildrenArray:(NSArray <UITableView *> *)childrenArray titles:(NSArray <NSString *> *)titles __attribute__((unused)) {
-    self = [super init];
-    if (self) {
-        _searchBar = UISearchBar.new;
-        _childrenArray = childrenArray;
-        // 初始化按钮
-        _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
-    }
-    return self;
-}
 
 - (instancetype)initWithChildrenVCArray:(NSArray<UIViewController *> *)childrenVCArray titles:(NSArray<NSString *> *)titles showSearchBar:(BOOL)showSearchBar onPageLeave:(OnPageLeave)onPageLeave onPageEnter:(OnPageEnter)onPageEnter {
     if (self) {
@@ -49,11 +38,6 @@ NSInteger const kTagToIndex = 1000;
                 }];
             }
         }
-        NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
-        for (UIViewController *vc in childrenVCArray) {
-            [childrenArray addObject:vc.view];
-        }
-        _childrenArray = childrenArray;
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
         _onPageLeave = onPageLeave;
@@ -69,12 +53,19 @@ NSInteger const kTagToIndex = 1000;
         _showSearchBar = showSearchBar;
         if (_showSearchBar) {
             _searchBar = UISearchBar.new;
+            if (@available(iOS 13.0, *)) {
+                _searchBar.searchTextField.textColor = UIColor.whiteColor;
+            } else {
+                [_searchBar.subviews.firstObject.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([obj isKindOfClass:UITextField.class]) {
+                        UITextField *textField = obj;
+                        textField.textColor = UIColor.whiteColor;
+                        *stop = YES;
+                        return;
+                    }
+                }];
+            }
         }
-        NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
-        for (UIViewController *vc in childrenVCArray) {
-            [childrenArray addObject:vc.view];
-        }
-        _childrenArray = childrenArray;
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
         _onPageLeave = ^(NSUInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
@@ -113,9 +104,9 @@ NSInteger const kTagToIndex = 1000;
     [self.view addSubview:_container];
     [self.view addSubview:_ttSliderNav];
     // 初始化容器下视图
-    [self populateWithChildren: _childrenArray];
+    [self addChildrenViewToContainerWithIndex:0];
     // 初始化容器滚动宽度，禁用y轴手势
-    CGSize contentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width * _childrenArray.count, 0);
+    CGSize contentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width * _childrenVCArray.count, 0);
     [_container setContentSize:contentSize];
     // 添加搜索框
     if (_showSearchBar) {
@@ -154,16 +145,6 @@ NSInteger const kTagToIndex = 1000;
     [_ttSliderNav setupSubViews];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [_childrenVCArray enumerateObjectsUsingBlock:^(UIViewController * _Nonnull childVC, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([childVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *ttVideoVC = (TTVideoStreamController *)childVC;
-            TTAVPlayerView *ttAVPlayerView = [ttVideoVC valueForKey:@"avPlayerView"];
-            [ttAVPlayerView pause];
-        }
-    }];
-}
-
 - (void)populateWithChildren:(NSArray<UIView *> *)children {
     // 遍历children数组添加视图到滑动容器
     __block BOOL containsNilObj = NO;
@@ -181,6 +162,26 @@ NSInteger const kTagToIndex = 1000;
         }];
     }];
     NSAssert(containsNilObj == NO, @"Error: 子视图不能为空指针");
+}
+
+- (void)addChildrenViewToContainerWithIndex:(NSUInteger)idx {
+    // 将对应下标VC视图添加到滑动容器
+    if (!_childrenArray[idx]) {
+        [_container addSubview:_childrenVCArray[idx].view];
+        [_childrenVCArray[idx].view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(UIScreen.mainScreen.bounds.size.width * idx);
+            make.top.mas_equalTo(0);
+            make.size.mas_equalTo(self.container);
+        }];
+    }
+}
+
+- (void)removeChildrenViewToContainerWithIndex:(NSUInteger)idx {
+    // 将对应下标VC视图添加到滑动容器
+    if (_childrenArray[idx]) {
+        [_childrenArray[idx] removeFromSuperview];
+        [_childrenArray removeObjectAtIndex:idx];
+    }
 }
 
 // 初始化容器
@@ -248,10 +249,12 @@ NSInteger const kTagToIndex = 1000;
     if (_onPageLeave) {
         _onPageLeave(currentIdx, weakSelf);
     }
+    [self removeChildrenViewToContainerWithIndex: currentIdx];
     _currentIndex = nextIndex;
     if (_onPageEnter) {
         _onPageEnter(nextIndex, weakSelf);
     }
+    [self addChildrenViewToContainerWithIndex:nextIndex];
 }
 
 #pragma mark - ScrollView委托方法
