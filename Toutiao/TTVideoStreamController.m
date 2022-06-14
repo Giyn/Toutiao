@@ -64,8 +64,7 @@
 }
 
 - (void)setupView {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -kScreenHeight, kScreenWidth, kScreenHeight * 3)];
-    self.tableView.contentInset = UIEdgeInsetsMake(kScreenHeight, 0, kScreenHeight, 0);
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.delegate = self;
@@ -93,16 +92,8 @@
 }
 
 #pragma mark - tableView delegate
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.urlArray.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.view.frame.size.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -141,8 +132,9 @@
 
         [self.avPlayerView removePlayer];
         [self.avPlayerView removeFromSuperview];
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kTabBarHeight) url:self.urlArray[self.currentIndex] image:self.videoImgArray[self.currentIndex]];
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urlArray[self.currentIndex] image:self.videoImgArray[self.currentIndex]];
         [cell.contentView addSubview:self.avPlayerView];
+        [cell insertSubview:cell.middleView belowSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
 
@@ -152,9 +144,11 @@
             if (isFull) {
                 self.tabBarController.tabBar.hidden = YES;
                 self.tableView.scrollEnabled = NO;
+                cell.middleView.hidden = YES;
             } else {
                 self.tabBarController.tabBar.hidden = NO;
                 self.tableView.scrollEnabled = YES;
+                cell.middleView.hidden = NO;
                 cell.bgImageView.hidden = NO;
             }
         };
