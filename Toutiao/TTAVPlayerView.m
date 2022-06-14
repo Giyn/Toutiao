@@ -104,7 +104,21 @@
         UITapGestureRecognizer *hidenTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenBottonView:)];
         [self addGestureRecognizer:hidenTap];
     }
+    
+    // 添加观察者
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    // 主页点击searchbar时暂停视频
+    [center addObserver:self selector:@selector(pause) name:@"searchBarClicked" object:nil];
+    // 搜索页点击返回时继续播放视频
+    [center addObserver:self selector:@selector(play) name:@"returnToHomepage" object:nil];
+    [center addObserver:self selector:@selector(pause) name:@"backLastVC" object:nil];
     return self;
+}
+
+// 移除观察者
+- (void)dealloc{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
 }
 
 - (void)hiddenBottonView: (UITapGestureRecognizer *)tap {
