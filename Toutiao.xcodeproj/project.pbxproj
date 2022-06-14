@@ -27,10 +27,8 @@
 		8481461F2852715800D06E39 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146172852715700D06E39 /* UIView+Border.m */; };
 		848146202852715800D06E39 /* TTRegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146182852715700D06E39 /* TTRegisterController.m */; };
 		848146212852715800D06E39 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146192852715700D06E39 /* TTPagerViewController.m */; };
-
 		84A168302852E6A300AA5543 /* TTSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A1682F2852E6A300AA5543 /* TTSearchViewController.m */; };
 		84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */; };
-
 		E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,12 +74,10 @@
 		848146172852715700D06E39 /* UIView+Border.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Border.m"; sourceTree = "<group>"; };
 		848146182852715700D06E39 /* TTRegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTRegisterController.m; sourceTree = "<group>"; };
 		848146192852715700D06E39 /* TTPagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPagerViewController.m; sourceTree = "<group>"; };
-
 		84A1682E2852E6A300AA5543 /* TTSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchViewController.h; sourceTree = "<group>"; };
 		84A1682F2852E6A300AA5543 /* TTSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchViewController.m; sourceTree = "<group>"; };
 		84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchTableViewCell.h; sourceTree = "<group>"; };
 		84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchTableViewCell.m; sourceTree = "<group>"; };
-
 		EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.release.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,7 +163,6 @@
 				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
 				848145B82851C7A900D06E39 /* TTTabBarController.h */,
 				848145B92851C7A900D06E39 /* TTTabBarController.m */,
-
 				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
 				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
