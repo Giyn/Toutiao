@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
 @property (nonatomic, strong) NSArray *urlArray; // 存放视频url
 @property (nonatomic, strong) UITableView *tableView;
-//@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 
 @end

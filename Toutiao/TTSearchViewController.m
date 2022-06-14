@@ -50,7 +50,11 @@
     
     // 初始化searchBar
     self.searchBar = [[UISearchBar alloc] init];
-    [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
+    if (@available(iOS 13.0, *)) {
+        _searchBar.searchTextField.backgroundColor = UIColor.clearColor;
+    } else {
+        [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
+    }
     [self.searchView addSubview:self.searchBar];
     self.searchBar.text = self.searchInput; // 主页跳转传值
     

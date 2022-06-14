@@ -19,7 +19,7 @@ NSInteger const kTagToIndex = 1000;
 
 @implementation TTPagerViewController
 
-- (instancetype)initWithChildrenArray:(NSArray <UITableView *> *)childrenArray titles:(NSArray <NSString *> *)titles {
+- (instancetype)initWithChildrenArray:(NSArray <UITableView *> *)childrenArray titles:(NSArray <NSString *> *)titles __attribute__((unused)) {
     self = [super init];
     if (self) {
         _searchBar = UISearchBar.new;
@@ -36,6 +36,18 @@ NSInteger const kTagToIndex = 1000;
         _showSearchBar = showSearchBar;
         if (_showSearchBar) {
             _searchBar = UISearchBar.new;
+            if (@available(iOS 13.0, *)) {
+                _searchBar.searchTextField.textColor = UIColor.whiteColor;
+            } else {
+                [_searchBar.subviews.firstObject.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                    if ([obj isKindOfClass:UITextField.class]) {
+                                        UITextField *textField = obj;
+                                        textField.textColor = UIColor.whiteColor;
+                                        *stop = YES;
+                                        return;
+                                    }
+                }];
+            }
         }
         NSMutableArray <UIView *> *childrenArray = [NSMutableArray array];
         for (UIViewController *vc in childrenVCArray) {
@@ -50,7 +62,7 @@ NSInteger const kTagToIndex = 1000;
     return self;
 }
 
-- (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar{
+- (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar __attribute__((unused)) {
     self = [super init];
     if (self) {
         _childrenVCArray = childrenVCArray;
@@ -65,29 +77,29 @@ NSInteger const kTagToIndex = 1000;
         _childrenArray = childrenArray;
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
-        _onPageLeave = ^(NSInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
+        _onPageLeave = ^(NSUInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
             __strong typeof(weakVC) strongVC = weakVC;
             if (![strongVC isKindOfClass:TTPagerViewController.class]) {
                 return;
             }
             TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-            UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+            UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
             if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
                 TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-                TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+                TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
                 [ttAVPlayerView pause];
             }
         };
-        _onPageEnter = ^(NSInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
+        _onPageEnter = ^(NSUInteger currentIndex, __weak UIViewController * _Nullable weakVC) {
             __strong typeof(weakVC) strongVC = weakVC;
             if (![strongVC isKindOfClass:TTPagerViewController.class]) {
                 return;
             }
             TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-            UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+            UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
             if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
                 TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-                TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+                TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
                 [ttAVPlayerView play];
             }
         };
@@ -146,9 +158,8 @@ NSInteger const kTagToIndex = 1000;
     [_childrenVCArray enumerateObjectsUsingBlock:^(UIViewController * _Nonnull childVC, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([childVC isKindOfClass:TTVideoStreamController.class]) {
             TTVideoStreamController *ttVideoVC = (TTVideoStreamController *)childVC;
-//            if (idx != 0) {
-                [ttVideoVC.avPlayerView pause];
-//            }
+            TTAVPlayerView *ttAVPlayerView = [ttVideoVC valueForKey:@"avPlayerView"];
+            [ttAVPlayerView pause];
         }
     }];
 }
@@ -231,8 +242,8 @@ NSInteger const kTagToIndex = 1000;
     [[_ttSliderNav buttonWithTag:tag]setSelected:YES];
     NSLog(@"scroll end: %zd", _currentIndex);
     // 更新下标
-    NSInteger nextIndex = [self indexFromTag:tag];
-    NSInteger currentIdx = _currentIndex;
+    NSUInteger nextIndex = [self indexFromTag:tag];
+    NSUInteger currentIdx = _currentIndex;
     __weak typeof(self) weakSelf = self;
     if (_onPageLeave) {
         _onPageLeave(currentIdx, weakSelf);
@@ -269,17 +280,17 @@ NSInteger const kTagToIndex = 1000;
     // 取消激活
     [[_ttSliderNav buttonWithTag:previousTag]setSelected:NO];
     // 根据容器滑动偏移量计算下一个页面对应的按钮tag
-    NSInteger nextTag = [self tagFromIndex:(NSInteger) (scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width)];
+    NSInteger nextTag = [self tagFromIndex:(NSUInteger) (scrollView.contentOffset.x / UIScreen.mainScreen.bounds.size.width)];
     // 开始动画
     [self animateWithTag:nextTag];
 }
 
 #pragma mark - 转换tag和index
-- (NSInteger)indexFromTag:(NSInteger)tag {
-    return tag - kTagToIndex;
+- (NSUInteger)indexFromTag:(NSInteger)tag {
+    return (NSUInteger) (tag - kTagToIndex);
 }
 
-- (NSInteger)tagFromIndex:(NSInteger)index {
+- (NSInteger)tagFromIndex:(NSUInteger)index {
     return index + kTagToIndex;
 }
 
