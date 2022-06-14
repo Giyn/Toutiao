@@ -32,33 +32,33 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor]; // 设置文字的前景色
 
     // 创建子控制器 - 主页
-    OnPageEnter onPageEnter = ^(NSInteger currentIndex, __weak UIViewController *weakVC) {
+    OnPageEnter onPageEnter = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
         __strong typeof(weakVC) strongVC = weakVC;
         if (![strongVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
         TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
         if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
             TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-            TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
             [ttAVPlayerView play];
         }
     };
-    OnPageLeave onPageLeave = ^(NSInteger currentIndex, __weak UIViewController *weakVC) {
+    OnPageLeave onPageLeave = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
         __strong typeof(weakVC) strongVC = weakVC;
         if (![strongVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
         TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = [strongSelf.childrenVCArray objectAtIndex:currentIndex];
+        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
         if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
             TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-            TTAVPlayerView *ttAVPlayerView = currentVideoStreamVC.avPlayerView;
+            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
             [ttAVPlayerView pause];
         }
     };
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:NO onPageLeave:onPageLeave onPageEnter:onPageEnter];
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
     vcHomePage.navigationController.navigationBar.hidden = YES;
     vcHomePage.tabBarItem.title = @"主页";

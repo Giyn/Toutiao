@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTVideoStreamController : UIViewController
-@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+
 @end
 
 NS_ASSUME_NONNULL_END
