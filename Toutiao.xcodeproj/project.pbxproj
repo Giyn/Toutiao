@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		728E9527285876B400DF1541 /* TTSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E9526285876B400DF1541 /* TTSearchModel.m */; };
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
@@ -23,16 +24,16 @@
 		8481461F2852715800D06E39 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146172852715700D06E39 /* UIView+Border.m */; };
 		848146202852715800D06E39 /* TTRegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146182852715700D06E39 /* TTRegisterController.m */; };
 		848146212852715800D06E39 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146192852715700D06E39 /* TTPagerViewController.m */; };
-
 		84A168302852E6A300AA5543 /* TTSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A1682F2852E6A300AA5543 /* TTSearchViewController.m */; };
 		84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */; };
-
 		E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		728E9525285876B400DF1541 /* TTSearchModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchModel.h; sourceTree = "<group>"; };
+		728E9526285876B400DF1541 /* TTSearchModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchModel.m; sourceTree = "<group>"; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449D284CE9B100D06E39 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8481449E284CE9B100D06E39 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -65,12 +66,10 @@
 		848146172852715700D06E39 /* UIView+Border.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Border.m"; sourceTree = "<group>"; };
 		848146182852715700D06E39 /* TTRegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTRegisterController.m; sourceTree = "<group>"; };
 		848146192852715700D06E39 /* TTPagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPagerViewController.m; sourceTree = "<group>"; };
-
 		84A1682E2852E6A300AA5543 /* TTSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchViewController.h; sourceTree = "<group>"; };
 		84A1682F2852E6A300AA5543 /* TTSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchViewController.m; sourceTree = "<group>"; };
 		84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchTableViewCell.h; sourceTree = "<group>"; };
 		84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchTableViewCell.m; sourceTree = "<group>"; };
-
 		EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.release.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,12 +154,12 @@
 				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
 				848145B82851C7A900D06E39 /* TTTabBarController.h */,
 				848145B92851C7A900D06E39 /* TTTabBarController.m */,
-
 				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
 				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
 				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
-
+				728E9525285876B400DF1541 /* TTSearchModel.h */,
+				728E9526285876B400DF1541 /* TTSearchModel.m */,
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
@@ -279,10 +278,8 @@
 			files = (
 				8481461F2852715800D06E39 /* UIView+Border.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
-
 				84A168302852E6A300AA5543 /* TTSearchViewController.m in Sources */,
 				84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */,
-
 				8481461C2852715800D06E39 /* TTRegisterView.m in Sources */,
 				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
@@ -295,6 +292,7 @@
 				8481461D2852715800D06E39 /* TTSliderNavView.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
 				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
+				728E9527285876B400DF1541 /* TTSearchModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +361,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -416,7 +414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
