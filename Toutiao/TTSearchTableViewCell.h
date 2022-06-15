@@ -6,10 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVKit/AVKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class TTSearchModel;
+
 @interface TTSearchTableViewCell : UITableViewCell
 
 @property (nonatomic, weak) UIImageView *imgViewIcon;   // 头像
