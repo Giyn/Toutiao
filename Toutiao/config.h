@@ -60,3 +60,8 @@
 #define kNavAndTabHeight (kNavBarAndStatusBarHeight + kTabBarHeight)
 
 #endif /* config_h */
+
+UIKIT_EXTERN NSString *const kUsernameRegex;
+UIKIT_EXTERN NSString *const kEmailRegex;
+UIKIT_EXTERN NSString *const kPasswordRegex;
+UIKIT_EXTERN const NSUInteger kValidPasswordLength;

@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class TTAVPlayerView;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTVideoStreamController : UIViewController
