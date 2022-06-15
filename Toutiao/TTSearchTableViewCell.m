@@ -18,7 +18,7 @@
 @end
 
 @implementation TTSearchTableViewCell
-
+#pragma mark - 重写cell初始化方法
 // 重写cell初始化方法
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]){
@@ -42,20 +42,16 @@
         [self.contentView addSubview:videoTitle];
         self.videoTitle = videoTitle;
         
-        // 4 视频
-        UIView *videoContainer = [[UIView alloc] init];
-        videoContainer.backgroundColor = [UIColor grayColor];
-        [self.contentView addSubview:videoContainer];
-        self.videoContainer = videoContainer;
-        
-        // 6 playerVC
-        self.playerVC = [[AVPlayerViewController alloc] init];
-        [self.videoContainer addSubview:self.playerVC.view];
+        // 视频图片
+        self.videoImgView = [[UIImageView alloc] init];
+        self.videoImgView.backgroundColor = [UIColor grayColor];
+        [self.contentView addSubview:self.videoImgView];
 
     }
     return self;
 }
 
+#pragma mark - 控件布局
 // 设置cell中控件的位置
 - (void)settingFrame{
     // 统一间距
@@ -91,23 +87,15 @@
     CGFloat videoTitleH = titleSize.height;
     self.videoTitle.frame = CGRectMake(videoTitleX, videoTitleY, videoTitleW, videoTitleH);
     
-    // 视频
-    [self.videoContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.imgViewIcon.left);
-        make.right.equalTo(self.contentView.right).offset(-margin);
-        make.centerX.equalTo(self.contentView.centerX);
-        make.height.equalTo(self.videoContainer.width).multipliedBy(0.5625);
-        make.top.equalTo(self.videoTitle.bottom).offset(margin);
-        make.bottom.equalTo(self.contentView.bottom).offset(-margin);   // 通过底部约束实现cell行高自适应
-    }];
-    
-    // playerVC
-    [self.playerVC.view makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(0);
-        make.top.equalTo(0);
-        make.height.equalTo(self.videoContainer.height);
-        make.width.equalTo(self.videoContainer.width);
-    }];
+    // 视频图片
+        [self.videoImgView makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.imgViewIcon.left);
+            make.right.equalTo(self.contentView.right).offset(-margin);
+            make.centerX.equalTo(self.contentView.centerX);
+            make.height.equalTo(self.videoImgView.width).multipliedBy(0.5625);
+            make.top.equalTo(self.videoTitle.bottom).offset(margin);
+            make.bottom.equalTo(self.contentView.bottom).offset(-margin);   // 通过底部约束实现cell行高自适应
+        }];
 
 }
 

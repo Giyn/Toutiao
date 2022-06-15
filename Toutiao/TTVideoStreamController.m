@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
+@property (nonatomic, strong) UIButton *backBtn;
 
 @end
 
@@ -27,6 +28,20 @@
     [super viewDidLoad];
     [self initData];
     [self setupView];
+    
+    if(self.isFromSearch){
+        self.backBtn = [[UIButton alloc] init];
+        [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
+        self.backBtn.titleLabel.textColor = [UIColor whiteColor];
+        [self.view addSubview:self.backBtn];
+        if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20){
+            self.backBtn.frame = CGRectMake(8, 48, 40, 20);
+        }else{
+            self.backBtn.frame = CGRectMake(8, 24, 40, 20);
+        }
+    }
+    
+    [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
 
     // 获取视频第一帧
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -40,6 +55,19 @@
             }
         }
     });
+    
+}
+
+// 搜索页创建该vc时有返回功能
+- (void)backLastVC{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center postNotificationName:@"backLastVC" object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
 }
 
 - (void)initData {

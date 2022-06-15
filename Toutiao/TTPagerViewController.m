@@ -289,8 +289,20 @@ NSInteger const kTagToIndex = 1000;
 }
 
 #pragma mark - searchBar代理方法
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    // 发送通知 点击searchbar时暂停视频
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center postNotificationName:@"searchBarClicked" object:nil];
+    
+    return YES;
+}
+
 // 点击键盘搜索键后跳转到搜索页面
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    // 收起键盘
+    [self.searchBar resignFirstResponder];
+    // 页面跳转
     TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
     [self.navigationController pushViewController:searchVC animated:YES];
 }
