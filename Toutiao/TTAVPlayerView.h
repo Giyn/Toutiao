@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isFullScreen; // 是否全屏状态 默认NO
 @property (nonatomic, assign) CGRect smallFrame; // 小屏幕frame
 @property (nonatomic, assign) CGRect bigFrame; // 全屏frame
+@property (nonatomic, strong) UILabel *userLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 // 点击全屏，取消全屏回调
 @property (nonatomic, copy) void(^changeScreen) (BOOL isFull);
