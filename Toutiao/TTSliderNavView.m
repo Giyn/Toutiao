@@ -37,11 +37,7 @@
 // 初始化指示器滑块
 - (void)initSliderLabel {
     _sliderLabel = UILabel.new;
-    if (@available(iOS 13.0, *)) {
-        _sliderLabel.backgroundColor = UIColor.systemRedColor;
-    } else {
-        _sliderLabel.backgroundColor = UIColor.redColor;
-    }
+    _sliderLabel.backgroundColor = [UIColor colorNamed:@"tt_red"];
     // 圆角
     [_sliderLabel.layer setCornerRadius:2];
     [_sliderLabel setClipsToBounds:YES];
@@ -69,7 +65,7 @@
 
 // 将根视图的buttonWithTag映射到容器的viewWithTag方法上，并对返回值进行类型转换
 - (UIButton *)buttonWithTag:(NSInteger)tag {
-    return (UIButton *)[_container viewWithTag:tag];
+    return [_container viewWithTag:tag];
 }
 
 // 为子视图设置约束
@@ -102,7 +98,7 @@
         make.left.mas_equalTo(paddingLeft);
     }];
     // 设置容器宽度为下挂按钮个数 * 按钮宽度，垂直方向置0关闭y轴手势监听
-    _container.contentSize = CGSizeMake(4 * self.frame.size.width / 3, 0);
+    _container.contentSize = CGSizeMake(_buttonArray.count * self.frame.size.width / 3, 0);
 }
 
 @end

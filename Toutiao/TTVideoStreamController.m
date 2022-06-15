@@ -11,8 +11,6 @@
 #import <Foundation/Foundation.h>
 #import "config.h"
 
-#define offsetY 100 // 位置：松开后切换视频
-
 @interface TTVideoStreamController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
@@ -49,10 +47,12 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         for (int i = 0; i < self.urlArray.count; i++) {
             UIImage *image = [self getVideoPreViewImage:[NSURL URLWithString:self.urlArray[i]]];
-            [self.videoImgArray replaceObjectAtIndex:i withObject:image];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
+            if (image != nil) {
+                [self.videoImgArray replaceObjectAtIndex:i withObject:image];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
         }
     });
     
@@ -72,6 +72,7 @@
 
 - (void)initData {
     self.urlArray = @[
+        @"https://aweme.snssdk.com/aweme/v1/play/?video_id=ba8f4ff0c1fe445dbfdc1cc9565222fa&line=0&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0",
         @"https://v-cdn.zjol.com.cn/276994.mp4",
         @"https://v-cdn.zjol.com.cn/276991.mp4",
         @"https://v-cdn.zjol.com.cn/276986.mp4",
@@ -99,7 +100,6 @@
     self.tableView.rowHeight = self.tableView.frame.size.height;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
 
     if (@available(ios 11.0,*)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
@@ -119,6 +119,7 @@
     });
 }
 
+#pragma mark - tableView delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.urlArray.count;
 }
@@ -134,26 +135,27 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         CGPoint translatedPoint = [scrollView.panGestureRecognizer translationInView:scrollView];
         scrollView.panGestureRecognizer.enabled = NO;
-        if (translatedPoint.y < -offsetY && self.currentIndex < (self.urlArray.count - 1)) {
+        if (translatedPoint.y < -100 && self.currentIndex < (self.urlArray.count - 1)) {
             self.currentIndex++;
         }
-        if (translatedPoint.y > offsetY && self.currentIndex > 0) {
+        if (translatedPoint.y > 100 && self.currentIndex > 0) {
             self.currentIndex--;
         }
         [UIView animateWithDuration:0.15
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseOut animations:^{
+            // 滑动到指定cell
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         } completion:^(BOOL finished) {
+            // 可以响应其他手势
             scrollView.panGestureRecognizer.enabled = YES;
         }];
     });
 }
 
-// 观察currentIndex变化
+#pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"currentIndex"]) {
-        // 整个列表视频播放，只会存在一个播放器
         TTVideoStreamCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
 
         [self.avPlayerView removePlayer];
@@ -196,34 +198,14 @@
     return videoImage;
 }
 
+// 长按加速播放，释放后恢复
 - (void)imglongTapClick:(UILongPressGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        UIAlertController *sheet = [UIAlertController alertControllerWithTitle:@"头条视频版" message:@"请选择您的操作" preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *rate_0_5 = [UIAlertAction actionWithTitle:@"倍速播放: 0.5倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 0.5;
-        }];
-        UIAlertAction *rate_1_0 = [UIAlertAction actionWithTitle:@"倍速播放: 正常" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 1.0;
-        }];
-        UIAlertAction *rate_1_5 = [UIAlertAction actionWithTitle:@"倍速播放: 1.5倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            self.avPlayerView.player.rate = 1.5;
-        }];
-        UIAlertAction *rate_2_0 = [UIAlertAction actionWithTitle:@"倍速播放: 2倍" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    if (self.avPlayerView.startVideoBtn.selected == NO) {
+        if (gesture.state == UIGestureRecognizerStateBegan) {
             self.avPlayerView.player.rate = 2.0;
-        }];
-        UIAlertAction *save = [UIAlertAction actionWithTitle:@"保存视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"保存视频");
-        }];
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"取消");
-        }];
-        [sheet addAction:rate_0_5];
-        [sheet addAction:rate_1_0];
-        [sheet addAction:rate_1_5];
-        [sheet addAction:rate_2_0];
-        [sheet addAction:save];
-        [sheet addAction:cancel];
-        [self presentViewController:sheet animated:YES completion:nil];
+        } else {
+            self.avPlayerView.player.rate = 1.0;
+        }
     }
 }
 

@@ -6,6 +6,7 @@ target 'Toutiao' do
   use_frameworks!
   pod 'Masonry'
   pod 'AFNetworking'
+  pod 'MJExtension'
   # Pods for Toutiao
 
 end

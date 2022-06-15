@@ -54,21 +54,14 @@
     [self.view addSubview:self.searchView];
     
     // 初始化searchBar
-        self.searchBar = [[UISearchBar alloc] init];
-        if (@available(iOS 13.0, *)) {
-            for (UIView *subView in self.searchBar.subviews) {
-                for (UIView *secondLevelSubview in subView.subviews){
-                    if ([secondLevelSubview isKindOfClass: [UIImageView class]]) {
-                        secondLevelSubview.alpha = 0.0;
-                        break;
-                    }
-                }
-            }
-        } else {
-            [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
-        }
-        [self.searchView addSubview:self.searchBar];
-        self.searchBar.text = self.searchInput; // 主页跳转传值
+    self.searchBar = [[UISearchBar alloc] init];
+    if (@available(iOS 13.0, *)) {
+        _searchBar.searchTextField.backgroundColor = UIColor.clearColor;
+    } else {
+        [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
+    }
+    [self.searchView addSubview:self.searchBar];
+    self.searchBar.text = self.searchInput; // 主页跳转传值
     
     // 初始化backBtn
     self.backBtn = [[UIButton alloc] init];
