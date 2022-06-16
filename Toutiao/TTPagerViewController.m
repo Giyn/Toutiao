@@ -28,12 +28,12 @@ NSInteger const kTagToIndex = 1000;
                 _searchBar.searchTextField.textColor = UIColor.whiteColor;
             } else {
                 [_searchBar.subviews.firstObject.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                                    if ([obj isKindOfClass:UITextField.class]) {
-                                        UITextField *textField = obj;
-                                        textField.textColor = UIColor.whiteColor;
-                                        *stop = YES;
-                                        return;
-                                    }
+                    if ([obj isKindOfClass:UITextField.class]) {
+                        UITextField *textField = obj;
+                        textField.textColor = UIColor.whiteColor;
+                        *stop = YES;
+                        return;
+                    }
                 }];
             }
         }
@@ -215,7 +215,7 @@ NSInteger const kTagToIndex = 1000;
     // sliderNav容器宽度
     CGFloat sliderWidth = _ttSliderNav.sliderLabel.frame.size.width;
     // 滑动指示器
-    UILabel *sliderLabel = self->_ttSliderNav.sliderLabel;
+    UILabel *sliderLabel = _ttSliderNav.sliderLabel;
     UIScrollView *sliderContainer = _ttSliderNav.container;
     // 禁止动画结束前交互
     _ttSliderNav.canInteract = false;
@@ -237,15 +237,16 @@ NSInteger const kTagToIndex = 1000;
     // 更新下标
     NSUInteger nextIndex = [self indexFromTag:tag];
     NSUInteger currentIdx = _currentIndex;
-    __weak typeof(self) weakSelf = self;
+    // 将self作为block的参数传到block里面，vc参数在block调用过程中作为临时变量被压栈进来，栈内存由系统自动管理，所以不会产生retain cycle
     if (_onPageLeave) {
-        _onPageLeave(currentIdx, weakSelf);
+        _onPageLeave(currentIdx, self);
     }
     _currentIndex = nextIndex;
-    if (_onPageEnter) {
-        _onPageEnter(nextIndex, weakSelf);
-    }
+    // 如果nextIndex对应的子视图未添加，则将子视图添加到滑动容器中的对应位置
     [self addChildrenViewToContainerWithIndex:nextIndex];
+    if (_onPageEnter) {
+        _onPageEnter(nextIndex, self);
+    }
 }
 
 #pragma mark - ScrollView委托方法

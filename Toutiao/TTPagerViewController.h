@@ -8,8 +8,8 @@
 #import <UIKit/UIKit.h>
 /// Class forward declaration -- 参见<<Effective Objective-C 2.0>>
 @class TTSliderNavView;
-typedef void(^OnPageLeave)(NSUInteger currentIndex, __weak UIViewController *_Nullable weakVC);
-typedef void(^OnPageEnter)(NSUInteger currentIndex, __weak UIViewController *_Nullable weakVC);
+typedef void(^OnPageLeave)(NSUInteger currentIndex, UIViewController * _Nullable currentVC);
+typedef void(^OnPageEnter)(NSUInteger currentIndex, UIViewController * _Nullable currentVC);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTPagerViewController : UIViewController
@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UISearchBar *searchBar; /// self.view下搜索框
 @property (nonatomic, assign) BOOL showSearchBar;
 @property (nonatomic, strong) TTSliderNavView *ttSliderNav; /// self.view下滑动指示器
-@property (nonatomic, strong) OnPageLeave onPageLeave; /// 页面切换回调
-@property (nonatomic, strong) OnPageEnter onPageEnter; /// 页面进入回调
+@property (nonatomic, strong) OnPageLeave onPageLeave; /// 页面换出回调
+@property (nonatomic, strong) OnPageEnter onPageEnter; /// 页面换入回调
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar __attribute__((unused));
 - (instancetype)initWithChildrenVCArray:(NSArray <UIViewController *> *)childrenVCArray titles:(NSArray <NSString *> *)titles showSearchBar:(BOOL)showSearchBar onPageLeave:(OnPageLeave)onPageLeave onPageEnter:(OnPageEnter)onPageEnter;
