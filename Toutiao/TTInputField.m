@@ -34,6 +34,8 @@
     if (self) {
         _textField = UITextField.new;
         _textField.tintColor = [UIColor colorNamed:@"tt_red"];
+        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _label = UILabel.new;
         _containerView = [[UIStackView alloc]initWithArrangedSubviews:@[_label, _textField]];
         [self setupTextFieldPaddingLeft];

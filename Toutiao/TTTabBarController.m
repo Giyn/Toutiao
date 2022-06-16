@@ -32,28 +32,26 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor]; // 设置文字的前景色
 
     // 创建子控制器 - 主页
-    OnPageEnter onPageEnter = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
-        __strong typeof(weakVC) strongVC = weakVC;
-        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+    OnPageEnter onPageEnter = ^(NSUInteger currentIndex, UIViewController *_Nullable currentVC) {
+        if (!currentVC || ![currentVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
-        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+        TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
+        UIViewController *currentChildVC = currentPagerViewController.childrenVCArray[currentIndex];
+        if ([currentChildVC isKindOfClass:TTVideoStreamController.class]) {
+            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentChildVC;
             TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
             [ttAVPlayerView play];
         }
     };
-    OnPageLeave onPageLeave = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
-        __strong typeof(weakVC) strongVC = weakVC;
-        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+    OnPageLeave onPageLeave = ^(NSUInteger currentIndex, UIViewController *_Nullable currentVC) {
+        if (!currentVC || ![currentVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
-        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+        TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
+        UIViewController *currentChildVC = currentPagerViewController.childrenVCArray[currentIndex];
+        if ([currentChildVC isKindOfClass:TTVideoStreamController.class]) {
+            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentChildVC;
             TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
             [ttAVPlayerView pause];
         }

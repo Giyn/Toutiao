@@ -28,6 +28,9 @@
     [self initData];
     [self setupView];
 
+    // 滑动收起搜索框键盘
+    [_tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
+
     // 获取视频第一帧
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         for (int i = 0; i < self.urlArray.count; i++) {

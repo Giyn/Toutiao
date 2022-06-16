@@ -159,7 +159,23 @@
             case AVPlayerStatusReadyToPlay:{
                 NSInteger countTime = CMTimeGetSeconds(self.player.currentItem.duration);
                 self.slider.maximumValue = countTime;
-                self.countTimeLabel.text = [self getMMSSFromSS:[NSString stringWithFormat:@"%zi", countTime]];
+
+                // 判断视频比例，横向保持比例纵向拉伸
+                AVAssetTrack *track = [[_player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+                if (track != nil)
+                {
+                    CGSize naturalSize = [track naturalSize];
+                    naturalSize = CGSizeApplyAffineTransform(naturalSize, track.preferredTransform);
+
+                    NSInteger width = (NSInteger) naturalSize.width;
+                    NSInteger height = (NSInteger) naturalSize.height;
+                    if ((CGFloat)width/(CGFloat)height < 1) {
+                        _avLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+                    } else {
+                        _avLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+                    }
+                }
+
                 [self.player play];
                 break;
             }
