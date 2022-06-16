@@ -124,7 +124,7 @@
     // 主页点击searchbar时暂停视频
     [center addObserver:self selector:@selector(pause) name:@"searchBarClicked" object:nil];
     // 搜索页点击返回时继续播放视频
-    [center addObserver:self selector:@selector(play) name:@"returnToHomepage" object:nil];
+//    [center addObserver:self selector:@selector(play) name:@"returnToHomepage" object:nil];
     [center addObserver:self selector:@selector(pause) name:@"backLastVC" object:nil];
     return self;
 }
@@ -217,7 +217,23 @@
             case AVPlayerStatusReadyToPlay:{
                 NSInteger countTime = CMTimeGetSeconds(self.player.currentItem.duration);
                 self.slider.maximumValue = countTime;
-                self.countTimeLabel.text = [self getMMSSFromSS:[NSString stringWithFormat:@"%zi", countTime]];
+
+                // 判断视频比例，横向保持比例纵向拉伸
+                AVAssetTrack *track = [[_player.currentItem.asset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+                if (track != nil)
+                {
+                    CGSize naturalSize = [track naturalSize];
+                    naturalSize = CGSizeApplyAffineTransform(naturalSize, track.preferredTransform);
+
+                    NSInteger width = (NSInteger) naturalSize.width;
+                    NSInteger height = (NSInteger) naturalSize.height;
+                    if ((CGFloat)width/(CGFloat)height < 1) {
+                        _avLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+                    } else {
+                        _avLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+                    }
+                }
+
                 [self.player play];
                 break;
             }

@@ -5,7 +5,7 @@
 //  Created by 肖扬 on 2022/6/6.
 //
 
-#import <AFNetworking/AFURLSessionManager.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 #import <MJExtension/NSObject+MJKeyValue.h>
 #import "TTRegisterController.h"
 #import "TTLoginView.h"
@@ -102,9 +102,8 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
         } else if (isPasswordEmpty) {
             errorMessage = @"输入的密码不能为空";
         } else if (!isUsernameValid) {
-            errorMessage = @"输入的账号应仅包含26个英文字母和数字";
-        } else if (!isPasswordValid) {
-            errorMessage = @"输入的密码应该包含大小写和数字, 且长度在8到30个字符以内";
+            // 因为注册的时候做了大小写数字以及最低长度为8位校验，这里只限制最大长度
+            errorMessage = @"输入的账号长度应在30个字符以内";
         }
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"输入错误" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -131,6 +130,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     UIAlertAction *action;
     if (redirectToPrev) {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            // 点击Action返回到登录页的上一个页面
             [self navToPrev];
         }];
     } else {
@@ -147,42 +147,43 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
 
 #pragma mark - 网络请求
 - (void)performLoginRequest {
+    // 从输入框获取账号密码
     NSString *username = _loginView.usernameInputField.textField.text;
     NSString *password = _loginView.passwordInputField.textField.text;
-    
+    // 设置网络请求状态
     self.isPerformingRequest = YES;
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc]initWithSessionConfiguration:config];
-    
+    // 初始化网络请求配置
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
     NSString *loginEndpoint = @"http://47.96.114.143:62318/api/user/login";
-    NSMutableDictionary *mutableDict = NSMutableDictionary.new;
-    mutableDict[@"account"] = username;
-    mutableDict[@"password"] = password;
-    
-    NSURLRequest *request = [[AFJSONRequestSerializer serializer]requestWithMethod:@"POST" URLString:loginEndpoint parameters:mutableDict.copy error:nil];
-    __weak typeof(self) weakSelf = self;
-    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
-        NSLog(@"%@ %@", response, responseObject);
-        
-        if (![loginResponse.success isEqualToString:@"1"]) {
-            [strongSelf showAlertWithTitle:@"登录失败" message:loginResponse.message redirectToPrev:NO];
-            return;
-        } else {
-            [strongSelf saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
-            [strongSelf showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
-        }
-    }];
-    [dataTask resume];
-    
+    // 表单
+    NSDictionary *formData = @{@"account": username, @"password": password};
+    // 请求头
+    NSDictionary *headers = @{@"Content-Type": @"application/json"};
+    // 初始化网络请求
+    [manager POST:loginEndpoint parameters:formData headers:headers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            self.isPerformingRequest = NO;
+            TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
+            NSLog(@"expireAt%@", [loginResponse.data.expireAt substringWithRange:NSMakeRange(0, 10)]);
+            if (![loginResponse.success isEqualToString:@"1"]) {
+                [self showAlertWithTitle:@"登录失败" message:loginResponse.message redirectToPrev:NO];
+                return;
+            } else {
+                [self saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
+                [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            self.isPerformingRequest = NO;
+            [self showAlertWithTitle:@"登录失败" message:error.description redirectToPrev:NO];
+        }];
 }
 
 #pragma mark - 登录结果
 - (void)saveLoginResultWithToken:(NSString *)token expireAt:(NSString *)expireAt {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:token forKey:@"token"];
-    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:[expireAt doubleValue]] forKey:@"expireAt"];
+    // 转换成10位时间戳
+    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:[expireAt doubleValue]/1000] forKey:@"expireAt"];
     NSLog(@"%@", [defaults objectForKey:@"expireAt"]);
     NSLog(@"%@", [defaults objectForKey:@"token"]);
 }
