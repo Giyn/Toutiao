@@ -43,6 +43,9 @@
     
     [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
 
+    // 滑动收起搜索框键盘
+    [_tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
+
     // 获取视频第一帧
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         for (int i = 0; i < self.urlArray.count; i++) {
@@ -101,7 +104,7 @@
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
 
-    if (@available(ios 11.0,*)) {
+    if (@available(ios 11.0, *)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
     
@@ -127,6 +130,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTVideoStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTVideoStreamCell" forIndexPath:indexPath];
     // 显示视频第一帧图片
+    cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
     cell.bgImageView.image = self.videoImgArray[indexPath.row];
     return cell;
 }

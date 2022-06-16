@@ -9,7 +9,6 @@
 #import "TTVideoStreamController.h"
 #import "TTLoginController.h"
 #import "TTPagerViewController.h"
-#import "TTAVPlayerView.h"
 
 @interface TTTabBarController () <UITabBarControllerDelegate>
 
@@ -32,31 +31,19 @@
     attrs[NSForegroundColorAttributeName] = [UIColor redColor]; // 设置文字的前景色
 
     // 创建子控制器 - 主页
-    OnPageEnter onPageEnter = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
-        __strong typeof(weakVC) strongVC = weakVC;
-        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+    OnPageEnter onPageEnter = ^(NSUInteger currentIndex, UIViewController *_Nullable currentVC) {
+        if (!currentVC || ![currentVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
-        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
-            [ttAVPlayerView play];
-        }
+        TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
+        [currentPagerViewController startPlayingCurrent];
     };
-    OnPageLeave onPageLeave = ^(NSUInteger currentIndex, __weak UIViewController *weakVC) {
-        __strong typeof(weakVC) strongVC = weakVC;
-        if (![strongVC isKindOfClass:TTPagerViewController.class]) {
+    OnPageLeave onPageLeave = ^(NSUInteger currentIndex, UIViewController *_Nullable currentVC) {
+        if (!currentVC || ![currentVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
-        TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
-        UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-        if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
-            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
-            [ttAVPlayerView pause];
-        }
+        TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
+        [currentPagerViewController stopPlayingCurrent];
     };
     UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];

@@ -9,6 +9,9 @@
 #import "TTSearchTableViewCell.h"
 #import "TTVideoStreamController.h"
 #import "AFHTTPSessionManager.h"
+#import "UIViewController+PreviousVC.h"
+#import "TTPagerViewController.h"
+
 //#import "TTSearchModel.h"
 
 #define MAS_SHORTHAND
@@ -162,9 +165,16 @@
 // 返回键点击事件
 - (void)backBtnClicked{
     // 发送通知 点击返回时视频继续播放
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center postNotificationName:@"returnToHomepage" object:nil];
-    
+//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+//    [center postNotificationName:@"returnToHomepage" object:nil];
+
+    // 找到上一个VC，调用其开始播放方法
+    UIViewController *prevVC = [self getPreviousVC];
+    if (prevVC && [prevVC isKindOfClass:TTPagerViewController.class]) {
+        TTPagerViewController *pagerVC = (TTPagerViewController *)prevVC;
+        [pagerVC startPlayingCurrent];
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
