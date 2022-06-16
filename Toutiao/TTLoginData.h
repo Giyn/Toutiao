@@ -6,12 +6,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "TTUserData.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTLoginData : NSObject
-@property (nonatomic, copy) NSString *token;
-@property (nonatomic, copy) NSString *expireAt;
+@property (nonatomic, strong) TTUserData *user;
+@property (nonatomic, copy)   NSString *token;
+@property (nonatomic, copy)   NSArray<NSString *> *permissionList;
+@property (nonatomic, assign) NSInteger expireAt;
 @end
 
 NS_ASSUME_NONNULL_END

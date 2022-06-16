@@ -164,8 +164,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     [manager POST:loginEndpoint parameters:formData headers:headers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             self.isPerformingRequest = NO;
             TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
-            NSLog(@"expireAt%@", [loginResponse.data.expireAt substringWithRange:NSMakeRange(0, 10)]);
-            if (![loginResponse.success isEqualToString:@"1"]) {
+            if (!loginResponse.isSuccess) {
                 [self showAlertWithTitle:@"登录失败" message:loginResponse.message redirectToPrev:NO];
                 return;
             } else {
@@ -179,11 +178,11 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
 }
 
 #pragma mark - 登录结果
-- (void)saveLoginResultWithToken:(NSString *)token expireAt:(NSString *)expireAt {
+- (void)saveLoginResultWithToken:(NSString *)token expireAt:(NSInteger)expireAt {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:token forKey:@"token"];
     // 转换成10位时间戳
-    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:[expireAt doubleValue]/1000] forKey:@"expireAt"];
+    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:expireAt/1000] forKey:@"expireAt"];
     NSLog(@"%@", [defaults objectForKey:@"expireAt"]);
     NSLog(@"%@", [defaults objectForKey:@"token"]);
 }
