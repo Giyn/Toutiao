@@ -79,7 +79,7 @@
     // 手动调用布局，否则下面约束无法添加
     [self layoutIfNeeded];
     // 单个按钮的长度
-    CGFloat widthMetric = _container.frame.size.width / 3;
+    CGFloat widthMetric = _container.frame.size.width / _buttonArray.count;
     // 遍历按钮数组添加约束
     [_buttonArray enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -90,15 +90,15 @@
         }];
     }];
     // 计算左偏移量
-    CGFloat paddingLeft = self.frame.size.width / 24;
+    CGFloat paddingLeft = (self.frame.size.width / _buttonArray.count - self.frame.size.width / (_buttonArray.count + 1)) / 2;
     [_sliderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self);
         make.height.mas_equalTo(4);
-        make.width.mas_equalTo(self.frame.size.width / 4);
+        make.width.mas_equalTo(self.frame.size.width / (CGFloat)(_buttonArray.count + 1));
         make.left.mas_equalTo(paddingLeft);
     }];
     // 设置容器宽度为下挂按钮个数 * 按钮宽度，垂直方向置0关闭y轴手势监听
-    _container.contentSize = CGSizeMake(_buttonArray.count * self.frame.size.width / 3, 0);
+    _container.contentSize = CGSizeMake(self.frame.size.width, 0);
 }
 
 @end

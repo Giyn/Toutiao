@@ -45,7 +45,7 @@
         TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
         [currentPagerViewController stopPlayingCurrent];
     };
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"首页", @"体育", @"军事", @"财经", @"娱乐"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
     vcHomePage.navigationController.navigationBar.hidden = YES;
     vcHomePage.tabBarItem.title = @"主页";
