@@ -8,6 +8,7 @@
 #import "TTSearchViewController.h"
 #import "TTSearchTableViewCell.h"
 #import "TTVideoStreamController.h"
+#import "AFHTTPSessionManager.h"
 //#import "TTSearchModel.h"
 
 #define MAS_SHORTHAND
@@ -42,7 +43,7 @@
     [self setUpSearchView];
     [self setUpSearchTableView];
     // 加载数据
-//    [self loadData];
+    //[self loadData];
 }
 
 #pragma mark - 布局
@@ -50,7 +51,7 @@
 - (void)setUpSearchView{
     // 初始化searchview
     self.searchView = [[UIView alloc] init];
-    self.searchView.backgroundColor = [UIColor redColor];
+    self.searchView.backgroundColor = [UIColor colorNamed:@"tt_red"];
     [self.view addSubview:self.searchView];
     
     // 初始化searchBar
@@ -220,6 +221,13 @@
 }
 
 #pragma mark - 处理模型
+// 获取token
+- (NSString *) getUserToken{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [defaults stringForKey:@"token"];
+    return token;
+}
+
 // 下面是加入model后两个方法
 // 加载数据 通过model内部请求函数 成功则回调模型数组
 - (void)loadData{
@@ -228,6 +236,40 @@
 //        } error:^{
 //            NSLog(@"获取数据出错");
 //        }];
+    
+//    NSString *urlStr = @"****************";
+//     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//       [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+//           NSLog(@"----requestData:%@",responseObject);
+//           NSArray *dataInfo = responseObject[@"data"];
+//           for (NSDictionary *dic in dataInfo) {
+//               PlayerModel *model = [[PlayerModel alloc]initWithDictory:dic];
+//               [_data addObject:model];
+//           }
+//           [self.tableView reloadData];
+//       } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+//           //
+//           NSLog(@"---requesterror:%@",error);
+//       }];
+    NSString *searchText = self.searchBar.text;
+    NSString *token = @"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIzZjk1YzNmNy1hMzc1LTRhZDUtYWM5Ni04Y2M5NzkxYmUzMTg1NDVmOWMyOC1lYzkxLTQ0YWYtYmViNS1kODA2YzY3ZDNkOTYiLCJpc3MiOiJUb3B2aWV3IiwiZXhwIjoxNjU1MzQ4NjQ5fQ.l8bhXXwhBso_jjihVD1Khq4WMt4ur84HcCU0ZE_F9aY9xAzu0yy9v8z8yQtF556HGR2delnDdVfVVKG5QPuACTBjHdcRmHgtz1_imxYfXe41DpxD2YzIOQpWoAEQ3BJIJBdI7QV9RntmhiSzouCwjQZ4T4UmOhiAbliBzUZhXbmXGgVLX3Uhvrx5jHT5RRJtwC4TLGnxUjSb6ucMrBvANSfg13NSCbbFJ9xXBb4obY39qDyQJdgky0ITQbV3WZhiZaDCsYcdfHHiSyOaZgriWhfObhI2SBk3dBQwBL_fqEDjjHGXDUMmagt0e6My4AsVT8OvgqeLcIfPhjYlbbOcI9UvQFzOue6z5fybVvgSS-zYDgUuqLxVuhwcEjHVFwJLjbvfbjwZItQDyt8qvIcEq8BKuAiZqG12OX0dROHCyJv5E3WhgiKElN9is6ASkDokPeqdzrrvJAh9w5hO3nPNviOrUkmBMtOiE_E4oGer-igxuZDW7WUCZeMWf8D_TmwHjuJdNA7-CCuGqd9X9m_mWCMIyWBtCZ-FDuCtjUJfBYVEbjNX97Hj53LlQgY04qhWTjb7IVLFIevgNwiE5uAAx8BlPFwN5o0oB9sNfxykE1LMfqJr2WrzPushRVToR-5cW_Gmi-rpp_LodjWWTWC-b8kWedjJgzJTwlBRgJn4Qnc";
+    
+    // 获取token
+//    NSString *token = [self getUserToken];
+
+    NSString *baseUrl = @"http:/47.96.114.143:62318/api/works/searchWorks?searchString=";
+    NSString *url = [baseUrl stringByAppendingString:searchText];
+    NSLog(@"%@", url);
+    
+    [[AFHTTPSessionManager manager] GET:url parameters:nil headers:@{@"Authorization":token} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"%@", responseObject);
+            // 获取响应体（作品id，标题，图片token，视频token，用户名，用户头像）
+            NSArray *data = responseObject[@"data"][@"records"];
+            NSLog(@"%@", data);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"%@", error);
+        }];
+
 }
 
 // 重写modelArray的set方法

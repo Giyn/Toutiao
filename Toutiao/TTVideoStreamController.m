@@ -32,7 +32,7 @@
     if(self.isFromSearch){
         self.backBtn = [[UIButton alloc] init];
         [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
-        self.backBtn.titleLabel.textColor = [UIColor whiteColor];
+        [self.backBtn setTitleColor:[UIColor colorNamed:@"tt_red"] forState:UIControlStateNormal];
         [self.view addSubview:self.backBtn];
         if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20){
             self.backBtn.frame = CGRectMake(8, 48, 40, 20);
