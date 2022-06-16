@@ -7,6 +7,8 @@
 
 #import "TTAVPlayerView.h"
 #import "config.h"
+#import "Masonry.h"
+#import "TTPagerViewController.h"
 
 @implementation TTAVPlayerView
 
@@ -36,29 +38,28 @@
         self.avLayer.frame = CGRectMake(0, 0, bgImageView.frame.size.width, bgImageView.frame.size.height);
         [bgImageView.layer addSublayer:self.avLayer];
 
-        self.sliderView = [[UIView alloc] initWithFrame:CGRectMake(0, height-kTabBarHeight, width, 30)];
+        self.sliderView = [[UIView alloc] init];
         self.sliderView.hidden = YES;
         [self addSubview:self.sliderView];
 
-        self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.sliderView.frame.size.height, width, 30)];
+        self.bottomView = [[UIView alloc] init];
         self.bottomView.backgroundColor = [UIColor grayColor];
         self.bottomView.alpha = 0.6;
         [self.sliderView addSubview:self.bottomView];
 
         self.startVideoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.startVideoBtn.frame = CGRectMake(0, 0, 30, 30);
         [self.startVideoBtn setImage:[UIImage imageNamed:@"video_pause_btn"] forState:normal];
         [self.startVideoBtn addTarget:self action:@selector(actStartVideo:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomView addSubview:self.startVideoBtn];
 
-        self.currentTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 0, 50, 50)];
+        self.currentTimeLabel = [[UILabel alloc] init];
         self.currentTimeLabel.textColor = [UIColor whiteColor];
         self.currentTimeLabel.text = @"00:00";
         self.currentTimeLabel.font = [UIFont systemFontOfSize:14];
         self.currentTimeLabel.textAlignment = 1;
         [self.bottomView addSubview:self.currentTimeLabel];
 
-        self.slider = [[UISlider alloc] initWithFrame:CGRectMake(100, 0, kScreenWidth-200, 50)];
+        self.slider = [[UISlider alloc] init];
         self.slider.minimumValue = 0;
         self.slider.minimumTrackTintColor = [UIColor whiteColor];
         self.slider.maximumTrackTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
@@ -67,7 +68,7 @@
         [self.slider setThumbImage:[UIImage imageNamed:@"slider"] forState:normal];
         [self.bottomView addSubview:self.slider];
 
-        self.countTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.slider.frame), 0, 50, 50)];
+        self.countTimeLabel = [[UILabel alloc] init];
         self.countTimeLabel.textColor = [UIColor whiteColor];
         self.countTimeLabel.text = @"00:00";
         self.countTimeLabel.font = [UIFont systemFontOfSize:14];
@@ -75,11 +76,24 @@
         [self.bottomView addSubview:self.countTimeLabel];
 
         self.changeFullScreenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.changeFullScreenBtn.frame = CGRectMake(CGRectGetMaxX(self.countTimeLabel.frame), 0, 50, 50);
         [self.changeFullScreenBtn setImage:[UIImage imageNamed:@"full_screen"] forState:normal];
         [self.changeFullScreenBtn addTarget:self action:@selector(actChange:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomView addSubview:self.changeFullScreenBtn];
         self.changeFullScreenBtn.selected = NO;
+
+        self.userLabel = [[UILabel alloc] init];
+        self.userLabel.textColor = [UIColor whiteColor];
+        self.userLabel.text = @"@今日头条";
+        self.userLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
+        self.userLabel.textAlignment = NSTextAlignmentLeft;
+        [self addSubview:self.userLabel];
+
+        self.titleLabel = [[UILabel alloc] init];
+        self.titleLabel.textColor = [UIColor whiteColor];
+        self.titleLabel.text = @"今日头条今日头条今日头条";
+        self.titleLabel.font = [UIFont systemFontOfSize:19];
+        self.titleLabel.textAlignment = NSTextAlignmentLeft;
+        [self addSubview:self.titleLabel];
 
         WEAKBLOCK(self);
 
@@ -143,25 +157,55 @@
     [super layoutSubviews];
 
     self.avLayer.frame = self.bounds;
-    self.sliderView.frame = self.bounds;
 
-    CGFloat topY = !self.isFullScreen?0:0;
-
-    CGFloat leftX = !self.isFullScreen?0:NavigationHeight;
-
-    CGFloat spaceWidth = !self.isFullScreen?0:30;
-
-    self.bottomView.frame = CGRectMake(0, self.sliderView.frame.size.height-topY-50, self.sliderView.frame.size.width, 50);
-
-    self.startVideoBtn.frame = CGRectMake(leftX, 0, 50, 50);
-
-    self.currentTimeLabel.frame = CGRectMake(leftX+50, 0, 50, 50);
-
-    self.slider.frame = CGRectMake(CGRectGetMaxX(self.currentTimeLabel.frame), 0, self.sliderView.frame.size.width-100-spaceWidth-CGRectGetMaxX(self.currentTimeLabel.frame), 50);
-
-    self.countTimeLabel.frame = CGRectMake(self.sliderView.frame.size.width-100-spaceWidth, 0, 50, 50);
-
-    self.changeFullScreenBtn.frame = CGRectMake(self.sliderView.frame.size.width-50-spaceWidth, 0, 50, 50);
+    [self.sliderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(kScreenWidth);
+    }];
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(kScreenWidth);
+    }];
+    [self.startVideoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(0);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(50);
+    }];
+    [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(50);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(50);
+    }];
+    [self.slider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(100);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(kScreenWidth-200);
+    }];
+    [self.countTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_offset(-50);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(50);
+    }];
+    [self.changeFullScreenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_offset(0);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(50);
+    }];
+    [self.userLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(0);
+        make.bottom.mas_offset(-100);
+        make.height.mas_equalTo(30);
+        make.width.mas_equalTo(kScreenWidth);
+    }];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(0);
+        make.bottom.mas_offset(-60);
+        make.height.mas_equalTo(30);
+        make.width.mas_equalTo(kScreenWidth);
+    }];
 }
 
 // 观察currentIndex变化
@@ -228,6 +272,11 @@
 - (void)actChange:(UIButton *)btn {
     if (!self.changeFullScreenBtn.selected) {
         self.isFullScreen = YES;
+        self.userLabel.hidden = YES;
+        self.titleLabel.hidden = YES;
+        TTPagerViewController *parentVC = (TTPagerViewController *)[self parentViewController];
+        parentVC.tabBarController.tabBar.hidden = YES;
+        [self bringSubviewToFront:self.sliderView];
         self.changeFullScreenBtn.selected = YES;
         [self.changeFullScreenBtn setImage:[UIImage imageNamed:@"exit_full_screen"] forState:normal];
 
@@ -243,6 +292,10 @@
     } else {
         self.changeFullScreenBtn.selected = NO;
         self.isFullScreen = NO;
+        self.userLabel.hidden = NO;
+        self.titleLabel.hidden = NO;
+        TTPagerViewController *parentVC = (TTPagerViewController *)[self parentViewController];
+        parentVC.tabBarController.tabBar.hidden = NO;
         [self.changeFullScreenBtn setImage:[UIImage imageNamed:@"full_screen"] forState:normal];
 
         [UIView animateWithDuration:0.3 animations:^{
@@ -267,6 +320,17 @@
     NSString *str_second = [NSString stringWithFormat:@"%02ld", seconds%60];
     NSString *format_time = [NSString stringWithFormat:@"%@:%@", str_minute, str_second];
     return format_time;
+}
+
+- (UIViewController *)parentViewController {
+    UIResponder *responder = [self nextResponder];
+    while (responder != nil) {
+        if ([responder isKindOfClass:[TTPagerViewController class]]) {
+            return (UIViewController *)responder;
+        }
+        responder = [responder nextResponder];
+    }
+    return nil;
 }
 
 

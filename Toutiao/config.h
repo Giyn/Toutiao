@@ -29,7 +29,7 @@
 
 
 // 导航栏高度
-#define NavigationHeight ((GL_isIPhone_Xr == YES || GL_isIPhone_Xs == YES || GL_isIPhone_Xs_Max == YES || GL_isIPhone_iPhone12_Mini == YES) ? 88.0 : (GL_isIPhone_X == YES) ? 92 : (GL_isIPhone_iPhone12 == YES || GL_isIPhone_iPhone12_ProMax == YES) ? 91 : 64.0)
+#define kNavigationHeight ((GL_isIPhone_Xr == YES || GL_isIPhone_Xs == YES || GL_isIPhone_Xs_Max == YES || GL_isIPhone_iPhone12_Mini == YES) ? 88.0 : (GL_isIPhone_X == YES) ? 92 : (GL_isIPhone_iPhone12 == YES || GL_isIPhone_iPhone12_ProMax == YES) ? 91 : 64.0)
 
 // 状态栏
 #define kStatusHeight [[UIApplication sharedApplication] statusBarFrame].size.height

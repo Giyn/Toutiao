@@ -104,7 +104,7 @@
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
 
-    if (@available(ios 11.0,*)) {
+    if (@available(ios 11.0, *)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
     
@@ -130,6 +130,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTVideoStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTVideoStreamCell" forIndexPath:indexPath];
     // 显示视频第一帧图片
+    cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
     cell.bgImageView.image = self.videoImgArray[indexPath.row];
     return cell;
 }
