@@ -110,7 +110,7 @@
     // 主页点击searchbar时暂停视频
     [center addObserver:self selector:@selector(pause) name:@"searchBarClicked" object:nil];
     // 搜索页点击返回时继续播放视频
-    [center addObserver:self selector:@selector(play) name:@"returnToHomepage" object:nil];
+//    [center addObserver:self selector:@selector(play) name:@"returnToHomepage" object:nil];
     [center addObserver:self selector:@selector(pause) name:@"backLastVC" object:nil];
     return self;
 }

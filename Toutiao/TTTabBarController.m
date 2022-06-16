@@ -9,7 +9,6 @@
 #import "TTVideoStreamController.h"
 #import "TTLoginController.h"
 #import "TTPagerViewController.h"
-#import "TTAVPlayerView.h"
 
 @interface TTTabBarController () <UITabBarControllerDelegate>
 
@@ -37,24 +36,14 @@
             return;
         }
         TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
-        UIViewController *currentChildVC = currentPagerViewController.childrenVCArray[currentIndex];
-        if ([currentChildVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentChildVC;
-            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
-            [ttAVPlayerView play];
-        }
+        [currentPagerViewController startPlayingCurrent];
     };
     OnPageLeave onPageLeave = ^(NSUInteger currentIndex, UIViewController *_Nullable currentVC) {
         if (!currentVC || ![currentVC isKindOfClass:TTPagerViewController.class]) {
             return;
         }
         TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
-        UIViewController *currentChildVC = currentPagerViewController.childrenVCArray[currentIndex];
-        if ([currentChildVC isKindOfClass:TTVideoStreamController.class]) {
-            TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentChildVC;
-            TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
-            [ttAVPlayerView pause];
-        }
+        [currentPagerViewController stopPlayingCurrent];
     };
     UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"第一页", @"第二页", @"第三页"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];

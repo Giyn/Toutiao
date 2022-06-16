@@ -292,10 +292,12 @@ NSInteger const kTagToIndex = 1000;
 #pragma mark - searchBar代理方法
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    // 发送通知 点击searchbar时暂停视频
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center postNotificationName:@"searchBarClicked" object:nil];
-    
+    [self stopPlayingCurrent];
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    [self startPlayingCurrent];
     return YES;
 }
 
@@ -303,9 +305,27 @@ NSInteger const kTagToIndex = 1000;
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     // 收起键盘
     [self.searchBar resignFirstResponder];
+    // 暂停视频
+    [self stopPlayingCurrent];
     // 页面跳转
     TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
     [self.navigationController pushViewController:searchVC animated:YES];
+}
+
+- (void)startPlayingCurrent {
+    UIViewController *childVC = _childrenVCArray[_currentIndex];
+    if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+        TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
+        [avPlayerView play];
+    }
+}
+
+- (void)stopPlayingCurrent {
+    UIViewController *childVC = _childrenVCArray[_currentIndex];
+    if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+        TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
+        [avPlayerView pause];
+    }
 }
 
 @end
