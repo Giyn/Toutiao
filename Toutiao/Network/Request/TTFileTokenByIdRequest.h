@@ -9,8 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTFileDownloadRequest : TTBaseRequest
-@property (nonatomic, copy) NSString *fileId;
+@interface TTFileTokenByIdRequest : TTBaseRequest
+@property (nonatomic, assign) NSInteger fileId;
 @end
 
 NS_ASSUME_NONNULL_END

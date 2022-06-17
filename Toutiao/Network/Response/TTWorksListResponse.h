@@ -6,11 +6,11 @@
 //
 
 #import "TTBaseResponse.h"
-
+#import "TTWorksListData.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTWorksListResponse : TTBaseResponse
-
+@property (nonatomic, strong) TTWorksListData *data;
 @end
 
 NS_ASSUME_NONNULL_END

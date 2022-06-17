@@ -10,8 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTWorksListRequest : TTBaseRequest
-@property (nonatomic, copy) NSString *current;
-@property (nonatomic, copy) NSString *size;
+@property (nonatomic, assign) NSInteger current;
+@property (nonatomic, assign) NSInteger size;
 @end
 
 NS_ASSUME_NONNULL_END

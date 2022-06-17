@@ -9,8 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTUpdateUserInfoRequest : NSObject
-@property (nonatomic, copy) NSString *picture;
+@interface TTUpdateUserInfoRequest : TTRegisterRequest
+@property (nonatomic, assign) NSInteger *picture;
 @end
 
 NS_ASSUME_NONNULL_END

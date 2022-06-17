@@ -174,7 +174,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     } onError:^(NSError * _Nonnull error) {
         self.isPerformingRequest = NO;
         [self showAlertWithTitle:@"登录失败" message:error.description redirectToPrev:NO];
-    }];
+    } onProgress:nil];
 }
 
 #pragma mark - 登录结果

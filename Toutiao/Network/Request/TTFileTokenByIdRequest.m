@@ -5,8 +5,8 @@
 //  Created by 肖扬 on 2022/6/16.
 //
 
-#import "TTFileDownloadRequest.h"
+#import "TTFileTokenByIdRequest.h"
 
-@implementation TTFileDownloadRequest
+@implementation TTFileTokenByIdRequest
 
 @end

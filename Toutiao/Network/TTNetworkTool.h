@@ -9,26 +9,33 @@
 #import "AFHTTPSessionManager.h"
 #import "URLs.h"
 #import "Request/TTBaseRequest.h"
-NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, TTHttpMethodType) {
     TTHttpMethodTypeGET,
     TTHttpMethodTypePOST,
     TTHttpMethodTypePUT,
     TTHttpMethodTypeDELETE
 };
-typedef void(^OnProgress)(CGFloat percentage);
+typedef void(^OnProgress)(NSProgress * _Nullable progress);
 typedef void(^OnSuccess)(id responseObject);
-typedef void(^OnError)(NSError *error);
+typedef void(^OnError)(NSError * _Nullable error);
+NS_ASSUME_NONNULL_BEGIN
+
 @interface TTNetworkTool : AFHTTPSessionManager
 
 + (instancetype)sharedManager;
+
++ (NSString *)getDownloadPathWithFileToken:(NSString *)fileToken; /// 将fileToken拼接成filePath(不包含baseURL)
+
++ (NSString *)getDownloadURLWithFileToken:(NSString *)fileToken; /// 将fileToken拼接成URLString(包含baseURL)
 
 - (void)requestWithMethod:(TTHttpMethodType)method
                      path:(NSString *)path
                    params:(NSDictionary*)params
             requiredToken:(BOOL)requiredToken
                 onSuccess:(OnSuccess)onSuccess
-                  onError:(OnError)onError;
+                  onError:(OnError)onError
+               onProgress:(OnProgress)onProgress;
 
 @end
 

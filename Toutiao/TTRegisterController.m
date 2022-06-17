@@ -208,7 +208,7 @@ NSUInteger const kRegisterViewPasswordFieldTag = 333;
         } onError:^(NSError * _Nonnull error) {
             self.isPerformingRequest = NO;
             [self showAlertWithTitle:@"注册失败" message:@"即将前往登录界面" redirectToPrev:YES];
-        }];
+        } onProgress:nil];
 }
 
 #pragma mark - 跳转到上一级页面
