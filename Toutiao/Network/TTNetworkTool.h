@@ -16,10 +16,12 @@ typedef NS_ENUM(NSInteger, TTHttpMethodType) {
     TTHttpMethodTypePUT,
     TTHttpMethodTypeDELETE
 };
-typedef void(^OnProgress)(NSProgress * _Nullable progress);
-typedef void(^OnSuccess)(id responseObject);
-typedef void(^OnError)(NSError * _Nullable error);
+
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void(^OnProgress)(NSProgress *progress);
+typedef void(^OnSuccess)(id responseObject);
+typedef void(^OnError)(NSError *error);
 
 @interface TTNetworkTool : AFHTTPSessionManager
 
@@ -35,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
             requiredToken:(BOOL)requiredToken
                 onSuccess:(OnSuccess)onSuccess
                   onError:(OnError)onError
-               onProgress:(OnProgress)onProgress;
+               onProgress:(_Nullable OnProgress)onProgress;
 
 @end
 
