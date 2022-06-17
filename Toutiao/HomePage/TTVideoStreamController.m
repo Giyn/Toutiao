@@ -5,16 +5,20 @@
 //  Created by Giyn on 2022/6/9.
 //
 
+#import <Foundation/Foundation.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
+#import <MJExtension/NSObject+MJKeyValue.h>
 #import "TTVideoStreamController.h"
 #import "TTVideoStreamCell.h"
 #import "TTAVPlayerView.h"
-#import <Foundation/Foundation.h>
+#import "TTVideo.h"
+#import "TTVideoStreamRequest.h"
+#import "TTVideoStreamResponse.h"
 #import "config.h"
 
 @interface TTVideoStreamController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
-@property (nonatomic, strong) NSArray *urlArray; // 存放视频url
+@property (nonatomic, strong) NSMutableArray<TTVideo *> *data; // 存放视频数据
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
@@ -25,42 +29,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initData];
+    [self loadData:1 size:10];
     [self setupView];
-
-    // 获取视频第一帧
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        for (int i = 0; i < self.urlArray.count; i++) {
-            UIImage *image = [self getVideoPreViewImage:[NSURL URLWithString:self.urlArray[i]]];
-            if (image != nil) {
-                [self.videoImgArray replaceObjectAtIndex:i withObject:image];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
-            }
-        }
-    });
-}
-
-- (void)initData {
-    self.urlArray = @[
-        @"https://aweme.snssdk.com/aweme/v1/play/?video_id=ba8f4ff0c1fe445dbfdc1cc9565222fa&line=0&ratio=720p&media_type=4&vr_type=0&test_cdn=None&improve_bitrate=0",
-        @"https://v-cdn.zjol.com.cn/276994.mp4",
-        @"https://v-cdn.zjol.com.cn/276991.mp4",
-        @"https://v-cdn.zjol.com.cn/276986.mp4",
-        @"https://v-cdn.zjol.com.cn/276990.mp4",
-        @"https://v-cdn.zjol.com.cn/276996.mp4",
-        @"https://v-cdn.zjol.com.cn/277000.mp4",
-        @"https://v-cdn.zjol.com.cn/277001.mp4",
-        @"https://v-cdn.zjol.com.cn/277003.mp4",
-        @"https://v-cdn.zjol.com.cn/280443.mp4",
-        @"https://v-cdn.zjol.com.cn/276982.mp4"
-    ];
-
-    self.videoImgArray = [NSMutableArray array];
-    for (int i = 0; i < self.urlArray.count; i++) {
-        [self.videoImgArray addObject:[UIImage imageNamed:@"video_loading"]];
-    }
 }
 
 - (void)setupView {
@@ -93,14 +63,18 @@
 
 #pragma mark - tableView delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.urlArray.count;
+    return self.data.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTVideoStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTVideoStreamCell" forIndexPath:indexPath];
-    // 显示视频第一帧图片
+    // 显示视频封面
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    cell.bgImageView.image = self.videoImgArray[indexPath.row];
+    NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
+    UIImage *cover;
+    NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
+    cover = [UIImage imageWithData:cover_data];
+    cell.bgImageView.image = cover;
     return cell;
 }
 
@@ -108,7 +82,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         CGPoint translatedPoint = [scrollView.panGestureRecognizer translationInView:scrollView];
         scrollView.panGestureRecognizer.enabled = NO;
-        if (translatedPoint.y < -100 && self.currentIndex < (self.urlArray.count - 1)) {
+        if (translatedPoint.y < -100 && self.currentIndex < (self.data.count - 1)) {
             self.currentIndex++;
         }
         if (translatedPoint.y > 100 && self.currentIndex > 0) {
@@ -133,7 +107,12 @@
 
         [self.avPlayerView removePlayer];
         [self.avPlayerView removeFromSuperview];
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urlArray[self.currentIndex] image:self.videoImgArray[self.currentIndex]];
+        NSString *video_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].videoToken];
+        NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
+        UIImage *cover;
+        NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
+        cover = [UIImage imageWithData:cover_data];
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:video_url image:cover];
         [cell.contentView addSubview:self.avPlayerView];
         [cell insertSubview:cell.middleView belowSubview:self.avPlayerView];
 
@@ -156,19 +135,24 @@
     }
 }
 
-// 获取网络视频第一帧
-- (UIImage*)getVideoPreViewImage:(NSURL *)path {
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:path options:nil];
-    AVAssetImageGenerator *assetGen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+#pragma mark - load data
+- (void)loadData:(NSInteger)current size:(NSInteger)size {
+    TTVideoStreamRequest *request = [[TTVideoStreamRequest alloc] init];
+    request.current = current;
+    request.size = size;
 
-    assetGen.appliesPreferredTrackTransform = YES;
-    CMTime time = CMTimeMakeWithSeconds(0, 1);
-    NSError *error = nil;
-    CMTime actualTime;
-    CGImageRef image = [assetGen copyCGImageAtTime:time actualTime:&actualTime error:&error];
-    UIImage *videoImage = [[UIImage alloc] initWithCGImage:image];
-    CGImageRelease(image);
-    return videoImage;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:@"http://47.96.114.143:62318/api/works/getWorksList" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        TTVideoStreamResponse *videoStreamResponse = [TTVideoStreamResponse mj_objectWithKeyValues:responseObject];
+        for (NSDictionary *dict in videoStreamResponse.data.records) {
+            TTVideo *video = [TTVideo mj_objectWithKeyValues:dict];
+            NSLog(@"%@", video.videoToken);
+            [self.data addObject:video];
+            NSLog(@"%@", self.data);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"请求失败: %@", error);
+    }];
 }
 
 // 长按加速播放，释放后恢复
