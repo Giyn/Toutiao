@@ -8,11 +8,16 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <MJExtension/NSObject+MJKeyValue.h>
 #import "TTRegisterController.h"
+#import "TTLoginController.h"
+#import "TTLoginView.h"
 #import "TTInputField.h"
 #import "TTRegisterView.h"
 #import "Masonry.h"
 #import "TTBaseResponse.h"
 #import "config.h"
+#import "Network/URLs.h"
+#import "Network/TTNetworkTool.h"
+#import "Network/Request/TTRegisterRequest.h"
 
 NSUInteger const kRegisterViewUsernameFieldTag = 111;
 NSUInteger const kRegisterViewEmailFieldTag = 222;
@@ -21,6 +26,8 @@ NSUInteger const kRegisterViewPasswordFieldTag = 333;
 @interface TTRegisterController () <UITextFieldDelegate>
 @property (nonatomic, strong) TTRegisterView *registerView;
 @property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizer;
+@property (nonatomic, strong) NSString *registeredUsername;
+@property (nonatomic, strong) NSString *registeredPassword;
 @property (nonatomic, assign) BOOL isPerformingRequest;
 @end
 
@@ -174,35 +181,34 @@ NSUInteger const kRegisterViewPasswordFieldTag = 333;
 - (void)performRegisterRequest {
     NSString *username = _registerView.usernameInputField.textField.text;
     NSString *email = _registerView.emailInputField.textField.text;
+    
+    TTRegisterRequest *registerRequest = TTRegisterRequest.new;
     NSString *password = _registerView.passwordInputField.textField.text;
+    registerRequest.account = username;
+    registerRequest.name = username;
+    registerRequest.password = password;
+    registerRequest.mail = email;
     
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc]initWithSessionConfiguration:config];
-    
-    NSString *registerEndpoint = @"http://47.96.114.143:62318/api/user/register";
-    NSMutableDictionary *mutableDict = NSMutableDictionary.new;
-    mutableDict[@"account"] = username;
-    mutableDict[@"name"] = username;
-    mutableDict[@"password"] = password;
-    mutableDict[@"mail"] = email;
+    NSDictionary *params = [registerRequest mj_keyValues].copy;
     
     self.isPerformingRequest = YES;
-    NSURLRequest *request = [[AFJSONRequestSerializer serializer]requestWithMethod:@"POST" URLString:registerEndpoint parameters:mutableDict.copy error:nil];
-    __weak typeof(self) weakSelf = self;
-    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        TTBaseResponse *baseResponse = [TTBaseResponse mj_objectWithKeyValues:responseObject];
-        NSLog(@"%@ %@", response, responseObject);
-        
-        if (![baseResponse.success isEqualToString:@"1"]) {
-            [strongSelf showAlertWithTitle:@"注册失败" message:baseResponse.message redirectToPrev:NO];
-            return;
-        } else {
-            [strongSelf showAlertWithTitle:@"注册成功" message:@"即将前往登录界面" redirectToPrev:YES];
-        }
-        strongSelf.isPerformingRequest = NO;
-    }];
-    [dataTask resume];
+    TTNetworkTool *manager = [TTNetworkTool sharedManager];
+    [manager requestWithMethod:TTHttpMethodTypePOST path:registerPath params:params requiredToken:NO onSuccess:^(id  _Nonnull responseObject) {
+            TTBaseResponse *baseResponse = [TTBaseResponse mj_objectWithKeyValues:responseObject];
+            if (!baseResponse.isSuccess) {
+                self.isPerformingRequest = NO;
+                [self showAlertWithTitle:@"注册失败" message:baseResponse.message redirectToPrev:NO];
+                return;
+            } else {
+                self.isPerformingRequest = NO;
+                [self showAlertWithTitle:@"注册成功" message:@"即将前往登录界面" redirectToPrev:YES];
+                self.registeredUsername = username;
+                self.registeredPassword = password;
+            }
+        } onError:^(NSError * _Nonnull error) {
+            self.isPerformingRequest = NO;
+            [self showAlertWithTitle:@"注册失败" message:@"即将前往登录界面" redirectToPrev:YES];
+        }];
 }
 
 #pragma mark - 跳转到上一级页面
@@ -218,6 +224,15 @@ NSUInteger const kRegisterViewPasswordFieldTag = 333;
     }];
     if (currentVCIndex == 0) {
         return;
+    }
+    UIViewController *prevVC = navVC.viewControllers[currentVCIndex-1];
+    if ([prevVC isKindOfClass:TTLoginController.class]) {
+        TTLoginController *loginVC = (TTLoginController *)prevVC;
+        TTLoginView *loginView = loginVC.loginView;
+        loginView.usernameInputField.textField.text = _registeredUsername;
+        loginView.passwordInputField.textField.text = _registeredPassword;
+        _registeredUsername = @"";
+        _registeredPassword = @"";
     }
     [navVC popToViewController:navVC.viewControllers[currentVCIndex-1] animated:YES];
 }
