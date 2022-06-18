@@ -10,9 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTBaseResponse : NSObject
-@property (nonatomic, copy) NSString *success;
-@property (nonatomic, copy) NSString *code;
-@property (nonatomic, copy) NSString *message;
+@property (nonatomic, assign) NSInteger code;
+@property (nonatomic, copy)   NSString *message;
+@property (nonatomic, assign, getter=isSuccess) BOOL success;
 @end
 
 NS_ASSUME_NONNULL_END

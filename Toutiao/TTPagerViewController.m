@@ -211,7 +211,7 @@ NSInteger const kTagToIndex = 1000;
 // 根据激活事件按钮tag更新约束添加动画
 - (void)animateWithTag:(NSInteger)tag {
     // 按钮宽度
-    CGFloat widthMetric = _ttSliderNav.frame.size.width / 3;
+    CGFloat widthMetric = _ttSliderNav.frame.size.width / _ttSliderNav.buttonArray.count;
     // sliderNav容器宽度
     CGFloat sliderWidth = _ttSliderNav.sliderLabel.frame.size.width;
     // 滑动指示器
@@ -259,10 +259,10 @@ NSInteger const kTagToIndex = 1000;
     }
     // 计算当前slider偏移量
     CGFloat currentOffSetX = _container.contentOffset.x;
-    CGFloat sliderOffsetX = currentOffSetX / 3.333 ;
+    CGFloat sliderOffsetX = currentOffSetX / (_ttSliderNav.buttonArray.count + 0.5) ;
     // 更新约束，使slider同步容器滚动
     [_ttSliderNav.sliderLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_ttSliderNav.container.mas_left).offset(sliderOffsetX + _ttSliderNav.bounds.size.width / 24);
+        make.left.mas_equalTo(_ttSliderNav.container.mas_left).offset(sliderOffsetX + (_ttSliderNav.frame.size.width / _ttSliderNav.buttonArray.count - _ttSliderNav.frame.size.width / (_ttSliderNav.buttonArray.count + 1)) / 2);
     }];
     // 通知sliderNav的容器重新布局
     [_ttSliderNav.container layoutIfNeeded];
