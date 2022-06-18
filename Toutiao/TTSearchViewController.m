@@ -232,7 +232,7 @@
 
 // 重写modelArray的set方法
 - (void)setModelArray:(NSArray *)modelArray{
-    self.modelArray = modelArray;
+    _.modelArray = modelArray;
     
     // 加载完数据后 刷新tableview数据
     [self.searchTableView reloadData];
