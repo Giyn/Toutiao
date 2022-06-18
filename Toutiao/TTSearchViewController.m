@@ -9,10 +9,13 @@
 #import "TTSearchTableViewCell.h"
 #import "TTVideoStreamController.h"
 #import "AFHTTPSessionManager.h"
-#import "UIViewController+PreviousVC.h"
+//#import "UIViewController+PreviousVC.h"
 #import "TTPagerViewController.h"
+#import "TTSearchResponse.h"
+#import <MJExtension/NSObject+MJKeyValue.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
-//#import "TTSearchModel.h"
+#import "TTSearchModel.h"
 
 #define MAS_SHORTHAND
 #define MAS_SHORTHAND_GLOBALS
@@ -46,7 +49,7 @@
     [self setUpSearchView];
     [self setUpSearchTableView];
     // 加载数据
-    //[self loadData];
+    [self loadData];
 }
 
 #pragma mark - 布局
@@ -178,14 +181,32 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (UIViewController *)getPreviousVC {
+    UINavigationController *navVC = self.navigationController;
+    if (navVC == nil) {
+        return nil;
+    }
+    __block NSUInteger currentVCIndex;
+    [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isEqual:self]) {
+                currentVCIndex = idx;
+                *stop = YES;
+                return;
+            }
+    }];
+    if (currentVCIndex == 0) {
+        return nil;
+    }
+    return navVC.viewControllers[currentVCIndex-1];
+}
 
-#pragma mark - searchTableView数据源方法（组数默认1 行数 单元格格式）
+#pragma mark - searchTableView数据源方法
 // 每组中的行数（后面需要根据模型来改）
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    //return 5;
     
     // 根据模型数组count方法返回相应行数
-    // return self.modelArray.count;
+     return self.modelArray.count;
 }
 
 // 设置单元格格式
@@ -203,13 +224,20 @@
 //    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url];
 //    AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
     //AVPlayer *player = [AVPlayer playerWithPlayerItem:nil];
-    cell.imgViewIcon.image = [UIImage imageNamed:@"icon1"];
-    cell.usrName.text = @"用户名";
-    cell.videoTitle.text = @"标题标题标题标题标题";
+//    cell.imgViewIcon.image = [UIImage imageNamed:@"icon1"];
+//    cell.usrName.text = @"用户名";
+//    cell.videoTitle.text = @"标题标题标题标题标题";
     //cell.playerVC.player = player;
     
     // 通过模型赋值
-    // cell.searchModel = self.modelArray[indexPath.row];
+    //cell.searchModel = self.modelArray[indexPath.row];
+    TTSearchModel *model = self.modelArray[indexPath.row];
+//    [cell.imgViewIcon sd_setImageWithURL:[NSURL URLWithString:searchModel.imgIcon] placeholderImage:nil];  // 设置头像
+//    cell.usrName =
+    [cell.imgViewIcon sd_setImageWithURL:[NSURL URLWithString:model.imgIcon]];
+    cell.usrName.text = model.usrName;
+    cell.videoTitle.text = model.videoTitle;
+    [cell.videoImgView sd_setImageWithURL:[NSURL URLWithString:model.videoImg]];
     
     [cell settingFrame];
     
@@ -217,7 +245,7 @@
     return cell;
 }
 
-#pragma mark - TableView的代理方法
+#pragma mark - TableView代理方法
 // 设置选中cell后cell的样式--cell选中后不变灰
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TTSearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -230,7 +258,7 @@
     
 }
 
-#pragma mark - 处理模型
+#pragma mark - 网络请求
 // 获取token
 - (NSString *) getUserToken{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -241,52 +269,49 @@
 // 下面是加入model后两个方法
 // 加载数据 通过model内部请求函数 成功则回调模型数组
 - (void)loadData{
-//    [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
-//            self.modelArray = array;    // 成功获取数组后赋值给modelArray属性（调用set方法刷新数据）
-//        } error:^{
-//            NSLog(@"获取数据出错");
-//        }];
-    
-//    NSString *urlStr = @"****************";
-//     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//       [manager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-//           NSLog(@"----requestData:%@",responseObject);
-//           NSArray *dataInfo = responseObject[@"data"];
-//           for (NSDictionary *dic in dataInfo) {
-//               PlayerModel *model = [[PlayerModel alloc]initWithDictory:dic];
-//               [_data addObject:model];
-//           }
-//           [self.tableView reloadData];
-//       } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-//           //
-//           NSLog(@"---requesterror:%@",error);
-//       }];
-    NSString *searchText = self.searchBar.text;
-    NSString *token = @"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIzZjk1YzNmNy1hMzc1LTRhZDUtYWM5Ni04Y2M5NzkxYmUzMTg1NDVmOWMyOC1lYzkxLTQ0YWYtYmViNS1kODA2YzY3ZDNkOTYiLCJpc3MiOiJUb3B2aWV3IiwiZXhwIjoxNjU1MzQ4NjQ5fQ.l8bhXXwhBso_jjihVD1Khq4WMt4ur84HcCU0ZE_F9aY9xAzu0yy9v8z8yQtF556HGR2delnDdVfVVKG5QPuACTBjHdcRmHgtz1_imxYfXe41DpxD2YzIOQpWoAEQ3BJIJBdI7QV9RntmhiSzouCwjQZ4T4UmOhiAbliBzUZhXbmXGgVLX3Uhvrx5jHT5RRJtwC4TLGnxUjSb6ucMrBvANSfg13NSCbbFJ9xXBb4obY39qDyQJdgky0ITQbV3WZhiZaDCsYcdfHHiSyOaZgriWhfObhI2SBk3dBQwBL_fqEDjjHGXDUMmagt0e6My4AsVT8OvgqeLcIfPhjYlbbOcI9UvQFzOue6z5fybVvgSS-zYDgUuqLxVuhwcEjHVFwJLjbvfbjwZItQDyt8qvIcEq8BKuAiZqG12OX0dROHCyJv5E3WhgiKElN9is6ASkDokPeqdzrrvJAh9w5hO3nPNviOrUkmBMtOiE_E4oGer-igxuZDW7WUCZeMWf8D_TmwHjuJdNA7-CCuGqd9X9m_mWCMIyWBtCZ-FDuCtjUJfBYVEbjNX97Hj53LlQgY04qhWTjb7IVLFIevgNwiE5uAAx8BlPFwN5o0oB9sNfxykE1LMfqJr2WrzPushRVToR-5cW_Gmi-rpp_LodjWWTWC-b8kWedjJgzJTwlBRgJn4Qnc";
+    //NSString *token = @"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIwZDRkZjgyNC05NmFkLTRiMGYtODY4Mi0yOTViOWJkODRkZTA3MWZkMjU4Zi1mZDQzLTRiODktYjYyYi0xYWU2MDgxY2QwNDQiLCJpc3MiOiJUb3B2aWV3IiwiZXhwIjoxNjU1NDM1MDE3fQ.hzolUtr2McyBUIppZKV35XKwcArmERJoBJqaRMKHr6vYnEBzbfoI_HGXyrDXqFE1wtNDPx9j665yIzI84sr43ylxzsXT6lnquRMgadkmnkTFcarnM4G9IWysbQDmO7ixI-4-GmXkPCuiGg6nOe6G2jNR9x0aTDm7mxKFcfIqrnKibVvlqQv57sYNrakBzQxRSEkZZASeI83Mcv0FdMVC1glZrW_YX5X4uIqCODDNKi0AIfdSY6PdxLjqLQrZF9gd-6msWZgAlqBk5kb2hU8r4zyHPBdkrNO-q41CqfgH1aPsbgXr2DOwHdKtr1UnkhkF4N93KYr12YeB0VcpbuwAdhXCRM-0bu2bSlRDl-9NWeJp6DA6tqutWNHH5Tp_ekQIjISg4Mk6MrsqcJ1JOVCsujLRaASyJrdy4Q9EFQCUmwjuPfQMbp2kYaZg4dqFbSrMXVNoluQj8DCwL9uTnpKDVDQNHNQ75SAyhw4xz5NrzkMCUkM248xvEh-mErAUGeReFR3FQxS5MKFjTeJcmMPy0LlDo1CHkWHM3zblMTDGwDKikaQlbMbgd0mKsbkabnJUPc56v7_XwcJlAW7qF5826Jk3vNVnHeWQWA-iyWwl5uyJZNxydcT6GqcoFmzxE5Wlm6qz8yOkHmb5DTucp_gi79kZLhygtnbT9LXm4FYxBpw";
     
     // 获取token
-//    NSString *token = [self getUserToken];
-
-    NSString *baseUrl = @"http:/47.96.114.143:62318/api/works/searchWorks?searchString=";
-    NSString *url = [baseUrl stringByAppendingString:searchText];
+    NSString *token = [self getUserToken];
+    NSInteger current = 1;  // 当前页
+    NSInteger size = 10;    // 页大小
+    NSString *url = @"http://47.96.114.143:62318/api/works/searchWorks";
+    //NSString *download = @"http://47.96.114.143:62318/api/file/download/";
     NSLog(@"%@", url);
     
-    [[AFHTTPSessionManager manager] GET:url parameters:nil headers:@{@"Authorization":token} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@", responseObject);
-            // 获取响应体（作品id，标题，图片token，视频token，用户名，用户头像）
-            NSArray *data = responseObject[@"data"][@"records"];
-            NSLog(@"%@", data);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    // 设置序列
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    // 设置请求头
+    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+    // 设置参数
+    NSDictionary *parametersDic = @{@"current":[NSNumber numberWithInt:(int)current], @"size":[NSNumber numberWithInt:(int)size], @"searchString":self.searchBar.text};
+
+    // 发起请求
+    [manager GET:url parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        TTSearchResponse *searchResponse = [TTSearchResponse mj_objectWithKeyValues:responseObject];
+        //NSLog(@"responseObject%@, searchResponse%@",responseObject,searchResponse);
+        //NSLog(@"searchResponse.data.records%@",searchResponse.data.records);    // records是一个数组 里面存搜到的作品字典  (字典数组)
+        
+        NSArray *recordsArray = [[TTSearchDataResponse mj_objectArrayWithKeyValuesArray:searchResponse.data.records] copy];    // 字典数组转化为模型数组(token)
+        NSMutableArray *models = [[NSMutableArray alloc] init];
+        for(TTSearchDataResponse *dataResponse in recordsArray){
+            TTSearchModel *model = [dataResponse getModel];
+            [models addObject:model];
+            }
+        NSLog(@"%@", models);
+        self.modelArray = [models copy];
+        NSLog(@"11");
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"%@", error);
-        }];
+    }];
 
 }
 
-// 重写modelArray的set方法
+
 - (void)setModelArray:(NSArray *)modelArray{
-    self.modelArray = modelArray;
-    
-    // 加载完数据后 刷新tableview数据
+    _modelArray = modelArray;
     [self.searchTableView reloadData];
 }
 

@@ -161,7 +161,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     // 请求头
     NSDictionary *headers = @{@"Content-Type": @"application/json"};
     // 初始化网络请求
-    [manager POST:loginEndpoint parameters:formData headers:headers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:loginEndpoint parameters:formData progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             self.isPerformingRequest = NO;
             TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
             NSLog(@"expireAt%@", [loginResponse.data.expireAt substringWithRange:NSMakeRange(0, 10)]);
