@@ -172,17 +172,17 @@
 				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
 				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
-<<<<<<< HEAD
+
 				728E9525285876B400DF1541 /* TTSearchModel.h */,
 				728E9526285876B400DF1541 /* TTSearchModel.m */,
-=======
+
 				0F458F902856F4F600887C76 /* TTBaseResponse.h */,
 				0F458F912856F4F600887C76 /* TTBaseResponse.m */,
 				0F458F932857041F00887C76 /* TTLoginResponse.h */,
 				0F458F942857041F00887C76 /* TTLoginResponse.m */,
 				0F458F962857053C00887C76 /* TTLoginData.h */,
 				0F458F972857053C00887C76 /* TTLoginData.m */,
->>>>>>> 8b4dd03eaa23c9f6e224bc9fe3ed910d752fabdc
+
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
