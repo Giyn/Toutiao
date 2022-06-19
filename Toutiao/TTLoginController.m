@@ -14,12 +14,14 @@
 #import "TTLoginResponse.h"
 #import "config.h"
 #import "Masonry.h"
+#import "Network/URLs.h"
+#import "Network/TTNetworkTool.h"
+#import "Network/Request/TTLoginRequest.h"
 
 NSUInteger const kLoginViewUsernameFieldTag = 111;
 NSUInteger const kLoginViewPasswordFieldTag = 333;
 
 @interface TTLoginController () <UITextFieldDelegate>
-@property (nonatomic, strong) TTLoginView *loginView;
 @property (nonatomic, strong) UITapGestureRecognizer *gestureRecognizer;
 @property (nonatomic, assign) BOOL isPerformingRequest;
 @end
@@ -152,38 +154,35 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     NSString *password = _loginView.passwordInputField.textField.text;
     // 设置网络请求状态
     self.isPerformingRequest = YES;
-    // 初始化网络请求配置
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSString *loginEndpoint = @"http://47.96.114.143:62318/api/user/login";
     // 表单
-    NSDictionary *formData = @{@"account": username, @"password": password};
-    // 请求头
-    NSDictionary *headers = @{@"Content-Type": @"application/json"};
+    TTLoginRequest *loginRequest = TTLoginRequest.new;
+    loginRequest.account = username;
+    loginRequest.password = password;
+    NSDictionary *params = [loginRequest mj_keyValues].copy;
     // 初始化网络请求
-    [manager POST:loginEndpoint parameters:formData progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            self.isPerformingRequest = NO;
-            TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
-            NSLog(@"expireAt%@", [loginResponse.data.expireAt substringWithRange:NSMakeRange(0, 10)]);
-            if (![loginResponse.success isEqualToString:@"1"]) {
-                [self showAlertWithTitle:@"登录失败" message:loginResponse.message redirectToPrev:NO];
-                return;
-            } else {
-                [self saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
-                [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
-            }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            self.isPerformingRequest = NO;
-            [self showAlertWithTitle:@"登录失败" message:error.description redirectToPrev:NO];
-        }];
+    TTNetworkTool *tool = [TTNetworkTool sharedManager];
+    [tool requestWithMethod:TTHttpMethodTypePOST path:loginPath params:params requiredToken:NO onSuccess:^(id  _Nonnull responseObject) {
+        self.isPerformingRequest = NO;
+        TTLoginResponse *loginResponse = [TTLoginResponse mj_objectWithKeyValues:responseObject];
+        if (!loginResponse.isSuccess) {
+            [self showAlertWithTitle:@"登录失败" message:[loginResponse mj_JSONString] redirectToPrev:NO];
+            return;
+        } else {
+            [self saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
+            [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
+        }
+    } onError:^(NSError * _Nonnull error) {
+        self.isPerformingRequest = NO;
+        [self showAlertWithTitle:@"登录失败" message:error.description redirectToPrev:NO];
+    } onProgress:nil];
 }
 
 #pragma mark - 登录结果
-- (void)saveLoginResultWithToken:(NSString *)token expireAt:(NSString *)expireAt {
+- (void)saveLoginResultWithToken:(NSString *)token expireAt:(NSInteger)expireAt {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:token forKey:@"token"];
     // 转换成10位时间戳
-    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:[expireAt doubleValue]/1000] forKey:@"expireAt"];
+    [defaults setObject:[NSDate dateWithTimeIntervalSince1970:expireAt/1000] forKey:@"expireAt"];
     NSLog(@"%@", [defaults objectForKey:@"expireAt"]);
     NSLog(@"%@", [defaults objectForKey:@"token"]);
 }

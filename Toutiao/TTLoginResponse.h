@@ -7,6 +7,7 @@
 
 #import "TTBaseResponse.h"
 #import "TTLoginData.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTLoginResponse : TTBaseResponse
