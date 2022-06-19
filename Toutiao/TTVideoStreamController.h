@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TTVideoStreamController : UIViewController
 
 @property (nonatomic, assign) BOOL isFromSearch;
+@property (nonatomic, assign) BOOL isPlayerRemoved;
+@property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 
 @end
 

@@ -315,7 +315,12 @@ NSInteger const kTagToIndex = 1000;
 - (void)startPlayingCurrent {
     UIViewController *childVC = _childrenVCArray[_currentIndex];
     if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+        TTVideoStreamController *videoVC = (TTVideoStreamController *)childVC;
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
+        NSInteger currentVCIndex = videoVC.currentIndex;
+        if (videoVC.isPlayerRemoved) {
+            [videoVC setValue:@(currentVCIndex) forKey:@"currentIndex"];
+        }
         [avPlayerView play];
     }
 }
@@ -323,8 +328,15 @@ NSInteger const kTagToIndex = 1000;
 - (void)stopPlayingCurrent {
     UIViewController *childVC = _childrenVCArray[_currentIndex];
     if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+        TTVideoStreamController *videoVC = (TTVideoStreamController *)childVC;
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
         [avPlayerView pause];
+        if (!videoVC.isPlayerRemoved) {
+            [avPlayerView removePlayer];
+            [avPlayerView removeFromSuperview];
+            [avPlayerView.player replaceCurrentItemWithPlayerItem:nil];
+            videoVC.isPlayerRemoved = YES;
+        }
     }
 }
 

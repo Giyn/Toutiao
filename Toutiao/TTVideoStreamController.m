@@ -17,7 +17,6 @@
 @property (nonatomic, strong) NSArray *urlArray; // 存放视频url
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
-@property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 @property (nonatomic, strong) UIButton *backBtn;
 
 @end
@@ -25,10 +24,11 @@
 @implementation TTVideoStreamController
 
 - (void)viewDidLoad {
+    self.isPlayerRemoved = YES;
     [super viewDidLoad];
     [self initData];
     [self setupView];
-    
+    self.isPlayerRemoved = NO;
     if(self.isFromSearch){
         self.backBtn = [[UIButton alloc] init];
         [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
@@ -161,9 +161,10 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"currentIndex"]) {
         TTVideoStreamCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
-
-        [self.avPlayerView removePlayer];
-        [self.avPlayerView removeFromSuperview];
+        if (!_isPlayerRemoved) {
+            [self.avPlayerView removePlayer];
+            [self.avPlayerView removeFromSuperview];
+        }
         self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urlArray[self.currentIndex] image:self.videoImgArray[self.currentIndex]];
         [cell.contentView addSubview:self.avPlayerView];
         [cell insertSubview:cell.middleView belowSubview:self.avPlayerView];
@@ -184,6 +185,7 @@
                 cell.bgImageView.hidden = NO;
             }
         };
+        self.isPlayerRemoved = NO;
     }
 }
 

@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import "AFHTTPSessionManager.h"
 #import "URLs.h"
-#import "Request/TTBaseRequest.h"
 
 typedef NS_ENUM(NSInteger, TTHttpMethodType) {
     TTHttpMethodTypeGET,
