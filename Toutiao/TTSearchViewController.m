@@ -14,14 +14,16 @@
 #import "TTSearchResponse.h"
 #import <MJExtension/NSObject+MJKeyValue.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "MJRefresh.h"
 
 #import "TTSearchModel.h"
+#import "TTVideoPlayController.h"
 
 #define MAS_SHORTHAND
 #define MAS_SHORTHAND_GLOBALS
 #import "Masonry.h"
 
-@interface TTSearchViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TTSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UITableView * searchTableView;
 @property (nonatomic, strong) UIView *searchView;
@@ -31,6 +33,7 @@
 @property (nonatomic, strong) NSString *searchInput;
 
 @property (nonatomic, strong) NSArray *modelArray;  // 模型数组
+@property (nonatomic, assign) NSInteger current;
 
 @end
 
@@ -49,7 +52,15 @@
     [self setUpSearchView];
     [self setUpSearchTableView];
     // 加载数据
+    self.current = 0;
     [self loadData];
+    //下拉加载
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
+    [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载..." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
+    self.searchTableView.mj_footer = footer;
+    
 }
 
 #pragma mark - 布局
@@ -67,6 +78,7 @@
     } else {
         [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
     }
+    self.searchBar.delegate = self;
     [self.searchView addSubview:self.searchBar];
     self.searchBar.text = self.searchInput; // 主页跳转传值
     
@@ -163,14 +175,11 @@
 // 搜索键的点击事件
 - (void)searchClicked{
     NSLog(@"搜索");
+    [self loadData];
 }
 
 // 返回键点击事件
 - (void)backBtnClicked{
-    // 发送通知 点击返回时视频继续播放
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//    [center postNotificationName:@"returnToHomepage" object:nil];
-
     // 找到上一个VC，调用其开始播放方法
     UIViewController *prevVC = [self getPreviousVC];
     if (prevVC && [prevVC isKindOfClass:TTPagerViewController.class]) {
@@ -200,11 +209,14 @@
     return navVC.viewControllers[currentVCIndex-1];
 }
 
-#pragma mark - searchTableView数据源方法
+#pragma mark - searchBar代理方法
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [self loadData];
+}
+
+#pragma mark - tableView数据源方法
 // 每组中的行数（后面需要根据模型来改）
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    //return 5;
-    
     // 根据模型数组count方法返回相应行数
      return self.modelArray.count;
 }
@@ -230,10 +242,7 @@
     //cell.playerVC.player = player;
     
     // 通过模型赋值
-    //cell.searchModel = self.modelArray[indexPath.row];
     TTSearchModel *model = self.modelArray[indexPath.row];
-//    [cell.imgViewIcon sd_setImageWithURL:[NSURL URLWithString:searchModel.imgIcon] placeholderImage:nil];  // 设置头像
-//    cell.usrName =
     [cell.imgViewIcon sd_setImageWithURL:[NSURL URLWithString:model.imgIcon]];
     cell.usrName.text = model.usrName;
     cell.videoTitle.text = model.videoTitle;
@@ -245,16 +254,21 @@
     return cell;
 }
 
-#pragma mark - TableView代理方法
+#pragma mark - tableView代理方法
 // 设置选中cell后cell的样式--cell选中后不变灰
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TTSearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // 选中cell后跳转视频播放
-    TTVideoStreamController *videoVc = [[TTVideoStreamController alloc] init];
-    videoVc.isFromSearch = YES;
-    [self.navigationController pushViewController:videoVc animated:YES];
+//    TTVideoStreamController *videoVc = [[TTVideoStreamController alloc] init];
+//    videoVc.isFromSearch = YES;
+//    videoVc.searchText = self.searchBar.text;
+//    [self.navigationController pushViewController:videoVc animated:YES];
+    
+    TTVideoPlayController *videoPlayVC = [[TTVideoPlayController alloc] init];
+    videoPlayVC.searchText = self.searchBar.text;
+    [self.navigationController pushViewController:videoPlayVC animated:YES];
     
 }
 
@@ -266,53 +280,59 @@
     return token;
 }
 
-// 下面是加入model后两个方法
-// 加载数据 通过model内部请求函数 成功则回调模型数组
 - (void)loadData{
-    //NSString *token = @"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIwZDRkZjgyNC05NmFkLTRiMGYtODY4Mi0yOTViOWJkODRkZTA3MWZkMjU4Zi1mZDQzLTRiODktYjYyYi0xYWU2MDgxY2QwNDQiLCJpc3MiOiJUb3B2aWV3IiwiZXhwIjoxNjU1NDM1MDE3fQ.hzolUtr2McyBUIppZKV35XKwcArmERJoBJqaRMKHr6vYnEBzbfoI_HGXyrDXqFE1wtNDPx9j665yIzI84sr43ylxzsXT6lnquRMgadkmnkTFcarnM4G9IWysbQDmO7ixI-4-GmXkPCuiGg6nOe6G2jNR9x0aTDm7mxKFcfIqrnKibVvlqQv57sYNrakBzQxRSEkZZASeI83Mcv0FdMVC1glZrW_YX5X4uIqCODDNKi0AIfdSY6PdxLjqLQrZF9gd-6msWZgAlqBk5kb2hU8r4zyHPBdkrNO-q41CqfgH1aPsbgXr2DOwHdKtr1UnkhkF4N93KYr12YeB0VcpbuwAdhXCRM-0bu2bSlRDl-9NWeJp6DA6tqutWNHH5Tp_ekQIjISg4Mk6MrsqcJ1JOVCsujLRaASyJrdy4Q9EFQCUmwjuPfQMbp2kYaZg4dqFbSrMXVNoluQj8DCwL9uTnpKDVDQNHNQ75SAyhw4xz5NrzkMCUkM248xvEh-mErAUGeReFR3FQxS5MKFjTeJcmMPy0LlDo1CHkWHM3zblMTDGwDKikaQlbMbgd0mKsbkabnJUPc56v7_XwcJlAW7qF5826Jk3vNVnHeWQWA-iyWwl5uyJZNxydcT6GqcoFmzxE5Wlm6qz8yOkHmb5DTucp_gi79kZLhygtnbT9LXm4FYxBpw";
-    
-    // 获取token
-    NSString *token = [self getUserToken];
-    NSInteger current = 1;  // 当前页
-    NSInteger size = 10;    // 页大小
-    NSString *url = @"http://47.96.114.143:62318/api/works/searchWorks";
-    //NSString *download = @"http://47.96.114.143:62318/api/file/download/";
-    NSLog(@"%@", url);
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    // 设置序列
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-    // 设置请求头
-    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-    // 设置参数
-    NSDictionary *parametersDic = @{@"current":[NSNumber numberWithInt:(int)current], @"size":[NSNumber numberWithInt:(int)size], @"searchString":self.searchBar.text};
-
-    // 发起请求
-    [manager GET:url parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        TTSearchResponse *searchResponse = [TTSearchResponse mj_objectWithKeyValues:responseObject];
-        //NSLog(@"responseObject%@, searchResponse%@",responseObject,searchResponse);
-        //NSLog(@"searchResponse.data.records%@",searchResponse.data.records);    // records是一个数组 里面存搜到的作品字典  (字典数组)
-        
-        NSArray *recordsArray = [[TTSearchDataResponse mj_objectArrayWithKeyValuesArray:searchResponse.data.records] copy];    // 字典数组转化为模型数组(token)
-        NSMutableArray *models = [[NSMutableArray alloc] init];
-        for(TTSearchDataResponse *dataResponse in recordsArray){
-            TTSearchModel *model = [dataResponse getModel];
-            [models addObject:model];
-            }
-        NSLog(@"%@", models);
-        self.modelArray = [models copy];
-        NSLog(@"11");
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"%@", error);
-    }];
-
+//    // 获取token
+//    NSString *token = [self getUserToken];
+//    NSInteger current = 1;  // 当前页
+//    NSInteger size = 10;    // 页大小
+//    NSString *url = @"http://47.96.114.143:62318/api/works/searchWorks";
+//    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    // 设置序列
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+//    // 设置请求头
+//    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+//    // 设置参数
+//    NSDictionary *parametersDic = @{@"current":[NSNumber numberWithInt:(int)current], @"size":[NSNumber numberWithInt:(int)size], @"searchString":self.searchBar.text};
+//
+//    // 发起请求
+//    [manager GET:url parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        TTSearchResponse *searchResponse = [TTSearchResponse mj_objectWithKeyValues:responseObject];
+//        //NSLog(@"responseObject%@, searchResponse%@",responseObject,searchResponse);
+//        //NSLog(@"searchResponse.data.records%@",searchResponse.data.records);    // records是一个数组 里面存搜到的作品字典  (字典数组)
+//        
+//        NSArray *recordsArray = [[TTSearchDataResponse mj_objectArrayWithKeyValuesArray:searchResponse.data.records] copy];    // 字典数组转化为模型数组(token)
+//        NSMutableArray *models = [[NSMutableArray alloc] init];
+//        for(TTSearchDataResponse *dataResponse in recordsArray){
+//            TTSearchModel *model = [dataResponse getModel];
+//            [models addObject:model];
+//            }
+//        NSLog(@"%@", models);
+//        self.modelArray = [models copy];
+//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//            NSLog(@"%@", error);
+//    }];
+    [self.searchTableView.mj_footer resetNoMoreData];
+    [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
+        self.modelArray = array;
+        self.current ++;
+    } fail:^(NSError * _Nonnull error) {
+        NSLog(@"%@", error);
+    } text:self.searchBar.text current:[NSNumber numberWithInt:(int)(self.current+1)]];
 }
 
 
 - (void)setModelArray:(NSArray *)modelArray{
     _modelArray = modelArray;
-    [self.searchTableView reloadData];
+//    [self.searchTableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchTableView reloadData];
+    });
+    [self.searchTableView.mj_footer endRefreshing];
+    if (self.modelArray.count < 10){
+        [self.searchTableView.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 
 @end

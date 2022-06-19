@@ -13,12 +13,13 @@
 
 @interface TTVideoStreamController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
-@property (nonatomic, strong) NSArray *urlArray; // 存放视频url
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
-@property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
-@property (nonatomic, strong) UIButton *backBtn;
+//@property (nonatomic, strong) NSMutableArray *videoImgArray; // 视频第一帧图片
+//@property (nonatomic, strong) NSArray *urlArray; // 存放视频url
+//@property (nonatomic, strong) UITableView *tableView;
+//@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+//@property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
+//@property (nonatomic, strong) UIButton *backBtn;
+//@property (nonatomic, strong) NSArray *searchModelArray;   //搜索得到的模型数组
 
 @end
 
@@ -29,19 +30,26 @@
     [self initData];
     [self setupView];
     
-    if(self.isFromSearch){
-        self.backBtn = [[UIButton alloc] init];
-        [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
-        [self.backBtn setTitleColor:[UIColor colorNamed:@"tt_red"] forState:UIControlStateNormal];
-        [self.view addSubview:self.backBtn];
-        if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20){
-            self.backBtn.frame = CGRectMake(8, 48, 40, 20);
-        }else{
-            self.backBtn.frame = CGRectMake(8, 24, 40, 20);
-        }
-    }
+//    if(self.isFromSearch){
+//        self.backBtn = [[UIButton alloc] init];
+//        [self.backBtn setTitle:@"返回" forState:UIControlStateNormal];
+//        [self.backBtn setTitleColor:[UIColor colorNamed:@"tt_red"] forState:UIControlStateNormal];
+//        [self.view addSubview:self.backBtn];
+//        if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20){
+//            self.backBtn.frame = CGRectMake(8, 48, 40, 20);
+//        }else{
+//            self.backBtn.frame = CGRectMake(8, 24, 40, 20);
+//        }
+        
+//        [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
+//                    self.searchModelArray = array;
+//                } fail:^(NSError * _Nonnull error) {
+//                    NSLog(@"%@", error);
+//                } text:self.searchText current:
+        
+//    }
     
-    [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
+//    [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
 
     // 滑动收起搜索框键盘
     [_tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
@@ -58,15 +66,14 @@
             }
         }
     });
-    
 }
 
-// 搜索页创建该vc时有返回功能
-- (void)backLastVC{
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center postNotificationName:@"backLastVC" object:nil];
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//// 搜索页创建该vc时有返回功能
+//- (void)backLastVC{
+//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+//    [center postNotificationName:@"backLastVC" object:nil];
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

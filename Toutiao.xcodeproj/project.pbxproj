@@ -11,6 +11,7 @@
 		0F458F922856F4F600887C76 /* TTBaseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F912856F4F600887C76 /* TTBaseResponse.m */; };
 		0F458F952857041F00887C76 /* TTLoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F942857041F00887C76 /* TTLoginResponse.m */; };
 		0F458F982857053C00887C76 /* TTLoginData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F972857053C00887C76 /* TTLoginData.m */; };
+		7219BEE5285E1406004D5D46 /* TTVideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */; };
 		728E952B285C13DE00DF1541 /* TTSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E952A285C13DE00DF1541 /* TTSearchResponse.m */; };
 		728E952E285C3AA000DF1541 /* TTSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E952D285C3AA000DF1541 /* TTSearchData.m */; };
 		728E9531285C427E00DF1541 /* TTSearchDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E9530285C427E00DF1541 /* TTSearchDataResponse.m */; };
@@ -46,6 +47,8 @@
 		0F458F972857053C00887C76 /* TTLoginData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTLoginData.m; sourceTree = "<group>"; };
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7219BEE3285E1406004D5D46 /* TTVideoPlayController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTVideoPlayController.h; sourceTree = "<group>"; };
+		7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTVideoPlayController.m; sourceTree = "<group>"; };
 		728E9529285C13DE00DF1541 /* TTSearchResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchResponse.h; sourceTree = "<group>"; };
 		728E952A285C13DE00DF1541 /* TTSearchResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchResponse.m; sourceTree = "<group>"; };
 		728E952C285C3AA000DF1541 /* TTSearchData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchData.h; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 				728E9530285C427E00DF1541 /* TTSearchDataResponse.m */,
 				728E9532285C98C000DF1541 /* TTSearchModel.h */,
 				728E9533285C98C000DF1541 /* TTSearchModel.m */,
+				7219BEE3285E1406004D5D46 /* TTVideoPlayController.h */,
+				7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */,
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
@@ -319,6 +324,7 @@
 				0F458F952857041F00887C76 /* TTLoginResponse.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
 				0F0E154628574DFD00276B2C /* config.m in Sources */,
+				7219BEE5285E1406004D5D46 /* TTVideoPlayController.m in Sources */,
 				8481461B2852715800D06E39 /* TTLoginController.m in Sources */,
 				8481461A2852715800D06E39 /* TTLoginView.m in Sources */,
 				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,

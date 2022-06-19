@@ -8,6 +8,7 @@ target 'Toutiao' do
   pod 'AFNetworking','~>3.0'
   pod 'MJExtension'
   pod 'SDWebImage'
+  pod 'MJRefresh'
   # Pods for Toutiao
 
 end

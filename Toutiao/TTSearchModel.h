@@ -2,7 +2,7 @@
 //  TTSearchModel.h
 //  Toutiao
 //
-//  Created by 吕文奎 on 2022/6/17.
+//  Created by luo on 2022/6/17.
 //
 
 #import <Foundation/Foundation.h>
@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *videoTitle;   // 视频标题
 @property (nonatomic, copy) NSString *videoImg; // 视频图片
 @property (nonatomic, copy) NSString *video;    // 视频
+
++ (void)searchModelWithSuccess:(void(^)(NSArray *array))success fail:(void(^)(NSError *error))fail text:(NSString *)text current:(NSNumber *)current;   // 发送请求获取数据
 
 @end
 
