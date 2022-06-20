@@ -12,7 +12,7 @@
 
 @implementation TTAVPlayerView
 
-- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image {
+- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title {
     if (self = [super initWithFrame:frame]) {
         self.isFullScreen = NO;
         self.smallFrame = frame;
@@ -22,15 +22,17 @@
         CGFloat width = frame.size.width;
 
         // 占位，视频第一帧图片
-        UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height-kTabBarHeight)];
+        UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
         bgImageView.image = image;
         bgImageView.userInteractionEnabled = YES;
         [self addSubview:bgImageView];
+        
+        self.resourceLoader = [ShortMediaResourceLoader new];
 
         // 网络视频路径
         NSURL *webVideoUrl = [NSURL URLWithString:url];
-        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:webVideoUrl];
-        self.player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        AVPlayerItem *playerItem = [self.resourceLoader playItemWithUrl:webVideoUrl];
+        self.player = [AVPlayer playerWithPlayerItem:playerItem];
 
         self.avLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
         self.avLayer.backgroundColor = [UIColor blackColor].CGColor;
@@ -83,14 +85,14 @@
 
         self.userLabel = [[UILabel alloc] init];
         self.userLabel.textColor = [UIColor whiteColor];
-        self.userLabel.text = @"@今日头条";
+        self.userLabel.text = [NSString stringWithFormat:@"@%@", user];
         self.userLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         self.userLabel.textAlignment = NSTextAlignmentLeft;
         [self addSubview:self.userLabel];
 
         self.titleLabel = [[UILabel alloc] init];
         self.titleLabel.textColor = [UIColor whiteColor];
-        self.titleLabel.text = @"今日头条今日头条今日头条";
+        self.titleLabel.text = title;
         self.titleLabel.font = [UIFont systemFontOfSize:19];
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
         [self addSubview:self.titleLabel];
@@ -181,13 +183,13 @@
         make.width.mas_equalTo(50);
     }];
     [self.userLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(0);
+        make.left.mas_offset(5);
         make.bottom.mas_offset(-100);
         make.height.mas_equalTo(30);
         make.width.mas_equalTo(kScreenWidth);
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(0);
+        make.left.mas_offset(10);
         make.bottom.mas_offset(-60);
         make.height.mas_equalTo(30);
         make.width.mas_equalTo(kScreenWidth);
@@ -199,6 +201,7 @@
     if ([keyPath isEqualToString:@"status"]){
         // 获取playerItem的status属性最新的状态
         AVPlayerStatus status = [[change objectForKey:@"new"] intValue];
+        NSLog(@"播放器状态: %ld", (long)status);
         switch (status) {
             case AVPlayerStatusReadyToPlay:{
                 NSInteger countTime = CMTimeGetSeconds(self.player.currentItem.duration);
@@ -208,6 +211,7 @@
                 break;
             }
             case AVPlayerStatusFailed:{ // 视频加载失败，点击重新加载
+                NSLog(@"Player error: %@", self.player.currentItem.error);
                 break;
             }
             case AVPlayerStatusUnknown:{

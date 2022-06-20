@@ -14,11 +14,13 @@
 #import "TTVideo.h"
 #import "TTVideoStreamRequest.h"
 #import "TTVideoStreamResponse.h"
+#import "ShortMediaResourceLoader.h"
 #import "config.h"
 
 @interface TTVideoStreamController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<TTVideo *> *data; // 存放视频数据
+@property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
@@ -29,8 +31,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.data = [NSMutableArray<TTVideo *> arrayWithCapacity:10];
+    self.urls = [NSMutableArray arrayWithCapacity:10];
     [self loadData:1 size:10];
     [self setupView];
+    [[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
 }
 
 - (void)setupView {
@@ -46,19 +51,14 @@
     if (@available(ios 11.0, *)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
-    
+
     [self.view addSubview:self.tableView];
 
     [self.tableView registerClass:[TTVideoStreamCell class] forCellReuseIdentifier:@"TTVideoStreamCell"];
-    
+
     // 创建长按手势
     UILongPressGestureRecognizer *longTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(imglongTapClick:)];
     [self.view addGestureRecognizer:longTap];
-    
-    // 添加观察者
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
-    });
 }
 
 #pragma mark - tableView delegate
@@ -94,7 +94,6 @@
             // 滑动到指定cell
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         } completion:^(BOOL finished) {
-            // 可以响应其他手势
             scrollView.panGestureRecognizer.enabled = YES;
         }];
     });
@@ -102,33 +101,31 @@
 
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"currentIndex"]) {
+    if ([keyPath isEqualToString:@"currentIndex"] && (self.currentIndex < self.data.count)) {
         TTVideoStreamCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
 
         [self.avPlayerView removePlayer];
         [self.avPlayerView removeFromSuperview];
+
         NSString *video_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].videoToken];
         NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
         UIImage *cover;
         NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
         cover = [UIImage imageWithData:cover_data];
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:video_url image:cover];
+
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:video_url image:cover user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
         [cell.contentView addSubview:self.avPlayerView];
-        [cell insertSubview:cell.middleView belowSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
-
         self.avPlayerView.changeScreen = ^(BOOL isFull) {
             STRONGBLOCK(self);
             cell.bgImageView.hidden = YES;
             if (isFull) {
                 self.tabBarController.tabBar.hidden = YES;
                 self.tableView.scrollEnabled = NO;
-                cell.middleView.hidden = YES;
             } else {
                 self.tabBarController.tabBar.hidden = NO;
                 self.tableView.scrollEnabled = YES;
-                cell.middleView.hidden = NO;
                 cell.bgImageView.hidden = NO;
             }
         };
@@ -137,19 +134,17 @@
 
 #pragma mark - load data
 - (void)loadData:(NSInteger)current size:(NSInteger)size {
-    TTVideoStreamRequest *request = [[TTVideoStreamRequest alloc] init];
-    request.current = current;
-    request.size = size;
-
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:@"http://47.96.114.143:62318/api/works/getWorksList" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         TTVideoStreamResponse *videoStreamResponse = [TTVideoStreamResponse mj_objectWithKeyValues:responseObject];
         for (NSDictionary *dict in videoStreamResponse.data.records) {
             TTVideo *video = [TTVideo mj_objectWithKeyValues:dict];
-            NSLog(@"%@", video.videoToken);
+            [self.urls addObject:[NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", video.videoToken]];
             [self.data addObject:video];
-            NSLog(@"%@", self.data);
         }
+        [self.tableView reloadData];
+        // 添加观察者
+        [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"请求失败: %@", error);
     }];
