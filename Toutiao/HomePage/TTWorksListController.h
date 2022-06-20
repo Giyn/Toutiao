@@ -1,5 +1,5 @@
 //
-//  TTVideoStreamController.h
+//  TTWorksListController.h
 //  Toutiao
 //
 //  Created by Giyn on 2022/6/9.
@@ -9,7 +9,7 @@
 @class TTAVPlayerView;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTVideoStreamController : UIViewController
+@interface TTWorksListController : UIViewController
 
 @property (nonatomic, assign) BOOL isFromSearch;
 

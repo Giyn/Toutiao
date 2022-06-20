@@ -6,7 +6,7 @@
 //
 
 #import "TTTabBarController.h"
-#import "TTVideoStreamController.h"
+#import "TTWorksListController.h"
 #import "TTLoginController.h"
 #import "TTPagerViewController.h"
 
@@ -45,7 +45,7 @@
         TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
         [currentPagerViewController stopPlayingCurrent];
     };
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new, TTVideoStreamController.new] titles:@[@"首页", @"体育", @"军事", @"财经", @"娱乐"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
+    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new] titles:@[@"首页", @"体育", @"军事", @"财经", @"娱乐"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
     UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
     vcHomePage.navigationController.navigationBar.hidden = YES;
     vcHomePage.tabBarItem.title = @"主页";

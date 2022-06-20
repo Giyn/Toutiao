@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
+#import "ShortMediaResourceLoader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,12 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGRect bigFrame; // 全屏frame
 @property (nonatomic, strong) UILabel *userLabel;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) ShortMediaResourceLoader *resourceLoader;
 
 // 点击全屏，取消全屏回调
 @property (nonatomic, copy) void(^changeScreen) (BOOL isFull);
 
 // 真实项目中，直接用dict包裹入参
-- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image;
+- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title;
 
 // 开始播放
 - (void)play;
