@@ -198,7 +198,7 @@
 - (UIImage*)getVideoPreViewImage:(NSURL *)path {
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:path options:nil];
     AVAssetImageGenerator *assetGen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-
+    
     assetGen.appliesPreferredTrackTransform = YES;
     CMTime time = CMTimeMakeWithSeconds(0, 1);
     NSError *error = nil;

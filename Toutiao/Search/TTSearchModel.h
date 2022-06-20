@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "../Network/TTWorkRecord.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *videoImg; // 视频图片
 @property (nonatomic, copy) NSString *video;    // 视频
 
-+ (void)searchModelWithSuccess:(void(^)(NSArray *array))success fail:(void(^)(NSError *error))fail text:(NSString *)text current:(NSNumber *)current;   // 发送请求获取数据
++ (void)searchModelWithSuccess:(void(^)(NSArray *array))success fail:(void(^)(NSError *error))fail text:(NSString *)text current:(NSInteger)current size:(NSInteger)size;   // 发送请求获取数据
+
++ (TTSearchModel *)getModelWithRecord:(TTWorkRecord *)record;
 
 @end
 

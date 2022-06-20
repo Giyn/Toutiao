@@ -8,11 +8,8 @@
 #import "TTSearchViewController.h"
 #import "TTSearchTableViewCell.h"
 #import "TTVideoStreamController.h"
-#import "AFHTTPSessionManager.h"
-//#import "UIViewController+PreviousVC.h"
+#import "UIViewController+PreviousVC.h"
 #import "TTPagerViewController.h"
-#import "TTSearchResponse.h"
-#import <MJExtension/NSObject+MJKeyValue.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "MJRefresh.h"
 
@@ -34,6 +31,7 @@
 
 @property (nonatomic, strong) NSArray *modelArray;  // 模型数组
 @property (nonatomic, assign) NSInteger current;
+@property (nonatomic, assign) NSInteger size;
 
 @end
 
@@ -53,7 +51,11 @@
     [self setUpSearchTableView];
     // 加载数据
     self.current = 0;
+    self.size = 10;
     [self loadData];
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(slideUp)];
+    header.stateLabel.hidden = YES;
+    self.searchTableView.mj_header = header;
     //下拉加载
     MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
@@ -161,6 +163,13 @@
     
 }
 
+- (void)slideUp{
+    //[self loadData];
+    self.current--;
+    [self loadData];
+    [self.searchTableView.mj_header endRefreshing];
+}
+
 -(void) viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES animated:YES]; //设置隐藏导航栏
     self.tabBarController.tabBar.hidden = YES;  // 页面出现时隐藏tabbar
@@ -190,25 +199,6 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (UIViewController *)getPreviousVC {
-    UINavigationController *navVC = self.navigationController;
-    if (navVC == nil) {
-        return nil;
-    }
-    __block NSUInteger currentVCIndex;
-    [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj isEqual:self]) {
-                currentVCIndex = idx;
-                *stop = YES;
-                return;
-            }
-    }];
-    if (currentVCIndex == 0) {
-        return nil;
-    }
-    return navVC.viewControllers[currentVCIndex-1];
-}
-
 #pragma mark - searchBar代理方法
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [self loadData];
@@ -224,7 +214,7 @@
 // 设置单元格格式
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // 创建单元格 cell重用
-    static NSString *ID = @"search_cell";
+    static NSString *ID = @"searchCell";
     TTSearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil){
         cell = [[TTSearchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
@@ -261,11 +251,6 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // 选中cell后跳转视频播放
-//    TTVideoStreamController *videoVc = [[TTVideoStreamController alloc] init];
-//    videoVc.isFromSearch = YES;
-//    videoVc.searchText = self.searchBar.text;
-//    [self.navigationController pushViewController:videoVc animated:YES];
-    
     TTVideoPlayController *videoPlayVC = [[TTVideoPlayController alloc] init];
     videoPlayVC.searchText = self.searchBar.text;
     [self.navigationController pushViewController:videoPlayVC animated:YES];
@@ -281,56 +266,27 @@
 }
 
 - (void)loadData{
-//    // 获取token
-//    NSString *token = [self getUserToken];
-//    NSInteger current = 1;  // 当前页
-//    NSInteger size = 10;    // 页大小
-//    NSString *url = @"http://47.96.114.143:62318/api/works/searchWorks";
-//    
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    // 设置序列
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-//    // 设置请求头
-//    [manager.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-//    // 设置参数
-//    NSDictionary *parametersDic = @{@"current":[NSNumber numberWithInt:(int)current], @"size":[NSNumber numberWithInt:(int)size], @"searchString":self.searchBar.text};
-//
-//    // 发起请求
-//    [manager GET:url parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        TTSearchResponse *searchResponse = [TTSearchResponse mj_objectWithKeyValues:responseObject];
-//        //NSLog(@"responseObject%@, searchResponse%@",responseObject,searchResponse);
-//        //NSLog(@"searchResponse.data.records%@",searchResponse.data.records);    // records是一个数组 里面存搜到的作品字典  (字典数组)
-//        
-//        NSArray *recordsArray = [[TTSearchDataResponse mj_objectArrayWithKeyValuesArray:searchResponse.data.records] copy];    // 字典数组转化为模型数组(token)
-//        NSMutableArray *models = [[NSMutableArray alloc] init];
-//        for(TTSearchDataResponse *dataResponse in recordsArray){
-//            TTSearchModel *model = [dataResponse getModel];
-//            [models addObject:model];
-//            }
-//        NSLog(@"%@", models);
-//        self.modelArray = [models copy];
-//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//            NSLog(@"%@", error);
-//    }];
     [self.searchTableView.mj_footer resetNoMoreData];
     [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
         self.modelArray = array;
         self.current ++;
     } fail:^(NSError * _Nonnull error) {
         NSLog(@"%@", error);
-    } text:self.searchBar.text current:[NSNumber numberWithInt:(int)(self.current+1)]];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:error.description preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    } text:self.searchBar.text current:(self.current+1) size:self.size];
 }
 
 
 - (void)setModelArray:(NSArray *)modelArray{
     _modelArray = modelArray;
-//    [self.searchTableView reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.searchTableView reloadData];
     });
     [self.searchTableView.mj_footer endRefreshing];
-    if (self.modelArray.count < 10){
+    if (self.modelArray.count < self.size){
         [self.searchTableView.mj_footer endRefreshingWithNoMoreData];
     }
 }

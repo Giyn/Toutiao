@@ -32,13 +32,9 @@
 		0F987751285C5B370033B154 /* TTGetUserInfoResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F987750285C5B370033B154 /* TTGetUserInfoResponse.m */; };
 		0F987754285C5B4E0033B154 /* TTGetUserInfoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F987753285C5B4E0033B154 /* TTGetUserInfoData.m */; };
 		0F987757285C637B0033B154 /* TTSearchWorksRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F987756285C637B0033B154 /* TTSearchWorksRequest.m */; };
-		0F458F922856F4F600887C76 /* TTBaseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F912856F4F600887C76 /* TTBaseResponse.m */; };
-		0F458F952857041F00887C76 /* TTLoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F942857041F00887C76 /* TTLoginResponse.m */; };
-		0F458F982857053C00887C76 /* TTLoginData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F458F972857053C00887C76 /* TTLoginData.m */; };
 		7219BEE5285E1406004D5D46 /* TTVideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */; };
 		728E952B285C13DE00DF1541 /* TTSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E952A285C13DE00DF1541 /* TTSearchResponse.m */; };
 		728E952E285C3AA000DF1541 /* TTSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E952D285C3AA000DF1541 /* TTSearchData.m */; };
-		728E9531285C427E00DF1541 /* TTSearchDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E9530285C427E00DF1541 /* TTSearchDataResponse.m */; };
 		728E9534285C98C000DF1541 /* TTSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 728E9533285C98C000DF1541 /* TTSearchModel.m */; };
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
@@ -119,8 +115,6 @@
 		728E952A285C13DE00DF1541 /* TTSearchResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchResponse.m; sourceTree = "<group>"; };
 		728E952C285C3AA000DF1541 /* TTSearchData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchData.h; sourceTree = "<group>"; };
 		728E952D285C3AA000DF1541 /* TTSearchData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchData.m; sourceTree = "<group>"; };
-		728E952F285C427E00DF1541 /* TTSearchDataResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchDataResponse.h; sourceTree = "<group>"; };
-		728E9530285C427E00DF1541 /* TTSearchDataResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchDataResponse.m; sourceTree = "<group>"; };
 		728E9532285C98C000DF1541 /* TTSearchModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchModel.h; sourceTree = "<group>"; };
 		728E9533285C98C000DF1541 /* TTSearchModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchModel.m; sourceTree = "<group>"; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,6 +216,10 @@
 				0F987750285C5B370033B154 /* TTGetUserInfoResponse.m */,
 				0F987752285C5B4E0033B154 /* TTGetUserInfoData.h */,
 				0F987753285C5B4E0033B154 /* TTGetUserInfoData.m */,
+				728E9529285C13DE00DF1541 /* TTSearchResponse.h */,
+				728E952A285C13DE00DF1541 /* TTSearchResponse.m */,
+				728E952C285C3AA000DF1541 /* TTSearchData.h */,
+				728E952D285C3AA000DF1541 /* TTSearchData.m */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -260,6 +258,21 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		72CE2985286014F20092CB78 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
+				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
+				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
+				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
+				7219BEE3285E1406004D5D46 /* TTVideoPlayController.h */,
+				7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */,
+				728E9532285C98C000DF1541 /* TTSearchModel.h */,
+				728E9533285C98C000DF1541 /* TTSearchModel.m */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		84814491284CE9B100D06E39 = {
 			isa = PBXGroup;
 			children = (
@@ -281,6 +294,7 @@
 		8481449C284CE9B100D06E39 /* Toutiao */ = {
 			isa = PBXGroup;
 			children = (
+				72CE2985286014F20092CB78 /* Search */,
 				0F2ED566285B689900408913 /* Network */,
 				8481460B2852715600D06E39 /* TTInputField.h */,
 				848146162852715700D06E39 /* TTInputField.m */,
@@ -314,20 +328,6 @@
 				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
 				848145B82851C7A900D06E39 /* TTTabBarController.h */,
 				848145B92851C7A900D06E39 /* TTTabBarController.m */,
-				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
-				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
-				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
-				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
-				728E9529285C13DE00DF1541 /* TTSearchResponse.h */,
-				728E952A285C13DE00DF1541 /* TTSearchResponse.m */,
-				728E952C285C3AA000DF1541 /* TTSearchData.h */,
-				728E952D285C3AA000DF1541 /* TTSearchData.m */,
-				728E952F285C427E00DF1541 /* TTSearchDataResponse.h */,
-				728E9530285C427E00DF1541 /* TTSearchDataResponse.m */,
-				728E9532285C98C000DF1541 /* TTSearchModel.h */,
-				728E9533285C98C000DF1541 /* TTSearchModel.m */,
-				7219BEE3285E1406004D5D46 /* TTVideoPlayController.h */,
-				7219BEE4285E1406004D5D46 /* TTVideoPlayController.m */,
 				0F2ED563285B3A1C00408913 /* UIViewController+PreviousVC.h */,
 				0F2ED564285B3A1C00408913 /* UIViewController+PreviousVC.m */,
 			);
@@ -479,7 +479,6 @@
 				0F2ED5A0285B779100408913 /* URLs.m in Sources */,
 				848146202852715800D06E39 /* TTRegisterController.m in Sources */,
 				728E952B285C13DE00DF1541 /* TTSearchResponse.m in Sources */,
-				728E9531285C427E00DF1541 /* TTSearchDataResponse.m in Sources */,
 				728E9534285C98C000DF1541 /* TTSearchModel.m in Sources */,
 				0F2ED583285B6C2800408913 /* TTWorksListRequest.m in Sources */,
 				8481461E2852715800D06E39 /* TTInputField.m in Sources */,

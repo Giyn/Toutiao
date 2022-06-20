@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) NSArray *searchModelArray;   //搜索得到的模型数组
 @property (nonatomic, assign) NSInteger current;
+@property (nonatomic, assign) NSInteger size;
 
 @end
 
@@ -27,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.current = 0;
+    self.size = 10;
     [self loadData];
     
     // 返回键
@@ -71,7 +73,12 @@
         
     } fail:^(NSError * _Nonnull error) {
         NSLog(@"%@", error);
-    } text:self.searchText current:[NSNumber numberWithInt:(int)(self.current+1)]];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:error.description preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        
+    } text:self.searchText current:(self.current+1) size:self.size];
 }
 
 - (void) setSearchModelArray:(NSArray *)searchModelArray{
@@ -82,14 +89,13 @@
         [self didChangeValueForKey:@"currentIndex"];
     });
     [self.tableView.mj_footer endRefreshing];
-    if (self.searchModelArray.count < 10){
+    if (self.searchModelArray.count < self.size){
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }
 }
 
 #pragma mark - tableView代理方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"%lu",self.searchModelArray.count);
     return self.searchModelArray.count;
 }
 
@@ -97,7 +103,6 @@
     TTVideoStreamCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTVideoStreamCell" forIndexPath:indexPath];
     // 显示视频第一帧图片
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    // cell.bgImageView.image = self.videoImgArray[indexPath.row];
     TTSearchModel *model = self.searchModelArray[indexPath.row];
     [cell.bgImageView sd_setImageWithURL:[NSURL URLWithString:model.videoImg]];
     return cell;
@@ -138,7 +143,7 @@
         self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:model.video image:[self getImageFromURL:model.videoImg]];
         
         // 设置显示的用户名和视频标题
-        self.avPlayerView.userLabel.text = model.usrName;
+        self.avPlayerView.userLabel.text = [@"@" stringByAppendingString:model.usrName];
         self.avPlayerView.titleLabel.text = model.videoTitle;
         
         [cell.contentView addSubview:self.avPlayerView];

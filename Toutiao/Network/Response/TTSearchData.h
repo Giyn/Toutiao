@@ -2,17 +2,17 @@
 //  TTSearchData.h
 //  Toutiao
 //
-//  Created by 吕文奎 on 2022/6/17.
+//  Created by luo on 2022/6/17.
 //
 
 #import <Foundation/Foundation.h>
-#import "TTSearchDataResponse.h"
+#import "../TTWorkRecord.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTSearchData : NSObject
 
-@property (nonatomic, strong) NSArray<TTSearchDataResponse *> *records;
+@property (nonatomic, strong) NSArray <TTWorkRecord *> *records;
 
 @end
 

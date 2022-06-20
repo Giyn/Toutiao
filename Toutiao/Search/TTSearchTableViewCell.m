@@ -44,7 +44,8 @@
         
         // 视频图片
         self.videoImgView = [[UIImageView alloc] init];
-        self.videoImgView.backgroundColor = [UIColor grayColor];
+        self.videoImgView.backgroundColor = [UIColor blackColor];
+        self.videoImgView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:self.videoImgView];
 
     }
