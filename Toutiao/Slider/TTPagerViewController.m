@@ -24,9 +24,11 @@ NSInteger const kTagToIndex = 1000;
         _showSearchBar = showSearchBar;
         if (_showSearchBar) {
             _searchBar = UISearchBar.new;
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
             if (@available(iOS 13.0, *)) {
                 _searchBar.searchTextField.textColor = UIColor.whiteColor;
-            } else {
+            }
+            #else
                 [_searchBar.subviews.firstObject.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     if ([obj isKindOfClass:UITextField.class]) {
                         UITextField *textField = obj;
@@ -35,7 +37,7 @@ NSInteger const kTagToIndex = 1000;
                         return;
                     }
                 }];
-            }
+            #endif
         }
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
@@ -52,9 +54,11 @@ NSInteger const kTagToIndex = 1000;
         _showSearchBar = showSearchBar;
         if (_showSearchBar) {
             _searchBar = UISearchBar.new;
+            #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
             if (@available(iOS 13.0, *)) {
                 _searchBar.searchTextField.textColor = UIColor.whiteColor;
-            } else {
+            }
+            #else
                 [_searchBar.subviews.firstObject.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     if ([obj isKindOfClass:UITextField.class]) {
                         UITextField *textField = obj;
@@ -63,7 +67,7 @@ NSInteger const kTagToIndex = 1000;
                         return;
                     }
                 }];
-            }
+            #endif
         }
         // 初始化按钮
         _ttSliderNav = [[TTSliderNavView alloc]initWithButtonTitles:titles];
@@ -305,8 +309,7 @@ NSInteger const kTagToIndex = 1000;
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     // 收起键盘
     [self.searchBar resignFirstResponder];
-    // 暂停视频
-    [self stopPlayingCurrent];
+    // 暂停视频交由ViewDidDisappear中实现
     // 页面跳转
     TTSearchViewController * searchVC = [[TTSearchViewController alloc] initWithText:self.searchBar.text];
     [self.navigationController pushViewController:searchVC animated:YES];
@@ -339,6 +342,17 @@ NSInteger const kTagToIndex = 1000;
             videoVC.isPlayerRemoved = YES;
         }
     }
+}
+
+#pragma mark - 导航后暂停或恢复
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self startPlayingCurrent];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    NSLog(@"Pager view did disappear");
+    [self stopPlayingCurrent];
 }
 
 @end

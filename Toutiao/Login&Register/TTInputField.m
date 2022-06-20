@@ -79,16 +79,18 @@
         make.right.mas_equalTo(paddingWrapper.superview);
     }];
     UIButton *rightButton;
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
     if (@available(iOS 13.0, *)) {
         rightButton = [UIButton systemButtonWithImage:image target:self action: @selector(toggleVisibility)];
-    } else {
+    }
+    #else
         rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(30);
             make.height.mas_equalTo(26);
         }];
         [rightButton setImage:image forState:UIControlStateNormal];
-    }
+    #endif
     rightButton.tintColor = [UIColor colorNamed:@"tt_red"];
     [paddingWrapper addArrangedSubview: rightButton];
     _textField.rightView = paddingWrapper;

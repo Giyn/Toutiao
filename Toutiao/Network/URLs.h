@@ -20,4 +20,6 @@ UIKIT_EXTERN NSString *const registerPath;
 UIKIT_EXTERN NSString *const loginPath;
 UIKIT_EXTERN NSString *const getUserInfoPath;
 UIKIT_EXTERN NSString *const updateUserInfoPath;
+UIKIT_EXTERN NSString *const getTypeListPath;
+UIKIT_EXTERN NSString *const getWorksByTypePath;
 UIKIT_EXTERN NSString *const baseURLString;
