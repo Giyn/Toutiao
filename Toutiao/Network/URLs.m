@@ -16,4 +16,6 @@ NSString *const registerPath = @"user/register";
 NSString *const loginPath = @"user/login";
 NSString *const getUserInfoPath = @"user/getUserInfo";
 NSString *const updateUserInfoPath = @"user/updateUserInfo";
+NSString *const getTypeListPath = @"works/getTypeList";
+NSString *const getWorksByTypePath = @"works/getWorksByType";
 NSString *const baseURLString = @"http://47.96.114.143:62318/api/";
