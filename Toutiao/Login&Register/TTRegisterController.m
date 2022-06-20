@@ -15,9 +15,9 @@
 #import "Masonry.h"
 #import "TTBaseResponse.h"
 #import "config.h"
-#import "Network/URLs.h"
-#import "Network/TTNetworkTool.h"
-#import "Network/Request/TTRegisterRequest.h"
+#import "../Network/URLs.h"
+#import "../Network/TTNetworkTool.h"
+#import "../Network/Request/TTRegisterRequest.h"
 
 NSUInteger const kRegisterViewUsernameFieldTag = 111;
 NSUInteger const kRegisterViewEmailFieldTag = 222;

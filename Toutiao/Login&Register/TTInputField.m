@@ -72,8 +72,11 @@
 - (void)setupTextFieldVisibilityButton {
     UIImage *image = [UIImage imageNamed:@"eye"];
     UIStackView *paddingWrapper = UIStackView.new;
+    [_textField addSubview:paddingWrapper];
     [paddingWrapper mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(30);
+        make.centerY.mas_equalTo(paddingWrapper.superview);
+        make.right.mas_equalTo(paddingWrapper.superview);
     }];
     UIButton *rightButton;
     if (@available(iOS 13.0, *)) {
@@ -108,13 +111,13 @@
 }
 
 - (void)setupContainer {
+    // 水平栈x轴居中
     _containerView.axis = UILayoutConstraintAxisHorizontal;
     _containerView.alignment = UIStackViewAlignmentCenter;
+    // 圆角
     _containerView.layer.masksToBounds = YES;
     [_containerView.layer setCornerRadius:10];
     [_containerView.layer setBorderWidth:0.5];
-    [_containerView mas_makeConstraints:^(MASConstraintMaker *make) {
-    }];
     [self addSubview:_containerView];
 }
 
