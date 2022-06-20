@@ -36,8 +36,8 @@
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
 		848144B0284CE9B400D06E39 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 848144AF284CE9B400D06E39 /* main.m */; };
-		848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145A82851335D00D06E39 /* TTVideoStreamController.m */; };
-		848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145AC2851338500D06E39 /* TTVideoStreamCell.m */; };
+		848145A92851335D00D06E39 /* TTWorksListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145A82851335D00D06E39 /* TTWorksListController.m */; };
+		848145AD2851338500D06E39 /* TTWorksListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145AC2851338500D06E39 /* TTWorksListCell.m */; };
 		848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B0285133A500D06E39 /* TTAVPlayerView.m */; };
 		848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848145B92851C7A900D06E39 /* TTTabBarController.m */; };
 		8481461A2852715800D06E39 /* TTLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481460D2852715600D06E39 /* TTLoginView.m */; };
@@ -113,10 +113,10 @@
 		848144AE284CE9B400D06E39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		848144AF284CE9B400D06E39 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		84814590284DFD4100D06E39 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		848145A72851335D00D06E39 /* TTVideoStreamController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTVideoStreamController.h; sourceTree = "<group>"; };
-		848145A82851335D00D06E39 /* TTVideoStreamController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTVideoStreamController.m; sourceTree = "<group>"; };
-		848145AB2851338500D06E39 /* TTVideoStreamCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTVideoStreamCell.h; sourceTree = "<group>"; };
-		848145AC2851338500D06E39 /* TTVideoStreamCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTVideoStreamCell.m; sourceTree = "<group>"; };
+		848145A72851335D00D06E39 /* TTWorksListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTWorksListController.h; sourceTree = "<group>"; };
+		848145A82851335D00D06E39 /* TTWorksListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTWorksListController.m; sourceTree = "<group>"; };
+		848145AB2851338500D06E39 /* TTWorksListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTWorksListCell.h; sourceTree = "<group>"; };
+		848145AC2851338500D06E39 /* TTWorksListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTWorksListCell.m; sourceTree = "<group>"; };
 		848145AF285133A500D06E39 /* TTAVPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTAVPlayerView.h; sourceTree = "<group>"; };
 		848145B0285133A500D06E39 /* TTAVPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTAVPlayerView.m; sourceTree = "<group>"; };
 		848145B82851C7A900D06E39 /* TTTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTTabBarController.h; sourceTree = "<group>"; };
@@ -169,8 +169,6 @@
 			children = (
 				0F2ED568285B68A900408913 /* Request */,
 				0F2ED567285B689F00408913 /* Response */,
-				0F2ED58A285B6DE400408913 /* TTWorkRecord.h */,
-				0F2ED58B285B6DE400408913 /* TTWorkRecord.m */,
 				0F2ED598285B701200408913 /* URLs.h */,
 				0F2ED59F285B779100408913 /* URLs.m */,
 				0F2ED5A1285B797D00408913 /* TTNetworkTool.h */,
@@ -196,8 +194,6 @@
 				0F2ED591285B6EEB00408913 /* TTFileUploadResponse.m */,
 				0F2ED593285B6EFF00408913 /* TTFileUploadData.h */,
 				0F2ED594285B6EFF00408913 /* TTFileUploadData.m */,
-				0F2ED599285B716A00408913 /* TTUserData.h */,
-				0F2ED59A285B716A00408913 /* TTUserData.m */,
 				0F987749285C54AA0033B154 /* TTUpdateUserInfoResponse.h */,
 				0F98774A285C54AA0033B154 /* TTUpdateUserInfoResponse.m */,
 				0F98774F285C5B370033B154 /* TTGetUserInfoResponse.h */,
@@ -263,6 +259,8 @@
 		8481449C284CE9B100D06E39 /* Toutiao */ = {
 			isa = PBXGroup;
 			children = (
+				84AA3C4F286070C800D2EBF3 /* Model */,
+				84AA3C4D28606AC900D2EBF3 /* HomePage */,
 				0F2ED566285B689900408913 /* Network */,
 				8481460B2852715600D06E39 /* TTInputField.h */,
 				848146162852715700D06E39 /* TTInputField.m */,
@@ -288,12 +286,6 @@
 				848144AF284CE9B400D06E39 /* main.m */,
 				84814590284DFD4100D06E39 /* config.h */,
 				0F0E154528574DFD00276B2C /* config.m */,
-				848145A72851335D00D06E39 /* TTVideoStreamController.h */,
-				848145A82851335D00D06E39 /* TTVideoStreamController.m */,
-				848145AB2851338500D06E39 /* TTVideoStreamCell.h */,
-				848145AC2851338500D06E39 /* TTVideoStreamCell.m */,
-				848145AF285133A500D06E39 /* TTAVPlayerView.h */,
-				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
 				848145B82851C7A900D06E39 /* TTTabBarController.h */,
 				848145B92851C7A900D06E39 /* TTTabBarController.m */,
 				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
@@ -304,6 +296,30 @@
 				0F2ED564285B3A1C00408913 /* UIViewController+PreviousVC.m */,
 			);
 			path = Toutiao;
+			sourceTree = "<group>";
+		};
+		84AA3C4D28606AC900D2EBF3 /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				848145A72851335D00D06E39 /* TTWorksListController.h */,
+				848145A82851335D00D06E39 /* TTWorksListController.m */,
+				848145AB2851338500D06E39 /* TTWorksListCell.h */,
+				848145AC2851338500D06E39 /* TTWorksListCell.m */,
+				848145AF285133A500D06E39 /* TTAVPlayerView.h */,
+				848145B0285133A500D06E39 /* TTAVPlayerView.m */,
+			);
+			path = HomePage;
+			sourceTree = "<group>";
+		};
+		84AA3C4F286070C800D2EBF3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0F2ED599285B716A00408913 /* TTUserData.h */,
+				0F2ED59A285B716A00408913 /* TTUserData.m */,
+				0F2ED58A285B6DE400408913 /* TTWorkRecord.h */,
+				0F2ED58B285B6DE400408913 /* TTWorkRecord.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -435,7 +451,7 @@
 				0F2ED56B285B691200408913 /* TTBaseRequest.m in Sources */,
 				8481461C2852715800D06E39 /* TTRegisterView.m in Sources */,
 				0F2ED595285B6EFF00408913 /* TTFileUploadData.m in Sources */,
-				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
+				848145AD2851338500D06E39 /* TTWorksListCell.m in Sources */,
 				0F2ED592285B6EEB00408913 /* TTFileUploadResponse.m in Sources */,
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
 				0F2ED586285B6C5B00408913 /* TTWorksListResponse.m in Sources */,
@@ -458,7 +474,7 @@
 				8481461D2852715800D06E39 /* TTSliderNavView.m in Sources */,
 				0F2ED58C285B6DE400408913 /* TTWorkRecord.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
-				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
+				848145A92851335D00D06E39 /* TTWorksListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

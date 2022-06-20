@@ -6,7 +6,7 @@
 //
 
 #import "AppDelegate.h"
-#import "TTVideoStreamController.h"
+#import "TTWorksListController.h"
 #import "TTTabBarController.h"
 
 @interface AppDelegate ()

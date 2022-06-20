@@ -7,6 +7,7 @@ target 'Toutiao' do
   pod 'Masonry'
   pod 'AFNetworking','~>3.0'
   pod 'MJExtension'
+  pod 'ShortMediaCache'
   # Pods for Toutiao
 
 end

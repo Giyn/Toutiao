@@ -8,7 +8,7 @@
 #import "TTPagerViewController.h"
 #import "TTSliderNavView.h"
 #import "TTSearchViewController.h"
-#import "TTVideoStreamController.h"
+#import "TTWorksListController.h"
 #import "TTAVPlayerView.h"
 #import "Masonry.h"
 NSInteger const kTagToIndex = 1000;
@@ -74,8 +74,8 @@ NSInteger const kTagToIndex = 1000;
             }
             TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
             UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-            if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-                TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+            if ([currentVC isKindOfClass:TTWorksListController.class]) {
+                TTWorksListController *currentVideoStreamVC = (TTWorksListController *)currentVC;
                 TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
                 [ttAVPlayerView pause];
             }
@@ -87,8 +87,8 @@ NSInteger const kTagToIndex = 1000;
             }
             TTPagerViewController *strongSelf = (TTPagerViewController *)strongVC;
             UIViewController *currentVC = strongSelf.childrenVCArray[currentIndex];
-            if ([currentVC isKindOfClass:TTVideoStreamController.class]) {
-                TTVideoStreamController *currentVideoStreamVC = (TTVideoStreamController *)currentVC;
+            if ([currentVC isKindOfClass:TTWorksListController.class]) {
+                TTWorksListController *currentVideoStreamVC = (TTWorksListController *)currentVC;
                 TTAVPlayerView *ttAVPlayerView = [currentVideoStreamVC valueForKey:@"avPlayerView"];
                 [ttAVPlayerView play];
             }
@@ -314,7 +314,7 @@ NSInteger const kTagToIndex = 1000;
 
 - (void)startPlayingCurrent {
     UIViewController *childVC = _childrenVCArray[_currentIndex];
-    if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+    if (childVC && [childVC isKindOfClass:TTWorksListController.class]) {
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
         [avPlayerView play];
     }
@@ -322,7 +322,7 @@ NSInteger const kTagToIndex = 1000;
 
 - (void)stopPlayingCurrent {
     UIViewController *childVC = _childrenVCArray[_currentIndex];
-    if (childVC && [childVC isKindOfClass:TTVideoStreamController.class]) {
+    if (childVC && [childVC isKindOfClass:TTWorksListController.class]) {
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
         [avPlayerView pause];
     }

@@ -7,7 +7,7 @@
 
 #import "TTSearchViewController.h"
 #import "TTSearchTableViewCell.h"
-#import "TTVideoStreamController.h"
+#import "TTWorksListController.h"
 #import "UIViewController+PreviousVC.h"
 #import "TTPagerViewController.h"
 //#import "TTSearchModel.h"
@@ -222,7 +222,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // 选中cell后跳转视频播放
-    TTVideoStreamController *videoVc = [[TTVideoStreamController alloc] init];
+    TTWorksListController *videoVc = [[TTWorksListController alloc] init];
     videoVc.isFromSearch = YES;
     [self.navigationController pushViewController:videoVc animated:YES];
     

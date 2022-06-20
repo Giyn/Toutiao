@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../TTWorkRecord.h"
+#import "TTWorkRecord.h"
 #import "TTWorksListData.h"
 NS_ASSUME_NONNULL_BEGIN
 
