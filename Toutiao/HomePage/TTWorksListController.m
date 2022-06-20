@@ -24,18 +24,19 @@
 @property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
-@property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 
 @end
 
 @implementation TTWorksListController
 
 - (void)viewDidLoad {
+    self.isPlayerRemoved = YES;
     [super viewDidLoad];
     self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:10];
     self.urls = [NSMutableArray arrayWithCapacity:10];
     [self loadData:1 size:10];
     [self setupView];
+    self.isPlayerRemoved = NO;
     [[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
 }
 
@@ -104,9 +105,10 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"currentIndex"] && (self.currentIndex < self.data.count)) {
         TTWorksListCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
-
-        [self.avPlayerView removePlayer];
-        [self.avPlayerView removeFromSuperview];
+        if (!_isPlayerRemoved) {
+            [self.avPlayerView removePlayer];
+            [self.avPlayerView removeFromSuperview];
+        }
 
         NSString *video_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].videoToken];
         NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
@@ -130,6 +132,7 @@
                 cell.bgImageView.hidden = NO;
             }
         };
+        self.isPlayerRemoved = NO;
     }
 }
 

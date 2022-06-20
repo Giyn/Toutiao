@@ -14,9 +14,9 @@
 #import "TTLoginResponse.h"
 #import "config.h"
 #import "Masonry.h"
-#import "Network/URLs.h"
-#import "Network/TTNetworkTool.h"
-#import "Network/Request/TTLoginRequest.h"
+#import "URLs.h"
+#import "TTNetworkTool.h"
+#import "TTLoginRequest.h"
 
 NSUInteger const kLoginViewUsernameFieldTag = 111;
 NSUInteger const kLoginViewPasswordFieldTag = 333;
