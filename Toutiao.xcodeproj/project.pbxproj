@@ -39,6 +39,7 @@
 		0FB8B7E1286093E2005DD727 /* TTLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7DC286093E2005DD727 /* TTLoginController.m */; };
 		0FB8B7E7286093FA005DD727 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */; };
 		0FB8B7E8286093FA005DD727 /* TTSliderNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */; };
+		0FB8B7FB2860983E005DD727 /* TTSearchWorksResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7FA2860983E005DD727 /* TTSearchWorksResponse.m */; };
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
@@ -117,6 +118,8 @@
 		0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSliderNavView.m; sourceTree = "<group>"; };
 		0FB8B7E5286093FA005DD727 /* TTSliderNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSliderNavView.h; sourceTree = "<group>"; };
 		0FB8B7E6286093FA005DD727 /* TTPagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPagerViewController.h; sourceTree = "<group>"; };
+		0FB8B7F92860983E005DD727 /* TTSearchWorksResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSearchWorksResponse.h; sourceTree = "<group>"; };
+		0FB8B7FA2860983E005DD727 /* TTSearchWorksResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSearchWorksResponse.m; sourceTree = "<group>"; };
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8481449A284CE9B100D06E39 /* Toutiao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toutiao.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +183,8 @@
 		0F2ED567285B689F00408913 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				0FB8B7F92860983E005DD727 /* TTSearchWorksResponse.h */,
+				0FB8B7FA2860983E005DD727 /* TTSearchWorksResponse.m */,
 				0F2ED56D285B693600408913 /* TTBaseResponse.h */,
 				0F2ED571285B693600408913 /* TTBaseResponse.m */,
 				0F2ED570285B693600408913 /* TTLoginData.h */,
@@ -467,7 +472,7 @@
 				84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */,
 				0F2ED56B285B691200408913 /* TTBaseRequest.m in Sources */,
 				0F2ED595285B6EFF00408913 /* TTFileUploadData.m in Sources */,
-				848145AD2851338500D06E39 /* TTVideoStreamCell.m in Sources */,
+				848145AD2851338500D06E39 /* TTWorksListCell.m in Sources */,
 				0FB8B7E0286093E2005DD727 /* TTInputField.m in Sources */,
 				848145AD2851338500D06E39 /* TTWorksListCell.m in Sources */,
 				0F2ED592285B6EEB00408913 /* TTFileUploadResponse.m in Sources */,
@@ -491,7 +496,7 @@
 				0F2ED58C285B6DE400408913 /* TTWorkRecord.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
 				0FB8B7DF286093E2005DD727 /* TTRegisterController.m in Sources */,
-				848145A92851335D00D06E39 /* TTVideoStreamController.m in Sources */,
+				0FB8B7FB2860983E005DD727 /* TTSearchWorksResponse.m in Sources */,
 				848145A92851335D00D06E39 /* TTWorksListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
