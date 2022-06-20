@@ -254,10 +254,10 @@
 		0FB8B7E2286093FA005DD727 /* Slider */ = {
 			isa = PBXGroup;
 			children = (
-				0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */,
-				0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */,
 				0FB8B7E5286093FA005DD727 /* TTSliderNavView.h */,
+				0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */,
 				0FB8B7E6286093FA005DD727 /* TTPagerViewController.h */,
+				0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */,
 			);
 			path = Slider;
 			sourceTree = "<group>";

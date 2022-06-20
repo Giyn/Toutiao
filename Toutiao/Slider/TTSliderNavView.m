@@ -27,9 +27,11 @@
         [self initSliderLabel];
         // 设置容器
         _container.showsHorizontalScrollIndicator = NO;
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140000
         if (@available(iOS 13.0, *)) {
             _container.automaticallyAdjustsScrollIndicatorInsets = NO;
         }
+        #endif
     }
     return self;
 }
