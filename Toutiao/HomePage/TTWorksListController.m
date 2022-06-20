@@ -141,8 +141,7 @@ static const NSInteger pageSize = 10;
     [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
         // 解析数据
-        for (NSDictionary *dict in worksListResponse.data.records) {
-            TTWorkRecord *work = [TTWorkRecord mj_objectWithKeyValues:dict];
+        for (TTWorkRecord *work in worksListResponse.data.records) {
             [self.data addObject:work];
             [self.urls addObject:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]];
             [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];
