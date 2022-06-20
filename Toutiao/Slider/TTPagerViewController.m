@@ -341,4 +341,15 @@ NSInteger const kTagToIndex = 1000;
     }
 }
 
+#pragma mark - 导航后暂停或恢复
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self startPlayingCurrent];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    NSLog(@"Pager view did disappear");
+    [self stopPlayingCurrent];
+}
+
 @end
