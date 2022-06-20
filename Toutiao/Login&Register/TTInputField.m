@@ -118,8 +118,6 @@
     _containerView.layer.masksToBounds = YES;
     [_containerView.layer setCornerRadius:10];
     [_containerView.layer setBorderWidth:0.5];
-    [_containerView mas_makeConstraints:^(MASConstraintMaker *make) {
-    }];
     [self addSubview:_containerView];
 }
 
