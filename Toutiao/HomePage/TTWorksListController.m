@@ -53,7 +53,7 @@ static const NSInteger pageSize = 10;
     self.tableView.rowHeight = self.tableView.frame.size.height;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
-
+    self.isScrollUp = YES;
     if (@available(ios 11.0, *)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
@@ -76,8 +76,26 @@ static const NSInteger pageSize = 10;
     TTWorksListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTWorksListCell" forIndexPath:indexPath];
     // 显示视频封面
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    cell.bgImageView.image = self.covers[self.currentIndex];
+    if (self.currentIndex >= 0 && self.currentIndex < self.data.count) {
+        if (self.isScrollUp) {
+            cell.bgImageView.image = self.covers[self.currentIndex+1];
+        } else {
+            cell.bgImageView.image = self.covers[self.currentIndex-1];
+        }
+    } else {
+        cell.bgImageView.image = self.covers[self.currentIndex];
+    }
     return cell;
+}
+
+#pragma mark - scrollview delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint point = [scrollView.panGestureRecognizer velocityInView:scrollView];
+    if (point.y > 0) {
+        self.isScrollUp = NO;
+    } else {
+        self.isScrollUp = YES;
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
