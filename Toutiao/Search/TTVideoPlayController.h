@@ -6,6 +6,13 @@
 //
 
 #import "TTWorksListController.h"
+#import "TTWorksListCell.h"
+#import "TTAVPlayerView.h"
+#import <Foundation/Foundation.h>
+#import "config.h"
+#import "TTSearchModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "ShortMediaResourceLoader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

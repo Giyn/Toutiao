@@ -73,7 +73,6 @@
     [self.usrName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imgViewIcon.right).offset(margin);
         make.centerY.equalTo(self.imgViewIcon.centerY);
-        make.width.equalTo(usrNameSize.width);
         make.height.equalTo(usrNameSize.height);
     }];
     
