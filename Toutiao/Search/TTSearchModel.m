@@ -16,12 +16,6 @@
 #import "../Network/Request/TTSearchWorksRequest.h"
 
 @implementation TTSearchModel
-// 获取token
-+ (NSString *) getUserToken{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults stringForKey:@"token"];
-    return token;
-}
 
 + (void)searchModelWithSuccess:(void(^)(NSArray *array))success fail:(void(^)(NSError *error))fail text:(NSString *)text current:(NSInteger)current size:(NSInteger)size{
     

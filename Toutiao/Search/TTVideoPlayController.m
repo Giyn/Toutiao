@@ -6,14 +6,6 @@
 //
 
 #import "TTVideoPlayController.h"
-#import "TTWorksListCell.h"
-#import "TTAVPlayerView.h"
-#import <Foundation/Foundation.h>
-#import "config.h"
-#import "TTSearchModel.h"
-#import <SDWebImage/UIImageView+WebCache.h>
-#import "MJRefresh.h"
-#import "ShortMediaResourceLoader.h"
 
 @interface TTVideoPlayController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -50,12 +42,7 @@
     }
     [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
     
-    // 上滑加载
-//    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
-//    [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
-//    [footer setTitle:@"正在加载..." forState:MJRefreshStateRefreshing];
-//    [footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
-//    self.tableView.mj_footer = footer;
+    [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 }
 
 // 搜索页创建该vc时有返回功能
@@ -72,39 +59,31 @@
 
 #pragma mark - 数据处理
 - (void) loadData{
-//    [self.tableView.mj_footer resetNoMoreData];
-    
+    self.isLoadingData = YES;
     [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
         self.searchModelArray = array;
         self.current++;
-//        for (TTSearchModel * model in self.searchModelArray){
-//            //[self.urls addObject:model.video];
-//            [self.urls addObject:[NSURL URLWithString:model.video]];
-//        }
-        
+        for (TTSearchModel * model in self.searchModelArray){
+            [self.urls addObject:[NSURL URLWithString:model.video]];
+        }
         //[[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
 
     } fail:^(NSError * _Nonnull error) {
         NSLog(@"%@", error);
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:error.description preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:@"出错啦～" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
         [alertVC addAction:action];
         [self presentViewController:alertVC animated:YES completion:nil];
         
     } text:self.searchText current:(self.current+1) size:self.size];
+    self.isLoadingData = NO;
 }
 
 - (void) setSearchModelArray:(NSArray *)searchModelArray{
     _searchModelArray = searchModelArray;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
-//        [self willChangeValueForKey:@"currentIndex"];
-//        [self didChangeValueForKey:@"currentIndex"];
     });
-//    [self.tableView.mj_footer endRefreshing];
-//    if (_searchModelArray.count < self.size){
-//        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-//    }
 }
 
 #pragma mark - tableView代理方法
@@ -114,13 +93,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTWorksListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTWorksListCell" forIndexPath:indexPath];
-    // 显示视频第一帧图片
+    // 显示视频封面
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    TTSearchModel *model = self.searchModelArray[indexPath.row];
-    [cell.bgImageView sd_setImageWithURL:[NSURL URLWithString:model.videoImg]];
+    if(self.currentIndex < self.searchModelArray.count){
+        TTSearchModel *model = self.searchModelArray[indexPath.row];
+        [cell.bgImageView sd_setImageWithURL:[NSURL URLWithString:model.videoImg]];
+    }
     return cell;
 }
 
+// 预加载数据
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isLoadingData) {
+        return;
+    }
+    // 70%出现后，需要去加载数据
+    if (self.currentIndex >= self.searchModelArray.count * 0.7) {
+        [self loadData];
+    }
+}
+
+#pragma mark - scrollview delegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     dispatch_async(dispatch_get_main_queue(), ^{
         CGPoint translatedPoint = [scrollView.panGestureRecognizer translationInView:scrollView];
@@ -152,14 +145,8 @@
             [self.avPlayerView removeFromSuperview];
         }
         
-        // 创建avplayerView
         TTSearchModel *model = self.searchModelArray[self.currentIndex];
         self.avPlayerView = [[TTAVPlayerView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:[NSURL URLWithString:model.video] image:[self getImageFromURL:model.videoImg] user:model.usrName title:model.videoTitle];
-        
-        // 设置显示的用户名和视频标题
-        self.avPlayerView.userLabel.text = [@"@" stringByAppendingString:model.usrName];
-        self.avPlayerView.titleLabel.text = model.videoTitle;
-        
         [cell.contentView addSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
@@ -176,6 +163,7 @@
                 cell.bgImageView.hidden = NO;
             }
         };
+        self.isPlayerRemoved = NO;
     }
 }
 
