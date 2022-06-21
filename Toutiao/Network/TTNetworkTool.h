@@ -26,9 +26,11 @@ typedef void(^OnError)(NSError *error);
 
 + (instancetype)sharedManager;
 
-+ (NSString *)getDownloadPathWithFileToken:(NSString *)fileToken; /// 将fileToken拼接成filePath(不包含baseURL)
+// 将fileToken拼接成filePath(不包含baseURL)
++ (NSString *)getDownloadPathWithFileToken:(NSString *)fileToken;
 
-+ (NSString *)getDownloadURLWithFileToken:(NSString *)fileToken; /// 将fileToken拼接成URLString(包含baseURL)
+// 将fileToken拼接成URLString(包含baseURL)
++ (NSString *)getDownloadURLWithFileToken:(NSString *)fileToken;
 
 - (void)requestWithMethod:(TTHttpMethodType)method
                      path:(NSString *)path

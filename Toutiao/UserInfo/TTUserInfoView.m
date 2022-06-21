@@ -1,7 +1,7 @@
 #import "TTUserInfoView.h"
 #import "TTGetUserInfoData.h"
 #import "Masonry.h"
-#import <SDWebImage/UIIMageView+WebCache.h>
+#import "UIIMageView+WebCache.h"
 #import "URLs.h"
 #import "TTNetworkTool.h"
 #define nameFont [UIFont systemFontOfSize:22]

@@ -69,7 +69,14 @@
     
     [tool requestWithMethod:TTHttpMethodTypeGET path:getTypeListPath params:@{} requiredToken:NO onSuccess:^(id  _Nonnull responseObject) {
         TTTypeListResponse *typeListResponse = [TTTypeListResponse mj_objectWithKeyValues:responseObject];
-        UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new] titles:typeListResponse.data showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
+        NSArray <NSString *> *types = typeListResponse.data;
+        NSMutableArray <TTWorksListController *> *childrenArray = @[].mutableCopy;
+        for (NSString *type in types) {
+            TTWorksListController *childVC = TTWorksListController.new;
+            childVC.type = type;
+            [childrenArray addObject:childVC];
+        }
+        UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:childrenArray.copy titles:typeListResponse.data showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
             vcHomePage.navigationController.navigationBar.hidden = YES;
             [navHomePage pushViewController:vcHomePage animated:NO];
         } onError:^(NSError * _Nonnull error) {

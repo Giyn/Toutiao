@@ -12,8 +12,8 @@
 #import "TTWorksListCell.h"
 #import "TTAVPlayerView.h"
 #import "TTWorkRecord.h"
-#import "TTWorksListRequest.h"
-#import "TTWorksListResponse.h"
+#import "TTWorksListByTypeRequest.h"
+#import "TTWorksListByTypeResponse.h"
 #import "TTNetworkTool.h"
 #import "ShortMediaResourceLoader.h"
 #import "config.h"
@@ -32,6 +32,14 @@
 @implementation TTWorksListController
 
 static const NSInteger pageSize = 10;
+
+- (instancetype)initWithType:(NSString *)type {
+    self = [super init];
+    if (self) {
+        self.type = type;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     self.isPlayerRemoved = YES;
@@ -121,7 +129,7 @@ static const NSInteger pageSize = 10;
 
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"currentIndex"]) {
+    if ([keyPath isEqualToString:@"currentIndex"] && self.data.count > self.currentIndex) {
         TTWorksListCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
         if (!_isPlayerRemoved) {
             [self.avPlayerView removePlayer];
@@ -151,14 +159,20 @@ static const NSInteger pageSize = 10;
 - (void)loadData:(NSInteger)current size:(NSInteger)size {
     self.isLoadingData = YES;
     // 请求参数构造
-    TTWorksListRequest *worksListRequest = [[TTWorksListRequest alloc] init];
+    TTWorksListByTypeRequest *worksListRequest = TTWorksListByTypeRequest.new;
     worksListRequest.current = current;
     worksListRequest.size = size;
-    NSDictionary *params = worksListRequest.mj_keyValues;
+    worksListRequest.type = self.type;
+    NSMutableDictionary *params = worksListRequest.mj_keyValues;
+    NSString *endpointPath = getWorksByTypePath;
+    if ([self.type isEqualToString:@"首页"]) {
+        [params removeObjectForKey:@"type"];
+        endpointPath = getWorksListPath;
+    }
     // 初始化网络请求
     TTNetworkTool *tool = [TTNetworkTool sharedManager];
-    [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
-        TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
+    [tool requestWithMethod:TTHttpMethodTypeGET path:endpointPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
+        TTWorksListByTypeResponse *worksListResponse = [TTWorksListByTypeResponse mj_objectWithKeyValues:responseObject];
         NSMutableArray<NSURL *> *urls = [NSMutableArray<NSURL *> arrayWithCapacity:pageSize];
         // 解析数据
         for (TTWorkRecord *work in worksListResponse.data.records) {

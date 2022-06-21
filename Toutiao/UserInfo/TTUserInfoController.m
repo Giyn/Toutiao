@@ -10,7 +10,7 @@
 #import "TTGetUserInfoRequest.h"
 #import "URLs.h"
 #import "TTNetworkTool.h"
-#import <SDWebImage/UIIMageView+WebCache.h>
+#import "UIIMageView+WebCache.h"
 #import "TTUserInfoCell.h"
 #import "TTUpdateInfoController.h"
 
