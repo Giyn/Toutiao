@@ -51,11 +51,11 @@
     [self.backBtn addTarget:self action:@selector(backLastVC) forControlEvents:UIControlEventTouchUpInside];
     
     // 上滑加载
-    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
-    [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
-    [footer setTitle:@"正在加载..." forState:MJRefreshStateRefreshing];
-    [footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
-    self.tableView.mj_footer = footer;
+//    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
+//    [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
+//    [footer setTitle:@"正在加载..." forState:MJRefreshStateRefreshing];
+//    [footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
+//    self.tableView.mj_footer = footer;
 }
 
 // 搜索页创建该vc时有返回功能
@@ -72,7 +72,7 @@
 
 #pragma mark - 数据处理
 - (void) loadData{
-    [self.tableView.mj_footer resetNoMoreData];
+//    [self.tableView.mj_footer resetNoMoreData];
     
     [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
         self.searchModelArray = array;
@@ -101,10 +101,10 @@
 //        [self willChangeValueForKey:@"currentIndex"];
 //        [self didChangeValueForKey:@"currentIndex"];
     });
-    [self.tableView.mj_footer endRefreshing];
-    if (_searchModelArray.count < self.size){
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
+//    [self.tableView.mj_footer endRefreshing];
+//    if (_searchModelArray.count < self.size){
+//        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//    }
 }
 
 #pragma mark - tableView代理方法
@@ -154,7 +154,7 @@
         
         // 创建avplayerView
         TTSearchModel *model = self.searchModelArray[self.currentIndex];
-        self.avPlayerView = [[TTAVPlayerView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:model.video image:[self getImageFromURL:model.videoImg] user:model.usrName title:model.videoTitle];
+        self.avPlayerView = [[TTAVPlayerView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:[NSURL URLWithString:model.video] image:[self getImageFromURL:model.videoImg] user:model.usrName title:model.videoTitle];
         
         // 设置显示的用户名和视频标题
         self.avPlayerView.userLabel.text = [@"@" stringByAppendingString:model.usrName];

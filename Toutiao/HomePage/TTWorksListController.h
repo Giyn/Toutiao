@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TTAVPlayerView;
+#import "TTAVPlayerView.h"
+#import <Foundation/Foundation.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TTWorksListController : UIViewController
@@ -15,7 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 
 @property (nonatomic, assign) BOOL isPlayerRemoved;
+@property (nonatomic, assign) BOOL isScrollUp; // 是否向上滑动
+@property (nonatomic, assign) BOOL isLoadingData;
+@property (nonatomic, assign) BOOL hasAddObserver;
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
+@property (nonatomic, assign) NSInteger pageIndex; // 当前视频数据的页索引
 
 //- (void)viewDidLoad;
 - (void)setupView;

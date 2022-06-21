@@ -39,10 +39,17 @@
 		0FB8B7E1286093E2005DD727 /* TTLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7DC286093E2005DD727 /* TTLoginController.m */; };
 		0FB8B7E7286093FA005DD727 /* TTPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */; };
 		0FB8B7E8286093FA005DD727 /* TTSliderNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */; };
+
 		0FB8B7FB2860983E005DD727 /* TTSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FB8B7FA2860983E005DD727 /* TTSearchResponse.m */; };
 		72CE29882860A8410092CB78 /* TTSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 72CE29872860A8410092CB78 /* TTSearchModel.m */; };
 		72CE298C2860A9130092CB78 /* TTVideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72CE298B2860A9130092CB78 /* TTVideoPlayController.m */; };
 		72CE298F2860AB000092CB78 /* TTSearchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72CE298E2860AB000092CB78 /* TTSearchData.m */; };
+
+		0FEE56D52860B2C40033E592 /* TTWorksListByTypeResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE56D22860B2C40033E592 /* TTWorksListByTypeResponse.m */; };
+		0FEE56D62860B2C40033E592 /* TTTypeListResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE56D32860B2C40033E592 /* TTTypeListResponse.m */; };
+		0FEE56DB2860B2DC0033E592 /* TTTypeListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE56D72860B2DC0033E592 /* TTTypeListRequest.m */; };
+		0FEE56DC2860B2DC0033E592 /* TTWorksListByTypeRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEE56DA2860B2DC0033E592 /* TTWorksListByTypeRequest.m */; };
+
 		8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481449E284CE9B100D06E39 /* AppDelegate.m */; };
 		848144AA284CE9B400D06E39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848144A9284CE9B400D06E39 /* Assets.xcassets */; };
 		848144AD284CE9B400D06E39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848144AB284CE9B400D06E39 /* LaunchScreen.storyboard */; };
@@ -121,8 +128,19 @@
 		0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSliderNavView.m; sourceTree = "<group>"; };
 		0FB8B7E5286093FA005DD727 /* TTSliderNavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSliderNavView.h; sourceTree = "<group>"; };
 		0FB8B7E6286093FA005DD727 /* TTPagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPagerViewController.h; sourceTree = "<group>"; };
+
 		0FB8B7F92860983E005DD727 /* TTSearchResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSearchResponse.h; sourceTree = "<group>"; };
 		0FB8B7FA2860983E005DD727 /* TTSearchResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSearchResponse.m; sourceTree = "<group>"; };
+
+		0FEE56D12860B2C40033E592 /* TTTypeListResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTypeListResponse.h; sourceTree = "<group>"; };
+		0FEE56D22860B2C40033E592 /* TTWorksListByTypeResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTWorksListByTypeResponse.m; sourceTree = "<group>"; };
+		0FEE56D32860B2C40033E592 /* TTTypeListResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTypeListResponse.m; sourceTree = "<group>"; };
+		0FEE56D42860B2C40033E592 /* TTWorksListByTypeResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTWorksListByTypeResponse.h; sourceTree = "<group>"; };
+		0FEE56D72860B2DC0033E592 /* TTTypeListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTypeListRequest.m; sourceTree = "<group>"; };
+		0FEE56D82860B2DC0033E592 /* TTWorksListByTypeRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTWorksListByTypeRequest.h; sourceTree = "<group>"; };
+		0FEE56D92860B2DC0033E592 /* TTTypeListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTypeListRequest.h; sourceTree = "<group>"; };
+		0FEE56DA2860B2DC0033E592 /* TTWorksListByTypeRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTWorksListByTypeRequest.m; sourceTree = "<group>"; };
+
 		1816C2A04EAF83C54AEC8E1D /* Pods-Toutiao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.debug.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.debug.xcconfig"; sourceTree = "<group>"; };
 		6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toutiao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72CE29862860A8410092CB78 /* TTSearchModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchModel.h; sourceTree = "<group>"; };
@@ -212,10 +230,17 @@
 				0F987750285C5B370033B154 /* TTGetUserInfoResponse.m */,
 				0F987752285C5B4E0033B154 /* TTGetUserInfoData.h */,
 				0F987753285C5B4E0033B154 /* TTGetUserInfoData.m */,
+
 				0FB8B7F92860983E005DD727 /* TTSearchResponse.h */,
 				0FB8B7FA2860983E005DD727 /* TTSearchResponse.m */,
 				72CE298D2860AB000092CB78 /* TTSearchData.h */,
 				72CE298E2860AB000092CB78 /* TTSearchData.m */,
+
+				0FEE56D12860B2C40033E592 /* TTTypeListResponse.h */,
+				0FEE56D32860B2C40033E592 /* TTTypeListResponse.m */,
+				0FEE56D42860B2C40033E592 /* TTWorksListByTypeResponse.h */,
+				0FEE56D22860B2C40033E592 /* TTWorksListByTypeResponse.m */,
+
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -241,6 +266,10 @@
 				0F98774D285C5AAE0033B154 /* TTGetUserInfoRequest.m */,
 				0F987755285C637B0033B154 /* TTSearchWorksRequest.h */,
 				0F987756285C637B0033B154 /* TTSearchWorksRequest.m */,
+				0FEE56D92860B2DC0033E592 /* TTTypeListRequest.h */,
+				0FEE56D72860B2DC0033E592 /* TTTypeListRequest.m */,
+				0FEE56D82860B2DC0033E592 /* TTWorksListByTypeRequest.h */,
+				0FEE56DA2860B2DC0033E592 /* TTWorksListByTypeRequest.m */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -265,10 +294,10 @@
 		0FB8B7E2286093FA005DD727 /* Slider */ = {
 			isa = PBXGroup;
 			children = (
-				0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */,
-				0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */,
 				0FB8B7E5286093FA005DD727 /* TTSliderNavView.h */,
+				0FB8B7E4286093FA005DD727 /* TTSliderNavView.m */,
 				0FB8B7E6286093FA005DD727 /* TTPagerViewController.h */,
+				0FB8B7E3286093FA005DD727 /* TTPagerViewController.m */,
 			);
 			path = Slider;
 			sourceTree = "<group>";
@@ -482,6 +511,7 @@
 				0FB8B7DD286093E2005DD727 /* TTRegisterView.m in Sources */,
 				0F2ED589285B6C6F00408913 /* TTWorksListData.m in Sources */,
 				8481461F2852715800D06E39 /* UIView+Border.m in Sources */,
+				0FEE56D52860B2C40033E592 /* TTWorksListByTypeResponse.m in Sources */,
 				0F987754285C5B4E0033B154 /* TTGetUserInfoData.m in Sources */,
 				0F2ED574285B693600408913 /* TTBaseResponse.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
@@ -504,6 +534,7 @@
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
 				0F2ED586285B6C5B00408913 /* TTWorksListResponse.m in Sources */,
 				0F98774B285C54AA0033B154 /* TTUpdateUserInfoResponse.m in Sources */,
+				0FEE56DB2860B2DC0033E592 /* TTTypeListRequest.m in Sources */,
 				0F2ED573285B693600408913 /* TTLoginResponse.m in Sources */,
 				0FB8B7E7286093FA005DD727 /* TTPagerViewController.m in Sources */,
 				0F0E154628574DFD00276B2C /* config.m in Sources */,
@@ -511,11 +542,13 @@
 				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,
 				72CE298F2860AB000092CB78 /* TTSearchData.m in Sources */,
 				0F2ED58F285B6EA300408913 /* TTFileUploadRequest.m in Sources */,
+				0FEE56DC2860B2DC0033E592 /* TTWorksListByTypeRequest.m in Sources */,
 				0F2ED5A0285B779100408913 /* URLs.m in Sources */,
 				0FB8B7E8286093FA005DD727 /* TTSliderNavView.m in Sources */,
 				0F2ED583285B6C2800408913 /* TTWorksListRequest.m in Sources */,
 				0F2ED580285B6BED00408913 /* TTFileTokenByIdRequest.m in Sources */,
 				0F2ED5A3285B797D00408913 /* TTNetworkTool.m in Sources */,
+				0FEE56D62860B2C40033E592 /* TTTypeListResponse.m in Sources */,
 				0F987751285C5B370033B154 /* TTGetUserInfoResponse.m in Sources */,
 				0F2ED57A285B69B900408913 /* TTRegisterRequest.m in Sources */,
 				0FB8B7E1286093E2005DD727 /* TTLoginController.m in Sources */,

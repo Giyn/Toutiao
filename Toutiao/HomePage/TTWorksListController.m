@@ -21,21 +21,30 @@
 @interface TTWorksListController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
-@property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
+
+@property (nonatomic, strong) NSMutableArray<NSURL *> *urls; // 存放视频url
+@property (nonatomic, strong) NSMutableArray *covers; // 存放视频封面
+
+@property (nonatomic, strong) ShortMediaManager *cacheManager;
 
 @end
 
 @implementation TTWorksListController
 
+static const NSInteger pageSize = 10;
+
 - (void)viewDidLoad {
     self.isPlayerRemoved = YES;
+    self.hasAddObserver = NO;
     [super viewDidLoad];
-    self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:10];
-    self.urls = [NSMutableArray arrayWithCapacity:10];
-    [self loadData:1 size:10];
+    self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:pageSize];
+    self.urls = [NSMutableArray<NSURL *> arrayWithCapacity:pageSize];
+    self.covers = [NSMutableArray arrayWithCapacity:pageSize];
+    self.pageIndex = 1;
+    [self loadData:self.pageIndex size:pageSize];
     [self setupView];
     self.isPlayerRemoved = NO;
-    [[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
+    self.cacheManager = [ShortMediaManager shareManager];
 }
 
 - (void)setupView {
@@ -47,7 +56,7 @@
     self.tableView.rowHeight = self.tableView.frame.size.height;
     self.tableView.backgroundColor = [UIColor blackColor];
     self.tableView.scrollsToTop = NO;
-
+    self.isScrollUp = YES;
     if (@available(ios 11.0, *)) {
         [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
@@ -70,12 +79,39 @@
     TTWorksListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTWorksListCell" forIndexPath:indexPath];
     // 显示视频封面
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
-    UIImage *cover;
-    NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
-    cover = [UIImage imageWithData:cover_data];
-    cell.bgImageView.image = cover;
+    if (self.currentIndex >= 0 && self.currentIndex < self.data.count) {
+        if (self.isScrollUp) {
+            cell.bgImageView.image = self.covers[self.currentIndex+1];
+        } else {
+            cell.bgImageView.image = self.covers[self.currentIndex-1];
+        }
+    } else {
+        cell.bgImageView.image = self.covers[self.currentIndex];
+    }
     return cell;
+}
+
+// 预加载数据
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isLoadingData) {
+        return;
+    }
+    // 70%出现后，需要去加载数据
+    if (self.currentIndex >= self.data.count * 0.7) {
+        self.pageIndex++;
+        [self loadData:self.pageIndex size:pageSize];
+    }
+}
+
+#pragma mark - scrollview delegate
+// 判断是否向上滑动
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint point = [scrollView.panGestureRecognizer velocityInView:scrollView];
+    if (point.y > 0) {
+        self.isScrollUp = NO;
+    } else {
+        self.isScrollUp = YES;
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -101,20 +137,13 @@
 
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"currentIndex"] && (self.currentIndex < self.data.count)) {
+    if ([keyPath isEqualToString:@"currentIndex"]) {
         TTWorksListCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
         if (!_isPlayerRemoved) {
             [self.avPlayerView removePlayer];
             [self.avPlayerView removeFromSuperview];
         }
-
-        NSString *video_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].videoToken];
-        NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
-        UIImage *cover;
-        NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
-        cover = [UIImage imageWithData:cover_data];
-
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:video_url image:cover user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urls[self.currentIndex] image:self.covers[self.currentIndex] user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
         [cell.contentView addSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
@@ -136,6 +165,7 @@
 
 #pragma mark - load data
 - (void)loadData:(NSInteger)current size:(NSInteger)size {
+    self.isLoadingData = YES;
     // 请求参数构造
     TTWorksListRequest *worksListRequest = [[TTWorksListRequest alloc] init];
     worksListRequest.current = current;
@@ -145,14 +175,22 @@
     TTNetworkTool *tool = [TTNetworkTool sharedManager];
     [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
-        for (NSDictionary *dict in worksListResponse.data.records) {
-            TTWorkRecord *work = [TTWorkRecord mj_objectWithKeyValues:dict];
-            [self.urls addObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", baseURLString, getFileByFileTokenPath, work.videoToken]]];
+
+        // 解析数据
+        for (TTWorkRecord *work in worksListResponse.data.records) {
+
             [self.data addObject:work];
+            [self.urls addObject:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]]];
+            [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];
         }
+        self.isLoadingData = NO;
         [self.tableView reloadData];
-        // 添加观察者
-        [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+//        [self.cacheManager resetPreloadingWithMediaUrls:self.urls];
+        if (!self.hasAddObserver) {
+            // 添加观察者
+            [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+            self.hasAddObserver = YES;
+        }
     } onError:^(NSError * _Nonnull error) {
         NSLog(@"请求失败: %@", error);
     } onProgress:nil];
