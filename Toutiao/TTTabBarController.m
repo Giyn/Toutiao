@@ -117,7 +117,7 @@
         [self uploadButtonAction];
         return NO;
     }
-    return YES;
+    return (viewController != tabBarController.selectedViewController);;
 }
 
 - (UIButton *)uploadButton {

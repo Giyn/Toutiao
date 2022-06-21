@@ -33,7 +33,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    self.tabBarItem.enabled = NO;
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSString *token = [ud valueForKey:@"token"];
     BOOL tokenExpired = NO;
@@ -47,10 +46,6 @@
     if (token == nil || tokenExpired) {
         [self navToLoginWithAnimation:NO];
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    self.tabBarItem.enabled = YES;
 }
 
 // 设置myVideoView
