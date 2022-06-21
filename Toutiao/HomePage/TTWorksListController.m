@@ -80,7 +80,9 @@ static const NSInteger pageSize = 10;
     // 显示视频封面
     NSInteger cellIndex = indexPath.row;
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    cell.bgImageView.image = self.covers[cellIndex];
+    if (self.currentIndex < self.data.count) {
+        cell.bgImageView.image = self.covers[cellIndex];
+    }
     return cell;
 }
 
