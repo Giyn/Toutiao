@@ -22,8 +22,6 @@
 
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
 @property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 
 @end
 
@@ -149,7 +147,7 @@
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
         for (NSDictionary *dict in worksListResponse.data.records) {
             TTWorkRecord *work = [TTWorkRecord mj_objectWithKeyValues:dict];
-            [self.urls addObject:[NSString stringWithFormat:@"%@%@%@", baseURLString, getFileByFileTokenPath, work.videoToken]];
+            [self.urls addObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", baseURLString, getFileByFileTokenPath, work.videoToken]]];
             [self.data addObject:work];
         }
         [self.tableView reloadData];

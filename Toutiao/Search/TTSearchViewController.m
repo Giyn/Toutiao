@@ -10,13 +10,17 @@
 #import "TTWorksListController.h"
 #import "UIViewController+PreviousVC.h"
 #import "TTPagerViewController.h"
-//#import "TTSearchModel.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "MJRefresh.h"
+
+#import "TTSearchModel.h"
+#import "TTVideoPlayController.h"
 
 #define MAS_SHORTHAND
 #define MAS_SHORTHAND_GLOBALS
 #import "Masonry.h"
 
-@interface TTSearchViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TTSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UITableView * searchTableView;
 @property (nonatomic, strong) UIView *searchView;
@@ -26,6 +30,8 @@
 @property (nonatomic, strong) NSString *searchInput;
 
 @property (nonatomic, strong) NSArray *modelArray;  // 模型数组
+@property (nonatomic, assign) NSInteger current;
+@property (nonatomic, assign) NSInteger size;
 
 @end
 
@@ -44,7 +50,19 @@
     [self setUpSearchView];
     [self setUpSearchTableView];
     // 加载数据
-//    [self loadData];
+    self.current = 0;
+    self.size = 10;
+    [self loadData];
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(slideUp)];
+    header.stateLabel.hidden = YES;
+    self.searchTableView.mj_header = header;
+    //下拉加载
+    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
+    [footer setTitle:@"加载更多" forState:MJRefreshStateIdle];
+    [footer setTitle:@"正在加载..." forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
+    self.searchTableView.mj_footer = footer;
+    
 }
 
 #pragma mark - 布局
@@ -52,7 +70,7 @@
 - (void)setUpSearchView{
     // 初始化searchview
     self.searchView = [[UIView alloc] init];
-    self.searchView.backgroundColor = [UIColor redColor];
+    self.searchView.backgroundColor = [UIColor colorNamed:@"tt_red"];
     [self.view addSubview:self.searchView];
     
     // 初始化searchBar
@@ -62,6 +80,7 @@
     } else {
         [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
     }
+    self.searchBar.delegate = self;
     [self.searchView addSubview:self.searchBar];
     self.searchBar.text = self.searchInput; // 主页跳转传值
     
@@ -144,6 +163,13 @@
     
 }
 
+// 下拉刷新
+- (void)slideUp{
+    self.current--;
+    [self loadData];
+    [self.searchTableView.mj_header endRefreshing];
+}
+
 -(void) viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES animated:YES]; //设置隐藏导航栏
     self.tabBarController.tabBar.hidden = YES;  // 页面出现时隐藏tabbar
@@ -157,15 +183,11 @@
 
 // 搜索键的点击事件
 - (void)searchClicked{
-    NSLog(@"搜索");
+    [self loadData];
 }
 
 // 返回键点击事件
 - (void)backBtnClicked{
-    // 发送通知 点击返回时视频继续播放
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//    [center postNotificationName:@"returnToHomepage" object:nil];
-
     // 找到上一个VC，调用其开始播放方法
     UIViewController *prevVC = [self getPreviousVC];
     if (prevVC && [prevVC isKindOfClass:TTPagerViewController.class]) {
@@ -176,38 +198,33 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+#pragma mark - searchBar代理方法
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [self loadData];
+}
 
-#pragma mark - searchTableView数据源方法（组数默认1 行数 单元格格式）
+#pragma mark - tableView数据源方法
 // 每组中的行数（后面需要根据模型来改）
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
-    
     // 根据模型数组count方法返回相应行数
-    // return self.modelArray.count;
+     return self.modelArray.count;
 }
 
 // 设置单元格格式
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // 创建单元格 cell重用
-    static NSString *ID = @"search_cell";
+    static NSString *ID = @"searchCell";
     TTSearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil){
         cell = [[TTSearchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     
-    // 设置单元格数据 单元格中添加模型属性 赋值时把模型赋值给单元中的属性就行(数据和frame)
-    // 以下数据是示例
-//    NSURL *url = [NSURL URLWithString:@"https://v-cdn.zjol.com.cn/276982.mp4"];
-//    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url];
-//    AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-    //AVPlayer *player = [AVPlayer playerWithPlayerItem:nil];
-    cell.imgViewIcon.image = [UIImage imageNamed:@"icon1"];
-    cell.usrName.text = @"用户名";
-    cell.videoTitle.text = @"标题标题标题标题标题";
-    //cell.playerVC.player = player;
-    
     // 通过模型赋值
-    // cell.searchModel = self.modelArray[indexPath.row];
+    TTSearchModel *model = self.modelArray[indexPath.row];
+    [cell.imgViewIcon sd_setImageWithURL:[NSURL URLWithString:model.imgIcon]];
+    cell.usrName.text = model.usrName;
+    cell.videoTitle.text = model.videoTitle;
+    [cell.videoImgView sd_setImageWithURL:[NSURL URLWithString:model.videoImg]];
     
     [cell settingFrame];
     
@@ -215,36 +232,51 @@
     return cell;
 }
 
-#pragma mark - TableView的代理方法
+#pragma mark - tableView代理方法
 // 设置选中cell后cell的样式--cell选中后不变灰
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TTSearchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // 选中cell后跳转视频播放
-    TTWorksListController *videoVc = [[TTWorksListController alloc] init];
-    videoVc.isFromSearch = YES;
-    [self.navigationController pushViewController:videoVc animated:YES];
+    TTVideoPlayController *videoPlayVC = [[TTVideoPlayController alloc] init];
+    videoPlayVC.searchText = self.searchBar.text;
+    [self.navigationController pushViewController:videoPlayVC animated:YES];
     
 }
 
-#pragma mark - 处理模型
-// 下面是加入model后两个方法
-// 加载数据 通过model内部请求函数 成功则回调模型数组
+#pragma mark - 网络请求
+// 获取token
+- (NSString *) getUserToken{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [defaults stringForKey:@"token"];
+    return token;
+}
+
 - (void)loadData{
-//    [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
-//            self.modelArray = array;    // 成功获取数组后赋值给modelArray属性（调用set方法刷新数据）
-//        } error:^{
-//            NSLog(@"获取数据出错");
-//        }];
+    [self.searchTableView.mj_footer resetNoMoreData];
+    [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
+        self.modelArray = array;
+        self.current ++;
+    } fail:^(NSError * _Nonnull error) {
+        NSLog(@"%@", error);
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:error.description preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    } text:self.searchBar.text current:(self.current+1) size:self.size];
 }
 
-// 重写modelArray的set方法
+
 - (void)setModelArray:(NSArray *)modelArray{
-    self.modelArray = modelArray;
-    
-    // 加载完数据后 刷新tableview数据
-    [self.searchTableView reloadData];
+    _modelArray = modelArray;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchTableView reloadData];
+    });
+    [self.searchTableView.mj_footer endRefreshing];
+    if (self.modelArray.count < self.size){
+        [self.searchTableView.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 
 @end

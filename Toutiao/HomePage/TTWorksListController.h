@@ -11,9 +11,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TTWorksListController : UIViewController
 
-@property (nonatomic, assign) BOOL isFromSearch;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+
 @property (nonatomic, assign) BOOL isPlayerRemoved;
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
+
+//- (void)viewDidLoad;
+- (void)setupView;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+- (void)imglongTapClick:(UILongPressGestureRecognizer *)gesture;
 
 @end
 

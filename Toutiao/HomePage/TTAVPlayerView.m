@@ -120,7 +120,17 @@
         UITapGestureRecognizer *hidenTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenBottonView:)];
         [self addGestureRecognizer:hidenTap];
     }
+    // 添加观察者
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(pause) name:@"backLastVC" object:nil];
+    
     return self;
+}
+
+// 移除观察者
+- (void)dealloc{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
 }
 
 - (void)hiddenBottonView: (UITapGestureRecognizer *)tap {
