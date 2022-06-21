@@ -71,14 +71,14 @@
     [self addChildViewController:navcHomePage];
     [self addChildViewController:navMine];
 
-    // 到时候把个人主页挂到这里
+    // 个人主页
     navMine.viewControllers = @[TTLoginController.new];
 
     //tabBar上添加一个UIButton遮盖住中间的UITabBar
-     self.uploadButton.frame = CGRectMake((self.tabBar.frame.size.width-self.tabBar.frame.size.height)/2, 5, self.tabBar.frame.size.height, self.tabBar.frame.size.height);
-     [self.tabBar addSubview:self.uploadButton];
+    self.uploadButton.frame = CGRectMake((self.tabBar.frame.size.width-self.tabBar.frame.size.height)/2, 1, self.tabBar.frame.size.height, self.tabBar.frame.size.height);
+    [self.tabBar addSubview:self.uploadButton];
 
-     self.delegate = self;
+    self.delegate = self;
 }
 
 // 控制器代理方法
