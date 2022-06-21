@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void(^changeScreen) (BOOL isFull);
 
 // 真实项目中，直接用dict包裹入参
-- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title;
+- (instancetype)initWithFrame:(CGRect)frame url:(NSURL *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title;
 
 // 开始播放
 - (void)play;

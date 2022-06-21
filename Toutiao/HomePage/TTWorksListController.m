@@ -21,10 +21,11 @@
 @interface TTWorksListController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
-@property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
+@property (nonatomic, strong) NSMutableArray<NSURL *> *urls; // 存放视频url
 @property (nonatomic, strong) NSMutableArray *covers; // 存放视频封面
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+@property (nonatomic, strong) ShortMediaManager *cacheManager;
 
 @end
 
@@ -34,14 +35,16 @@ static const NSInteger pageSize = 10;
 
 - (void)viewDidLoad {
     self.isPlayerRemoved = YES;
+    self.hasAddObserver = NO;
     [super viewDidLoad];
     self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:pageSize];
-    self.urls = [NSMutableArray arrayWithCapacity:pageSize];
+    self.urls = [NSMutableArray<NSURL *> arrayWithCapacity:pageSize];
     self.covers = [NSMutableArray arrayWithCapacity:pageSize];
-    [self loadData:1 size:pageSize];
+    self.pageIndex = 1;
+    [self loadData:self.pageIndex size:pageSize];
     [self setupView];
     self.isPlayerRemoved = NO;
-    [[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
+    self.cacheManager = [ShortMediaManager shareManager];
 }
 
 - (void)setupView {
@@ -88,7 +91,20 @@ static const NSInteger pageSize = 10;
     return cell;
 }
 
+// 预加载数据
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isLoadingData) {
+        return;
+    }
+    // 70%出现后，需要去加载数据
+    if (self.currentIndex >= self.data.count * 0.7) {
+        self.pageIndex++;
+        [self loadData:self.pageIndex size:pageSize];
+    }
+}
+
 #pragma mark - scrollview delegate
+// 判断是否向上滑动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGPoint point = [scrollView.panGestureRecognizer velocityInView:scrollView];
     if (point.y > 0) {
@@ -121,7 +137,7 @@ static const NSInteger pageSize = 10;
 
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"currentIndex"] && (self.currentIndex < self.data.count)) {
+    if ([keyPath isEqualToString:@"currentIndex"]) {
         TTWorksListCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
         if (!_isPlayerRemoved) {
             [self.avPlayerView removePlayer];
@@ -149,6 +165,7 @@ static const NSInteger pageSize = 10;
 
 #pragma mark - load data
 - (void)loadData:(NSInteger)current size:(NSInteger)size {
+    self.isLoadingData = YES;
     // 请求参数构造
     TTWorksListRequest *worksListRequest = [[TTWorksListRequest alloc] init];
     worksListRequest.current = current;
@@ -161,12 +178,17 @@ static const NSInteger pageSize = 10;
         // 解析数据
         for (TTWorkRecord *work in worksListResponse.data.records) {
             [self.data addObject:work];
-            [self.urls addObject:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]];
+            [self.urls addObject:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]]];
             [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];
         }
+        self.isLoadingData = NO;
         [self.tableView reloadData];
-        // 添加观察者
-        [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+//        [self.cacheManager resetPreloadingWithMediaUrls:self.urls];
+        if (!self.hasAddObserver) {
+            // 添加观察者
+            [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+            self.hasAddObserver = YES;
+        }
     } onError:^(NSError * _Nonnull error) {
         NSLog(@"请求失败: %@", error);
     } onProgress:nil];
