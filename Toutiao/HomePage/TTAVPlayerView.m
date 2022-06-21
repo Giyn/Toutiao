@@ -12,7 +12,7 @@
 
 @implementation TTAVPlayerView
 
-- (instancetype)initWithFrame:(CGRect)frame url:(NSString *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title {
+- (instancetype)initWithFrame:(CGRect)frame url:(NSURL *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title {
     if (self = [super initWithFrame:frame]) {
         self.isFullScreen = NO;
         self.smallFrame = frame;
@@ -30,8 +30,7 @@
         self.resourceLoader = [ShortMediaResourceLoader new];
 
         // 网络视频路径
-        NSURL *webVideoUrl = [NSURL URLWithString:url];
-        AVPlayerItem *playerItem = [self.resourceLoader playItemWithUrl:webVideoUrl];
+        AVPlayerItem *playerItem = [self.resourceLoader playItemWithUrl:url];
         self.player = [AVPlayer playerWithPlayerItem:playerItem];
 
         self.avLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
