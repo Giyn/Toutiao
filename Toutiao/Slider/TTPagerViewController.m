@@ -298,7 +298,7 @@ NSInteger const kTagToIndex = 1000;
 #pragma mark - searchBar代理方法
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    [self stopPlayingCurrent];
+    [self stopPlayingCurrentWithPlayerRemoved:NO];
     return YES;
 }
 
@@ -330,22 +330,13 @@ NSInteger const kTagToIndex = 1000;
     }
 }
 
-- (void)stopPlayingCurrent {
+- (void)stopPlayingCurrentWithPlayerRemoved:(BOOL)removePlayer {
     UIViewController *childVC = _childrenVCArray[_currentIndex];
     if (childVC && [childVC isKindOfClass:TTWorksListController.class]) {
         TTWorksListController *videoVC = (TTWorksListController *)childVC;
-        UITableView *tableView = [videoVC valueForKey:@"tableView"];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:videoVC.currentIndex inSection:0];
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        NSArray *covers = [videoVC valueForKey:@"covers"];
-        if ([cell isKindOfClass:TTWorksListCell.class]) {
-            TTWorksListCell *worksListCell = (TTWorksListCell *)cell;
-            UIImage *correctImage = covers[(NSUInteger) videoVC.currentIndex];
-            worksListCell.bgImageView.image = correctImage;
-        }
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
         [avPlayerView pause];
-        if (!videoVC.isPlayerRemoved) {
+        if (!videoVC.isPlayerRemoved && removePlayer) {
             [avPlayerView removePlayer];
             [avPlayerView removeFromSuperview];
             [avPlayerView.player replaceCurrentItemWithPlayerItem:nil];
@@ -362,7 +353,7 @@ NSInteger const kTagToIndex = 1000;
 
 - (void)viewDidDisappear:(BOOL)animated {
     NSLog(@"Pager view did disappear");
-    [self stopPlayingCurrent];
+    [self stopPlayingCurrentWithPlayerRemoved:YES];
 }
 
 @end
