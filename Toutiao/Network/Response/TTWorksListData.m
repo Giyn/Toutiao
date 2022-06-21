@@ -6,7 +6,12 @@
 //
 
 #import "TTWorksListData.h"
+#import "MJExtension.h"
 
 @implementation TTWorksListData
+
++ (NSDictionary *)mj_objectClassInArray {
+    return @{@"records": TTWorkRecord.class};
+}
 
 @end

@@ -22,6 +22,7 @@
 
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
 @property (nonatomic, strong) NSMutableArray *urls; // 存放视频url
+@property (nonatomic, strong) NSMutableArray *covers; // 存放视频封面
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
 
@@ -29,12 +30,15 @@
 
 @implementation TTWorksListController
 
+static const NSInteger pageSize = 10;
+
 - (void)viewDidLoad {
     self.isPlayerRemoved = YES;
     [super viewDidLoad];
-    self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:10];
-    self.urls = [NSMutableArray arrayWithCapacity:10];
-    [self loadData:1 size:10];
+    self.data = [NSMutableArray<TTWorkRecord *> arrayWithCapacity:pageSize];
+    self.urls = [NSMutableArray arrayWithCapacity:pageSize];
+    self.covers = [NSMutableArray arrayWithCapacity:pageSize];
+    [self loadData:1 size:pageSize];
     [self setupView];
     self.isPlayerRemoved = NO;
     [[ShortMediaManager shareManager] resetPreloadingWithMediaUrls:self.urls];
@@ -72,11 +76,7 @@
     TTWorksListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTWorksListCell" forIndexPath:indexPath];
     // 显示视频封面
     cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
-    NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
-    UIImage *cover;
-    NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
-    cover = [UIImage imageWithData:cover_data];
-    cell.bgImageView.image = cover;
+    cell.bgImageView.image = self.covers[self.currentIndex];
     return cell;
 }
 
@@ -109,14 +109,7 @@
             [self.avPlayerView removePlayer];
             [self.avPlayerView removeFromSuperview];
         }
-
-        NSString *video_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].videoToken];
-        NSString *cover_url = [NSString stringWithFormat:@"http://47.96.114.143:62318/api/file/download/%@", self.data[self.currentIndex].pictureToken];
-        UIImage *cover;
-        NSData *cover_data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cover_url]];
-        cover = [UIImage imageWithData:cover_data];
-
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:video_url image:cover user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urls[self.currentIndex] image:self.covers[self.currentIndex] user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
         [cell.contentView addSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
@@ -147,10 +140,11 @@
     TTNetworkTool *tool = [TTNetworkTool sharedManager];
     [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
-        for (NSDictionary *dict in worksListResponse.data.records) {
-            TTWorkRecord *work = [TTWorkRecord mj_objectWithKeyValues:dict];
-            [self.urls addObject:[NSString stringWithFormat:@"%@%@%@", baseURLString, getFileByFileTokenPath, work.videoToken]];
+        // 解析数据
+        for (TTWorkRecord *work in worksListResponse.data.records) {
             [self.data addObject:work];
+            [self.urls addObject:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]];
+            [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];
         }
         [self.tableView reloadData];
         // 添加观察者

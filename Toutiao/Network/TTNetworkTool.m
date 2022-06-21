@@ -23,11 +23,11 @@
 }
 
 + (NSString *)getDownloadPathWithFileToken:(NSString *)fileToken {
-    return [NSString stringWithFormat:@"%@%@", getFileByFileTokenPath, fileToken];
+    return [NSString stringWithFormat:@"%@/%@", getFileByFileTokenPath, fileToken];
 }
 
 + (NSString *)getDownloadURLWithFileToken:(NSString *)fileToken {
-    return [NSString stringWithFormat:@"%@%@%@", baseURLString, getFileByFileTokenPath, fileToken];
+    return [NSString stringWithFormat:@"%@%@/%@", baseURLString, getFileByFileTokenPath, fileToken];
 }
 
 - (void)requestWithMethod:(TTHttpMethodType)method path:(NSString *)path params:(NSDictionary *)params requiredToken:(BOOL)requiredToken onSuccess:(OnSuccess)onSuccess onError:(OnError)onError onProgress:(OnProgress)onProgress {
