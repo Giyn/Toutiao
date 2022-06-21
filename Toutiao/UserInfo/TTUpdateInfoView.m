@@ -30,6 +30,16 @@
     
     [_updateButton sizeToFit];
     [_updateButton setTitle:@"更新" forState:UIControlStateNormal];
+    
+    _logoutButton = [UIButton buttonWithType:UIButtonTypeSystem];
+
+    [_logoutButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    _logoutButton.tintColor = [UIColor colorNamed:@"tt_red"];
+    [_logoutButton.layer setCornerRadius:8];
+    [_logoutButton setContentEdgeInsets:UIEdgeInsetsMake(12, 0, 12, 0)];
+    
+    [_logoutButton sizeToFit];
+    [_logoutButton setTitle:@"退出当前账号" forState:UIControlStateNormal];
 }
 
 - (void)setupInputFields {
@@ -58,6 +68,7 @@
     _containerStack.distribution = UIStackViewDistributionEqualSpacing;
     [self initButtons];
     [_containerStack addArrangedSubview:_updateButton];
+    [_containerStack addArrangedSubview:_logoutButton];
 }
 
 - (void)layoutSubviews {

@@ -13,6 +13,7 @@
 #import "TTNetworkTool.h"
 #import "TTTypeListResponse.h"
 #import "TTHomePageLoadingViewController.h"
+#import "TTUserInfoController.h"
 #import "URLs.h"
 
 @interface TTTabBarController () <UITabBarControllerDelegate>
@@ -99,7 +100,7 @@
     [self addChildViewController:navMine];
 
     // 个人主页
-    navMine.viewControllers = @[TTLoginController.new];
+    navMine.viewControllers = @[TTUserInfoController.new];
 
     //tabBar上添加一个UIButton遮盖住中间的UITabBar
     self.uploadButton.frame = CGRectMake((self.tabBar.frame.size.width-self.tabBar.frame.size.height)/2, 1, self.tabBar.frame.size.height, self.tabBar.frame.size.height);

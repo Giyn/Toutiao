@@ -44,6 +44,7 @@ NSUInteger const viewPasswordTag = 4;
     _updateInfoView.passwordInputField.tag = viewPasswordTag;
     
     [_updateInfoView.updateButton addTarget:self action:@selector(updateAction) forControlEvents:UIControlEventTouchUpInside];
+    [_updateInfoView.logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside];
     [self.navigationController setNavigationBarHidden:false];
     self.navigationItem.title = @"更新个人信息";
     _gestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
@@ -178,6 +179,12 @@ NSUInteger const viewPasswordTag = 4;
         [self showAlertWithTitle:@"网络繁忙" message:@"正在请求中，请稍后再试" redirectToPrev:NO];
     }
     [self performRegisterRequest];
+}
+
+- (void)logoutAction {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud removeObjectForKey:@"token"];
+    [self.navigationController pushViewController:TTLoginController.new animated:YES];
 }
 
 #pragma mark - 网络请求

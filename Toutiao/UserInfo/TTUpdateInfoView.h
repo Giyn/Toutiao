@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TTInputField *emailInputField;
 @property (nonatomic, strong) TTInputField *passwordInputField;
 @property (nonatomic, strong) UIButton *updateButton;
+@property (nonatomic, strong) UIButton *logoutButton;
 @end
 
 NS_ASSUME_NONNULL_END

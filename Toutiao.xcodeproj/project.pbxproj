@@ -297,16 +297,16 @@
 		0FB8B7D2286093E2005DD727 /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
-				0FB8B7D3286093E2005DD727 /* TTRegisterView.m */,
-				0FB8B7D4286093E2005DD727 /* TTLoginView.m */,
-				0FB8B7D5286093E2005DD727 /* TTRegisterController.m */,
 				0FB8B7D6286093E2005DD727 /* TTInputField.h */,
-				0FB8B7D7286093E2005DD727 /* TTLoginController.h */,
-				0FB8B7D8286093E2005DD727 /* TTRegisterView.h */,
 				0FB8B7D9286093E2005DD727 /* TTInputField.m */,
-				0FB8B7DA286093E2005DD727 /* TTRegisterController.h */,
-				0FB8B7DB286093E2005DD727 /* TTLoginView.h */,
+				0FB8B7D7286093E2005DD727 /* TTLoginController.h */,
 				0FB8B7DC286093E2005DD727 /* TTLoginController.m */,
+				0FB8B7DB286093E2005DD727 /* TTLoginView.h */,
+				0FB8B7D4286093E2005DD727 /* TTLoginView.m */,
+				0FB8B7DA286093E2005DD727 /* TTRegisterController.h */,
+				0FB8B7D5286093E2005DD727 /* TTRegisterController.m */,
+				0FB8B7D8286093E2005DD727 /* TTRegisterView.h */,
+				0FB8B7D3286093E2005DD727 /* TTRegisterView.m */,
 			);
 			path = "Login&Register";
 			sourceTree = "<group>";

@@ -200,7 +200,6 @@ NSInteger const kTagToIndex = 1000;
     }
     // 取消先前激活按钮
     UIButton *currentSelectedButton = [_ttSliderNav buttonWithTag: [self tagFromIndex:_currentIndex]];
-    NSLog(@"%@", currentSelectedButton.description);
     [currentSelectedButton setSelected:NO];
     [self animateWithTag:sender.tag];
     // 设置为按钮点击状态，防止动画冲突
@@ -239,7 +238,6 @@ NSInteger const kTagToIndex = 1000;
     }];
     // 选中对应按钮
     [[_ttSliderNav buttonWithTag:tag]setSelected:YES];
-    NSLog(@"scroll end: %zd", _currentIndex);
     // 更新下标
     NSUInteger nextIndex = [self indexFromTag:tag];
     NSUInteger currentIdx = _currentIndex;
@@ -352,7 +350,6 @@ NSInteger const kTagToIndex = 1000;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    NSLog(@"Pager view did disappear");
     [self stopPlayingCurrentWithPlayerRemoved:YES];
 }
 
