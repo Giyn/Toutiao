@@ -5,12 +5,14 @@
 //  Created by 肖扬 on 2022/6/7.
 //
 
+#import "Masonry.h"
 #import "TTPagerViewController.h"
 #import "TTSliderNavView.h"
 #import "TTSearchViewController.h"
 #import "TTWorksListController.h"
+#import "TTWorksListCell.h"
 #import "TTAVPlayerView.h"
-#import "Masonry.h"
+
 NSInteger const kTagToIndex = 1000;
 @interface TTPagerViewController () <UIScrollViewDelegate, UISearchBarDelegate>
 
@@ -332,7 +334,15 @@ NSInteger const kTagToIndex = 1000;
     UIViewController *childVC = _childrenVCArray[_currentIndex];
     if (childVC && [childVC isKindOfClass:TTWorksListController.class]) {
         TTWorksListController *videoVC = (TTWorksListController *)childVC;
-
+        UITableView *tableView = [videoVC valueForKey:@"tableView"];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:videoVC.currentIndex inSection:0];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        NSArray *covers = [videoVC valueForKey:@"covers"];
+        if ([cell isKindOfClass:TTWorksListCell.class]) {
+            TTWorksListCell *worksListCell = (TTWorksListCell *)cell;
+            UIImage *correctImage = covers[(NSUInteger) videoVC.currentIndex];
+            worksListCell.bgImageView.image = correctImage;
+        }
         TTAVPlayerView *avPlayerView = [childVC valueForKey:@"avPlayerView"];
         [avPlayerView pause];
         if (!videoVC.isPlayerRemoved) {
