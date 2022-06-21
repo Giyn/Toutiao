@@ -291,6 +291,8 @@
 				72CE29872860A8410092CB78 /* TTSearchModel.m */,
 				72CE298A2860A9130092CB78 /* TTVideoPlayController.h */,
 				72CE298B2860A9130092CB78 /* TTVideoPlayController.m */,
+				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
+				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -324,8 +326,6 @@
 				0FB8B7D2286093E2005DD727 /* Login&Register */,
 				848146112852715600D06E39 /* UIView+Border.h */,
 				848146172852715700D06E39 /* UIView+Border.m */,
-				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
-				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				8481449D284CE9B100D06E39 /* AppDelegate.h */,
 				8481449E284CE9B100D06E39 /* AppDelegate.m */,
 				848144A9284CE9B400D06E39 /* Assets.xcassets */,
