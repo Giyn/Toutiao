@@ -13,6 +13,7 @@
 @implementation TTAVPlayerView
 
 - (instancetype)initWithFrame:(CGRect)frame url:(NSURL *)url image:(UIImage *)image user:(NSString *)user title:(NSString *)title {
+    _startTime = CFAbsoluteTimeGetCurrent();
     if (self = [super initWithFrame:frame]) {
         self.isFullScreen = NO;
         self.smallFrame = frame;
@@ -28,8 +29,6 @@
         [self addSubview:bgImageView];
         
         self.resourceLoader = [ShortMediaResourceLoader new];
-
-        // 网络视频路径
         AVPlayerItem *playerItem = [self.resourceLoader playItemWithUrl:url];
         self.player = [AVPlayer playerWithPlayerItem:playerItem];
 
@@ -116,7 +115,7 @@
 
         [self.player.currentItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
 
-        UITapGestureRecognizer *hidenTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenBottonView:)];
+        UITapGestureRecognizer *hidenTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenBottonView:)];
         [self addGestureRecognizer:hidenTap];
     }
     // 添加观察者
@@ -127,7 +126,7 @@
 }
 
 // 移除观察者
-- (void)dealloc{
+- (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
 }
@@ -156,7 +155,7 @@
     self.avLayer.frame = self.bounds;
 
     [self.sliderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.mas_equalTo(0);
+        make.centerX.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(50);
         make.width.mas_equalTo(kScreenWidth);
@@ -167,9 +166,10 @@
         make.width.mas_equalTo(kScreenWidth);
     }];
     [self.startVideoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(0);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
+        make.left.mas_offset(5);
+        make.top.mas_offset(5);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(40);
     }];
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_offset(50);
@@ -213,6 +213,8 @@
         NSLog(@"播放器状态: %ld", (long)status);
         switch (status) {
             case AVPlayerStatusReadyToPlay:{
+                _endTime = (CFAbsoluteTimeGetCurrent() - _startTime);
+                NSLog(@"短视频切换响应时间: %f ms", _endTime * 1000.0);
                 NSInteger countTime = CMTimeGetSeconds(self.player.currentItem.duration);
                 self.slider.maximumValue = countTime;
                 self.countTimeLabel.text = [self getMMSSFromSS:[NSString stringWithFormat:@"%zi", countTime]];

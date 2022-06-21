@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) ShortMediaResourceLoader *resourceLoader;
 
+// 统计短视频响应时间
+@property (nonatomic, assign) CFAbsoluteTime startTime;
+@property (nonatomic, assign) CFAbsoluteTime endTime;
+
 // 点击全屏，取消全屏回调
 @property (nonatomic, copy) void(^changeScreen) (BOOL isFull);
 

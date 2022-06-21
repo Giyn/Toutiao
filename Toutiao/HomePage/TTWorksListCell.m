@@ -15,7 +15,7 @@
         self.contentView.backgroundColor = [UIColor blackColor];
 
         self.bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-kTabBarHeight)];
-        self.bgImageView.tag = 100;
+        self.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.bgImageView.image = [UIImage imageNamed:@"video_loading"];
         [self.contentView addSubview:self.bgImageView];
     }

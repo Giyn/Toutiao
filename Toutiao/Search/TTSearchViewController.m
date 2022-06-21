@@ -198,7 +198,7 @@
         [pagerVC startPlayingCurrent];
     }
 
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popToViewController:prevVC animated:YES];
 }
 
 #pragma mark - searchBar代理方法

@@ -21,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 @property (nonatomic, assign) NSInteger pageIndex; // 当前视频数据的页索引
 
-//- (void)viewDidLoad;
 - (void)setupView;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 - (void)imglongTapClick:(UILongPressGestureRecognizer *)gesture;
