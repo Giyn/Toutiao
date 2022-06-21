@@ -38,13 +38,14 @@
         // 3 视频标题
         UILabel *videoTitle = [[UILabel alloc] init];
         videoTitle.font = videoTitleFont;
-        videoTitle.numberOfLines = 2;   // 显示2行后自动换行
+        videoTitle.numberOfLines = 0;   // 显示2行后自动换行
         [self.contentView addSubview:videoTitle];
         self.videoTitle = videoTitle;
         
         // 视频图片
         self.videoImgView = [[UIImageView alloc] init];
-        self.videoImgView.backgroundColor = [UIColor grayColor];
+        self.videoImgView.backgroundColor = [UIColor blackColor];
+        self.videoImgView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:self.videoImgView];
 
     }

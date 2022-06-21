@@ -21,10 +21,10 @@
 @interface TTWorksListController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
+
 @property (nonatomic, strong) NSMutableArray<NSURL *> *urls; // 存放视频url
 @property (nonatomic, strong) NSMutableArray *covers; // 存放视频封面
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
+
 @property (nonatomic, strong) ShortMediaManager *cacheManager;
 
 @end
@@ -161,8 +161,10 @@ static const NSInteger pageSize = 10;
     TTNetworkTool *tool = [TTNetworkTool sharedManager];
     [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
+
         // 解析数据
         for (TTWorkRecord *work in worksListResponse.data.records) {
+
             [self.data addObject:work];
             [self.urls addObject:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]]];
             [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];

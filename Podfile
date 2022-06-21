@@ -8,6 +8,8 @@ target 'Toutiao' do
   pod 'AFNetworking','~>3.0'
   pod 'MJExtension'
   pod 'ShortMediaCache'
+  pod 'MJRefresh'
+  pod 'SDWebImage'
   # Pods for Toutiao
 
 end
