@@ -9,7 +9,7 @@ target 'Toutiao' do
   pod 'MJExtension'
   pod 'ShortMediaCache'
   pod 'MJRefresh'
-  pod 'SDWebImage'
+  pod 'SDWebImage','4.0.0'
   # Pods for Toutiao
 
 end
