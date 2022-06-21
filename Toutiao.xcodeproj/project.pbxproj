@@ -59,6 +59,11 @@
 		8481461F2852715800D06E39 /* UIView+Border.m in Sources */ = {isa = PBXBuildFile; fileRef = 848146172852715700D06E39 /* UIView+Border.m */; };
 		84A168302852E6A300AA5543 /* TTSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A1682F2852E6A300AA5543 /* TTSearchViewController.m */; };
 		84A168362852E7DE00AA5543 /* TTSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */; };
+		D915A730286205B300791162 /* TTUserInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D915A72F286205B300791162 /* TTUserInfoView.m */; };
+		D915A733286205D700791162 /* TTUserInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = D915A732286205D700791162 /* TTUserInfoController.m */; };
+		D915A736286205F300791162 /* TTUpdateInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D915A735286205F300791162 /* TTUpdateInfoView.m */; };
+		D915A7392862060D00791162 /* TTUpdateInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = D915A7382862060D00791162 /* TTUpdateInfoController.m */; };
+		D915A73C2862069B00791162 /* TTUserInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D915A73B2862069B00791162 /* TTUserInfoCell.m */; };
 		E452A2E6469092D115000DEB /* Pods_Toutiao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6145AB90A16E8C2138CCFD48 /* Pods_Toutiao.framework */; };
 /* End PBXBuildFile section */
 
@@ -168,6 +173,16 @@
 		84A1682F2852E6A300AA5543 /* TTSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchViewController.m; sourceTree = "<group>"; };
 		84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSearchTableViewCell.h; sourceTree = "<group>"; };
 		84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSearchTableViewCell.m; sourceTree = "<group>"; };
+		D915A72E286205B300791162 /* TTUserInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TTUserInfoView.h; path = ../../../../learning/Toutiao/Toutiao/UserInfo/TTUserInfoView.h; sourceTree = "<group>"; };
+		D915A72F286205B300791162 /* TTUserInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TTUserInfoView.m; path = ../../../../learning/Toutiao/Toutiao/UserInfo/TTUserInfoView.m; sourceTree = "<group>"; };
+		D915A731286205D700791162 /* TTUserInfoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTUserInfoController.h; sourceTree = "<group>"; };
+		D915A732286205D700791162 /* TTUserInfoController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTUserInfoController.m; sourceTree = "<group>"; };
+		D915A734286205F300791162 /* TTUpdateInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTUpdateInfoView.h; sourceTree = "<group>"; };
+		D915A735286205F300791162 /* TTUpdateInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTUpdateInfoView.m; sourceTree = "<group>"; };
+		D915A7372862060D00791162 /* TTUpdateInfoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTUpdateInfoController.h; sourceTree = "<group>"; };
+		D915A7382862060D00791162 /* TTUpdateInfoController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTUpdateInfoController.m; sourceTree = "<group>"; };
+		D915A73A2862069B00791162 /* TTUserInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTUserInfoCell.h; sourceTree = "<group>"; };
+		D915A73B2862069B00791162 /* TTUserInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTUserInfoCell.m; sourceTree = "<group>"; };
 		EA3AC258ADA8A667171EA127 /* Pods-Toutiao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toutiao.release.xcconfig"; path = "Target Support Files/Pods-Toutiao/Pods-Toutiao.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -341,6 +356,7 @@
 		8481449C284CE9B100D06E39 /* Toutiao */ = {
 			isa = PBXGroup;
 			children = (
+				D915A72D2862052A00791162 /* UserInfo */,
 				72CE29892860A87F0092CB78 /* Search */,
 				0FB8B7E2286093FA005DD727 /* Slider */,
 				84AA3C4F286070C800D2EBF3 /* Model */,
@@ -389,6 +405,23 @@
 				0F2ED58B285B6DE400408913 /* TTWorkRecord.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D915A72D2862052A00791162 /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D915A72E286205B300791162 /* TTUserInfoView.h */,
+				D915A72F286205B300791162 /* TTUserInfoView.m */,
+				D915A731286205D700791162 /* TTUserInfoController.h */,
+				D915A732286205D700791162 /* TTUserInfoController.m */,
+				D915A734286205F300791162 /* TTUpdateInfoView.h */,
+				D915A735286205F300791162 /* TTUpdateInfoView.m */,
+				D915A7372862060D00791162 /* TTUpdateInfoController.h */,
+				D915A7382862060D00791162 /* TTUpdateInfoController.m */,
+				D915A73A2862069B00791162 /* TTUserInfoCell.h */,
+				D915A73B2862069B00791162 /* TTUserInfoCell.m */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,6 +542,7 @@
 				0F2ED589285B6C6F00408913 /* TTWorksListData.m in Sources */,
 				8481461F2852715800D06E39 /* UIView+Border.m in Sources */,
 				0FEE56D52860B2C40033E592 /* TTWorksListByTypeResponse.m in Sources */,
+				D915A73C2862069B00791162 /* TTUserInfoCell.m in Sources */,
 				0F987754285C5B4E0033B154 /* TTGetUserInfoData.m in Sources */,
 				0F2ED574285B693600408913 /* TTBaseResponse.m in Sources */,
 				8481449F284CE9B100D06E39 /* AppDelegate.m in Sources */,
@@ -531,14 +565,17 @@
 				848144B0284CE9B400D06E39 /* main.m in Sources */,
 				0F2ED586285B6C5B00408913 /* TTWorksListResponse.m in Sources */,
 				0F98774B285C54AA0033B154 /* TTUpdateUserInfoResponse.m in Sources */,
+				D915A7392862060D00791162 /* TTUpdateInfoController.m in Sources */,
 				0FEE56DB2860B2DC0033E592 /* TTTypeListRequest.m in Sources */,
 				0F2ED573285B693600408913 /* TTLoginResponse.m in Sources */,
 				0FB8B7E7286093FA005DD727 /* TTPagerViewController.m in Sources */,
 				0F0E154628574DFD00276B2C /* config.m in Sources */,
 				0FB8B7DE286093E2005DD727 /* TTLoginView.m in Sources */,
+				D915A730286205B300791162 /* TTUserInfoView.m in Sources */,
 				848145BA2851C7A900D06E39 /* TTTabBarController.m in Sources */,
 				72CE298F2860AB000092CB78 /* TTSearchData.m in Sources */,
 				0F2ED58F285B6EA300408913 /* TTFileUploadRequest.m in Sources */,
+				D915A736286205F300791162 /* TTUpdateInfoView.m in Sources */,
 				0FEE56DC2860B2DC0033E592 /* TTWorksListByTypeRequest.m in Sources */,
 				0F2ED5A0285B779100408913 /* URLs.m in Sources */,
 				0FB8B7E8286093FA005DD727 /* TTSliderNavView.m in Sources */,
@@ -549,6 +586,7 @@
 				0F987751285C5B370033B154 /* TTGetUserInfoResponse.m in Sources */,
 				0F2ED57A285B69B900408913 /* TTRegisterRequest.m in Sources */,
 				0FB8B7E1286093E2005DD727 /* TTLoginController.m in Sources */,
+				D915A733286205D700791162 /* TTUserInfoController.m in Sources */,
 				0F2ED58C285B6DE400408913 /* TTWorkRecord.m in Sources */,
 				848145B1285133A500D06E39 /* TTAVPlayerView.m in Sources */,
 				0FB8B7DF286093E2005DD727 /* TTRegisterController.m in Sources */,
@@ -690,7 +728,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VM58575Z8J;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Toutiao/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -710,7 +748,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VM58575Z8J;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Toutiao/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
