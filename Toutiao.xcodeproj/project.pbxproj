@@ -248,6 +248,8 @@
 		0FB8B7D2286093E2005DD727 /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
+				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
+				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				0FB8B7D3286093E2005DD727 /* TTRegisterView.m */,
 				0FB8B7D4286093E2005DD727 /* TTLoginView.m */,
 				0FB8B7D5286093E2005DD727 /* TTRegisterController.m */,
@@ -285,8 +287,6 @@
 		72CE29892860A87F0092CB78 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				84A1682E2852E6A300AA5543 /* TTSearchViewController.h */,
-				84A1682F2852E6A300AA5543 /* TTSearchViewController.m */,
 				84A168342852E7DE00AA5543 /* TTSearchTableViewCell.h */,
 				84A168352852E7DE00AA5543 /* TTSearchTableViewCell.m */,
 				72CE29862860A8410092CB78 /* TTSearchModel.h */,
