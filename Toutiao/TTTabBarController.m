@@ -5,10 +5,15 @@
 //  Created by Admin on 2022/6/9.
 //
 
+#import "MJExtension.h"
 #import "TTTabBarController.h"
 #import "TTWorksListController.h"
 #import "TTLoginController.h"
 #import "TTPagerViewController.h"
+#import "TTNetworkTool.h"
+#import "TTTypeListResponse.h"
+#import "TTHomePageLoadingViewController.h"
+#import "URLs.h"
 
 @interface TTTabBarController () <UITabBarControllerDelegate>
 
@@ -43,19 +48,34 @@
             return;
         }
         TTPagerViewController *currentPagerViewController = (TTPagerViewController *)currentVC;
-        [currentPagerViewController stopPlayingCurrent];
+        [currentPagerViewController stopPlayingCurrentWithPlayerRemoved: YES];
     };
-    UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new] titles:@[@"首页", @"体育", @"军事", @"财经", @"娱乐"] showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
-    UINavigationController *navcHomePage = [[UINavigationController alloc] initWithRootViewController:vcHomePage];
-    vcHomePage.navigationController.navigationBar.hidden = YES;
-    vcHomePage.tabBarItem.title = @"主页";
-    vcHomePage.tabBarItem.image = [UIImage imageNamed:@"homepage"];
+    
+    TTNetworkTool *tool = [TTNetworkTool sharedManager];
+    
+    UIViewController *loadingPage = TTHomePageLoadingViewController.new;
+    
+    // 创建Navigation控制器 - 主页
+    UINavigationController *navHomePage = [[UINavigationController alloc] initWithRootViewController:loadingPage];
+    navHomePage.navigationBar.hidden = YES;
+    navHomePage.tabBarItem.title = @"主页";
+    navHomePage.tabBarItem.image = [UIImage imageNamed:@"homepage"];
     UIImage *imageHomePage = [UIImage imageNamed:@"homepage_highlighted"];
     // 设置渲染模式 - 保持原始的渲染
     imageHomePage = [imageHomePage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    vcHomePage.tabBarItem.selectedImage = imageHomePage;
-    [vcHomePage.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
-
+    navHomePage.tabBarItem.selectedImage = imageHomePage;
+    [navHomePage.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
+    navHomePage.navigationBar.tintColor = [UIColor colorNamed:@"tt_red"];
+    
+    [tool requestWithMethod:TTHttpMethodTypeGET path:getTypeListPath params:@{} requiredToken:NO onSuccess:^(id  _Nonnull responseObject) {
+        TTTypeListResponse *typeListResponse = [TTTypeListResponse mj_objectWithKeyValues:responseObject];
+        UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new] titles:typeListResponse.data showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
+            vcHomePage.navigationController.navigationBar.hidden = YES;
+            [navHomePage pushViewController:vcHomePage animated:NO];
+        } onError:^(NSError * _Nonnull error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        } onProgress:nil];
+    
     // 创建Navigation控制器 - 我的
     UINavigationController *navMine = UINavigationController.new;
     navMine.tabBarItem.title = @"我的";
@@ -68,7 +88,7 @@
 
     navMine.navigationBar.tintColor = [UIColor colorNamed:@"tt_red"];
     
-    [self addChildViewController:navcHomePage];
+    [self addChildViewController:navHomePage];
     [self addChildViewController:navMine];
 
     // 个人主页
