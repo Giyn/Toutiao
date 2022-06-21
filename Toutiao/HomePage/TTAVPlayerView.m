@@ -28,8 +28,6 @@
         [self addSubview:bgImageView];
         
         self.resourceLoader = [ShortMediaResourceLoader new];
-
-        // 网络视频路径
         AVPlayerItem *playerItem = [self.resourceLoader playItemWithUrl:url];
         self.player = [AVPlayer playerWithPlayerItem:playerItem];
 
@@ -167,9 +165,10 @@
         make.width.mas_equalTo(kScreenWidth);
     }];
     [self.startVideoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_offset(0);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(50);
+        make.left.mas_offset(5);
+        make.top.mas_offset(5);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(40);
     }];
     [self.currentTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_offset(50);

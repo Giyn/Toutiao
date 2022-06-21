@@ -23,9 +23,9 @@
 @property (nonatomic, strong) NSMutableArray<TTWorkRecord *> *data; // 存放视频数据
 
 @property (nonatomic, strong) NSMutableArray<NSURL *> *urls; // 存放视频url
-@property (nonatomic, strong) NSMutableArray *covers; // 存放视频封面
+@property (nonatomic, strong) NSMutableArray<UIImage *> *covers; // 存放视频封面
 
-@property (nonatomic, strong) ShortMediaManager *cacheManager;
+@property (nonatomic, strong) ShortMediaManager *cacheManager; // 视频缓存工具
 
 @end
 
@@ -79,7 +79,6 @@ static const NSInteger pageSize = 10;
     TTWorksListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TTWorksListCell" forIndexPath:indexPath];
     // 显示视频封面
     NSInteger cellIndex = indexPath.row;
-    cell.bgImageView.contentMode = UIViewContentModeScaleAspectFit;
     if (self.currentIndex < self.data.count) {
         cell.bgImageView.image = self.covers[cellIndex];
     }
@@ -99,7 +98,6 @@ static const NSInteger pageSize = 10;
 }
 
 #pragma mark - scrollview delegate
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     dispatch_async(dispatch_get_main_queue(), ^{
         CGPoint translatedPoint = [scrollView.panGestureRecognizer translationInView:scrollView];
@@ -129,7 +127,7 @@ static const NSInteger pageSize = 10;
             [self.avPlayerView removePlayer];
             [self.avPlayerView removeFromSuperview];
         }
-        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, self.tableView.rowHeight-kTabBarHeight) url:self.urls[self.currentIndex] image:self.covers[self.currentIndex] user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
+        self.avPlayerView = [[TTAVPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-kTabBarHeight) url:self.urls[self.currentIndex] image:self.covers[self.currentIndex] user:self.data[self.currentIndex].uploader title:self.data[self.currentIndex].name];
         [cell.contentView addSubview:self.avPlayerView];
 
         WEAKBLOCK(self);
@@ -161,17 +159,18 @@ static const NSInteger pageSize = 10;
     TTNetworkTool *tool = [TTNetworkTool sharedManager];
     [tool requestWithMethod:TTHttpMethodTypeGET path:getWorksListPath params:params requiredToken:NO onSuccess:^(id _Nonnull responseObject) {
         TTWorksListResponse *worksListResponse = [TTWorksListResponse mj_objectWithKeyValues:responseObject];
-
+        NSMutableArray<NSURL *> *urls = [NSMutableArray<NSURL *> arrayWithCapacity:pageSize];
         // 解析数据
         for (TTWorkRecord *work in worksListResponse.data.records) {
-
             [self.data addObject:work];
-            [self.urls addObject:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]]];
+            NSURL *url = [NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.videoToken]];
+            [urls addObject:url];
+            [self.urls addObject:url];
             [self.covers addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[TTNetworkTool getDownloadURLWithFileToken:work.pictureToken]]]]];
         }
         self.isLoadingData = NO;
+//        [self.cacheManager resetPreloadingWithMediaUrls:urls];
         [self.tableView reloadData];
-//        [self.cacheManager resetPreloadingWithMediaUrls:self.urls];
         if (!self.hasAddObserver) {
             // 添加观察者
             [self addObserver:self forKeyPath:@"currentIndex" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
