@@ -170,7 +170,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
             return;
         } else {
             [self saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
-            [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
+//            [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
             UINavigationController *navVC = self.navigationController;
             TTUserInfoController *regVC = TTUserInfoController.new;
             [navVC pushViewController:regVC animated:YES];
