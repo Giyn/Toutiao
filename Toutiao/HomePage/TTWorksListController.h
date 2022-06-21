@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL isFromSearch;
 @property (nonatomic, assign) BOOL isPlayerRemoved;
-@property (nonatomic, assign) BOOL isScrollUp; // 是否向上滑动
 @property (nonatomic, assign) BOOL isLoadingData;
 @property (nonatomic, assign) BOOL hasAddObserver;
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
