@@ -298,8 +298,19 @@ NSInteger const kTagToIndex = 1000;
 #pragma mark - searchBar代理方法
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    [self stopPlayingCurrent];
-    return YES;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *token = [defaults stringForKey:@"token"];
+    if (!token){
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"未登录" message:@"登录解锁新体验" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertVC addAction:action];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        return NO;
+    }
+    else{
+        [self stopPlayingCurrent];
+        return YES;
+    }
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {

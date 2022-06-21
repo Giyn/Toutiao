@@ -161,7 +161,6 @@
         }];
     }
     
-    //self.searchTableView.allowsSelection = NO;  // 禁止cell与用户互动
     self.searchTableView.dataSource = self;
     self.searchTableView.delegate = self;
     
@@ -250,13 +249,6 @@
 }
 
 #pragma mark - 网络请求
-// 获取token
-- (NSString *) getUserToken{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *token = [defaults stringForKey:@"token"];
-    return token;
-}
-
 - (void)loadData{
     [self.searchTableView.mj_footer resetNoMoreData];
     [TTSearchModel searchModelWithSuccess:^(NSArray * _Nonnull array) {
@@ -264,7 +256,7 @@
         self.current ++;
     } fail:^(NSError * _Nonnull error) {
         NSLog(@"%@", error);
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:error.description preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"错误" message:@"出错啦～" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
         [alertVC addAction:action];
         [self presentViewController:alertVC animated:YES completion:nil];
