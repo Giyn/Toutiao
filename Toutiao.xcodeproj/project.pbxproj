@@ -283,19 +283,30 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		0FA9D1562862367E003E11BF /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				0F2ED563285B3A1C00408913 /* UIViewController+PreviousVC.h */,
+				0F2ED564285B3A1C00408913 /* UIViewController+PreviousVC.m */,
+				848146112852715600D06E39 /* UIView+Border.h */,
+				848146172852715700D06E39 /* UIView+Border.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		0FB8B7D2286093E2005DD727 /* Login&Register */ = {
 			isa = PBXGroup;
 			children = (
-				0FB8B7D3286093E2005DD727 /* TTRegisterView.m */,
-				0FB8B7D4286093E2005DD727 /* TTLoginView.m */,
-				0FB8B7D5286093E2005DD727 /* TTRegisterController.m */,
 				0FB8B7D6286093E2005DD727 /* TTInputField.h */,
-				0FB8B7D7286093E2005DD727 /* TTLoginController.h */,
-				0FB8B7D8286093E2005DD727 /* TTRegisterView.h */,
 				0FB8B7D9286093E2005DD727 /* TTInputField.m */,
-				0FB8B7DA286093E2005DD727 /* TTRegisterController.h */,
-				0FB8B7DB286093E2005DD727 /* TTLoginView.h */,
+				0FB8B7D7286093E2005DD727 /* TTLoginController.h */,
 				0FB8B7DC286093E2005DD727 /* TTLoginController.m */,
+				0FB8B7DB286093E2005DD727 /* TTLoginView.h */,
+				0FB8B7D4286093E2005DD727 /* TTLoginView.m */,
+				0FB8B7DA286093E2005DD727 /* TTRegisterController.h */,
+				0FB8B7D5286093E2005DD727 /* TTRegisterController.m */,
+				0FB8B7D8286093E2005DD727 /* TTRegisterView.h */,
+				0FB8B7D3286093E2005DD727 /* TTRegisterView.m */,
 			);
 			path = "Login&Register";
 			sourceTree = "<group>";
@@ -356,6 +367,7 @@
 		8481449C284CE9B100D06E39 /* Toutiao */ = {
 			isa = PBXGroup;
 			children = (
+				0FA9D1562862367E003E11BF /* Category */,
 				D915A72D2862052A00791162 /* UserInfo */,
 				72CE29892860A87F0092CB78 /* Search */,
 				0FB8B7E2286093FA005DD727 /* Slider */,
@@ -363,8 +375,6 @@
 				84AA3C4D28606AC900D2EBF3 /* HomePage */,
 				0F2ED566285B689900408913 /* Network */,
 				0FB8B7D2286093E2005DD727 /* Login&Register */,
-				848146112852715600D06E39 /* UIView+Border.h */,
-				848146172852715700D06E39 /* UIView+Border.m */,
 				8481449D284CE9B100D06E39 /* AppDelegate.h */,
 				8481449E284CE9B100D06E39 /* AppDelegate.m */,
 				848144A9284CE9B400D06E39 /* Assets.xcassets */,
@@ -375,10 +385,6 @@
 				0F0E154528574DFD00276B2C /* config.m */,
 				848145B82851C7A900D06E39 /* TTTabBarController.h */,
 				848145B92851C7A900D06E39 /* TTTabBarController.m */,
-				0F2ED563285B3A1C00408913 /* UIViewController+PreviousVC.h */,
-				0F2ED564285B3A1C00408913 /* UIViewController+PreviousVC.m */,
-				0F8611632861D4D100ED91C2 /* TTHomePageLoadingViewController.h */,
-				0F8611642861D4D100ED91C2 /* TTHomePageLoadingViewController.m */,
 			);
 			path = Toutiao;
 			sourceTree = "<group>";
@@ -386,6 +392,8 @@
 		84AA3C4D28606AC900D2EBF3 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				0F8611632861D4D100ED91C2 /* TTHomePageLoadingViewController.h */,
+				0F8611642861D4D100ED91C2 /* TTHomePageLoadingViewController.m */,
 				848145A72851335D00D06E39 /* TTWorksListController.h */,
 				848145A82851335D00D06E39 /* TTWorksListController.m */,
 				848145AB2851338500D06E39 /* TTWorksListCell.h */,

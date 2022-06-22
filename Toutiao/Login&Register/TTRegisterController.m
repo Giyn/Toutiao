@@ -52,14 +52,21 @@ NSUInteger const kRegisterViewPasswordFieldTag = 333;
     [self.view addGestureRecognizer:_gestureRecognizer];
     _gestureRecognizer.cancelsTouchesInView = NO;
 }
-- (void)viewWillLayoutSubviews {
 
+- (void)viewWillLayoutSubviews {
     [_registerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(self.view);
         make.center.mas_equalTo(self.view);
         make.height.mas_equalTo(300);
     }];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    self.tabBarItem.enabled = NO;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    self.tabBarItem.enabled = YES;
 }
 
 #pragma mark - UITextField委托方法

@@ -13,6 +13,7 @@
 #import "TTNetworkTool.h"
 #import "TTTypeListResponse.h"
 #import "TTHomePageLoadingViewController.h"
+#import "TTUserInfoController.h"
 #import "URLs.h"
 
 @interface TTTabBarController () <UITabBarControllerDelegate>
@@ -69,7 +70,14 @@
     
     [tool requestWithMethod:TTHttpMethodTypeGET path:getTypeListPath params:@{} requiredToken:NO onSuccess:^(id  _Nonnull responseObject) {
         TTTypeListResponse *typeListResponse = [TTTypeListResponse mj_objectWithKeyValues:responseObject];
-        UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:@[TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new, TTWorksListController.new] titles:typeListResponse.data showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
+        NSArray <NSString *> *types = typeListResponse.data;
+        NSMutableArray <TTWorksListController *> *childrenArray = @[].mutableCopy;
+        for (NSString *type in types) {
+            TTWorksListController *childVC = TTWorksListController.new;
+            childVC.type = type;
+            [childrenArray addObject:childVC];
+        }
+        UIViewController *vcHomePage = [[TTPagerViewController alloc] initWithChildrenVCArray:childrenArray.copy titles:typeListResponse.data showSearchBar:YES onPageLeave:onPageLeave onPageEnter:onPageEnter];
             vcHomePage.navigationController.navigationBar.hidden = YES;
             [navHomePage pushViewController:vcHomePage animated:NO];
         } onError:^(NSError * _Nonnull error) {
@@ -92,7 +100,7 @@
     [self addChildViewController:navMine];
 
     // 个人主页
-    navMine.viewControllers = @[TTLoginController.new];
+    navMine.viewControllers = @[TTUserInfoController.new];
 
     //tabBar上添加一个UIButton遮盖住中间的UITabBar
     self.uploadButton.frame = CGRectMake((self.tabBar.frame.size.width-self.tabBar.frame.size.height)/2, 1, self.tabBar.frame.size.height, self.tabBar.frame.size.height);
@@ -109,7 +117,7 @@
         [self uploadButtonAction];
         return NO;
     }
-    return YES;
+    return (viewController != tabBarController.selectedViewController);;
 }
 
 - (UIButton *)uploadButton {

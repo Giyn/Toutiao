@@ -31,6 +31,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.hidesBackButton = YES;
     _loginView = TTLoginView.new;
     [self.view addSubview:_loginView];
     self.view.backgroundColor = UIColor.whiteColor;
@@ -134,7 +135,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     if (redirectToPrev) {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             // 点击Action返回到登录页的上一个页面
-            [self navToPrev];
+            [self navToUserInfo];
         }];
     } else {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -170,7 +171,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
             return;
         } else {
             [self saveLoginResultWithToken:loginResponse.data.token expireAt:loginResponse.data.expireAt];
-//            [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:NO];
+            [self showAlertWithTitle:@"登录成功" message:@"开始您的头条之旅" redirectToPrev:YES];
             UINavigationController *navVC = self.navigationController;
             TTUserInfoController *regVC = TTUserInfoController.new;
             [navVC pushViewController:regVC animated:YES];
@@ -199,20 +200,9 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
 }
 
 // 跳转到上一级页面
-- (void)navToPrev {
+- (void)navToUserInfo {
     UINavigationController *navVC = self.navigationController;
-    __block NSUInteger currentVCIndex;
-    [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj isEqual:self]) {
-                currentVCIndex = idx;
-                *stop = YES;
-                return;
-            }
-    }];
-    if (currentVCIndex == 0) {
-        return;
-    }
-    [navVC popToViewController:navVC.viewControllers[currentVCIndex-1] animated:YES];
+    [navVC popToViewController:navVC.viewControllers[0] animated:YES];
 }
 
 @end

@@ -14,12 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) TTAVPlayerView *avPlayerView; // 视频播放器视图
-
+@property (nonatomic, copy) NSString *type; // 视频的分类
 @property (nonatomic, assign) BOOL isPlayerRemoved;
 @property (nonatomic, assign) BOOL isLoadingData;
 @property (nonatomic, assign) BOOL hasAddObserver;
 @property (nonatomic, assign) NSInteger currentIndex; // 当前tableview的indexPath
 @property (nonatomic, assign) NSInteger pageIndex; // 当前视频数据的页索引
+
+- (instancetype)initWithType:(NSString *)type;
 
 - (void)setupView;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;

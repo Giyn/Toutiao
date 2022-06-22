@@ -10,9 +10,10 @@
 #import "TTGetUserInfoRequest.h"
 #import "URLs.h"
 #import "TTNetworkTool.h"
-#import <UIIMageView+WebCache.h>
+#import "UIIMageView+WebCache.h"
 #import "TTUserInfoCell.h"
 #import "TTUpdateInfoController.h"
+#import "TTLoginController.h"
 
 @interface TTUserInfoController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic,strong)UITableView *myVideoTableView;
@@ -24,9 +25,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.hidesBackButton = YES;
     self.view.backgroundColor = [UIColor whiteColor];
+    NSLog(@"vsb%@", self.navigationController.visibleViewController);
     [self performLoginRequest];
     [self.navigationController setNavigationBarHidden:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *token = [ud valueForKey:@"token"];
+    BOOL tokenExpired = NO;
+    NSDate *expireAt = [ud valueForKey:@"expireAt"];
+    NSDate *currentTime = [NSDate date];
+    if ([expireAt compare:currentTime] == NSOrderedAscending) {
+        [ud removeObjectForKey:@"token"];
+        [ud removeObjectForKey:@"expireAt"];
+        tokenExpired = YES;
+    }
+    if (token == nil || tokenExpired) {
+        [self navToLoginWithAnimation:NO];
+    }
 }
 
 // 设置myVideoView
@@ -104,7 +123,7 @@
     [tool requestWithMethod:TTHttpMethodTypeGET path:getUserInfoPath params:[[NSDictionary alloc] init] requiredToken:YES onSuccess:^(id  _Nonnull responseObject) {
         TTGetUserInfoResponse *infoResponse = [TTGetUserInfoResponse mj_objectWithKeyValues:responseObject];
         if (!infoResponse.isSuccess) {
-            [self showAlertWithTitle:@"获取信息失败" message:[infoResponse mj_JSONString] redirectToPrev:NO];
+            [self showAlertWithTitle:@"获取信息失败" message:[infoResponse mj_JSONString] redirect:NO];
             // 设置网络请求状态
             self.isPerformingRequest = NO;
             return;
@@ -114,42 +133,32 @@
             self.isPerformingRequest = NO;
         }
     } onError:^(NSError * _Nonnull error) {
-        [self showAlertWithTitle:@"获取信息失败" message:error.description redirectToPrev:NO];
+        [self showAlertWithTitle:@"获取信息失败" message:error.description redirect:YES];
     } onProgress:nil];
     
 }
 
 // 跳转上一页
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message redirectToPrev:(BOOL)redirectToPrev {
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message redirect:(BOOL)redirectToPrev {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action;
     if (redirectToPrev) {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self navToPrev];
+            [self navToLoginWithAnimation:YES];
         }];
     } else {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     }
     [alertController addAction:action];
-    [self presentViewController:alertController animated:YES completion:nil];
+//    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
 // 跳转到上一级页面
-- (void)navToPrev {
+- (void)navToLoginWithAnimation:(BOOL)animated {
     UINavigationController *navVC = self.navigationController;
-    __block NSUInteger currentVCIndex;
-    [navVC.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isEqual:self]) {
-            currentVCIndex = idx;
-            *stop = YES;
-            return;
-        }
-    }];
-    if (currentVCIndex == 0) {
-        return;
-    }
-    [navVC popToViewController:navVC.viewControllers[currentVCIndex-1] animated:YES];
+    TTLoginController *loginVC = TTLoginController.new;
+    [navVC pushViewController:loginVC animated:animated];
 }
 
 
