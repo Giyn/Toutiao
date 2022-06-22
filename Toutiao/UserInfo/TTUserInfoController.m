@@ -53,18 +53,18 @@
     self.myVideoTableView = [[UITableView alloc] init];
     self.myVideoTableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.myVideoTableView];
-    // 设置searchView的宽高
+//    // 设置searchView的宽高
     if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20) {    // 是刘海屏
         // 设置searchView的宽高
         [self.myVideoTableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(self.view.mas_width);
-            make.height.equalTo(self.view.mas_height).offset(-88);
+            make.height.equalTo(self.view.mas_height);
             make.bottom.equalTo(self.view.mas_bottom);
         }];
     }else{
         [self.myVideoTableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(self.view.mas_width);
-            make.height.equalTo(self.view.mas_height).offset(-64);
+            make.height.equalTo(self.view.mas_height);
             make.bottom.equalTo(self.view.mas_bottom);
         }];
     }

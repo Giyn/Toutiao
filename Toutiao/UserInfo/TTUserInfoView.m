@@ -86,7 +86,7 @@
 - (void)layoutSubviews {
     // 图片约束
     [_headIconView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self).offset(30);
+        make.left.mas_equalTo(self).offset(10);
         make.top.mas_equalTo(self).offset(40);
         make.width.mas_equalTo(@110);
         make.height.mas_equalTo(@110);
@@ -96,11 +96,11 @@
         make.width.mas_equalTo(@70);
         make.height.mas_equalTo(self.headIconView).offset(10);
         make.top.mas_equalTo(self.headIconView);
-        make.left.mas_equalTo(self.headIconView.mas_right).offset(30);
+        make.left.mas_equalTo(self.headIconView.mas_right).offset(10);
     }];
     // 数据标签约束
     [_containerData mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(@150);
+        make.width.mas_equalTo(@180);
         make.height.mas_equalTo(self.containerLabel);
         make.top.mas_equalTo(self.containerLabel);
         make.left.mas_equalTo(self.containerLabel.mas_right);
@@ -110,8 +110,8 @@
     [_updateButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self).offset(-20);
         make.top.mas_equalTo(self).offset(20);
-        make.width.mas_equalTo(@30);
-        make.height.mas_equalTo(@30);
+        make.width.mas_equalTo(@40);
+        make.height.mas_equalTo(@40);
     }];
     // 设置图片圆角
     [self layoutIfNeeded];
