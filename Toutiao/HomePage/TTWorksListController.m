@@ -165,7 +165,7 @@ static const NSInteger pageSize = 10;
     worksListRequest.type = self.type;
     NSMutableDictionary *params = worksListRequest.mj_keyValues;
     NSString *endpointPath = getWorksByTypePath;
-    if ([self.type isEqualToString:@"首页"]) {
+    if ([self.type isEqualToString:@"首页"] || self.type == nil) {
         [params removeObjectForKey:@"type"];
         endpointPath = getWorksListPath;
     }
