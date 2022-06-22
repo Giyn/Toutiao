@@ -81,7 +81,8 @@
     }
 
     #else
-        [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];    // 去除searchbar的背景色
+    // 去除searchbar的背景色
+    [[[self.searchBar.subviews objectAtIndex:0].subviews objectAtIndex:0] removeFromSuperview];
     #endif
 
     self.searchBar.delegate = self;

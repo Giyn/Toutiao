@@ -27,8 +27,6 @@
     [super viewDidLoad];
     self.navigationItem.hidesBackButton = YES;
     self.view.backgroundColor = [UIColor whiteColor];
-    NSLog(@"vsb%@", self.navigationController.visibleViewController);
-    [self performLoginRequest];
     [self.navigationController setNavigationBarHidden:NO];
 }
 
@@ -45,6 +43,8 @@
     }
     if (token == nil || tokenExpired) {
         [self navToLoginWithAnimation:NO];
+    } else {
+        [self performLoginRequest];
     }
 }
 
