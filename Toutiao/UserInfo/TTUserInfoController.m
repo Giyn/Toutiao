@@ -30,17 +30,23 @@
     [self.navigationController setNavigationBarHidden:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    // 获取UserDefaults
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    // 获取token
     NSString *token = [ud valueForKey:@"token"];
     BOOL tokenExpired = NO;
+    // 获取token过期时间
     NSDate *expireAt = [ud valueForKey:@"expireAt"];
     NSDate *currentTime = [NSDate date];
+    // 比较token过期时间和当前时间
     if ([expireAt compare:currentTime] == NSOrderedAscending) {
+        // 如果token已过期则从UserDefaults中删除相关属性
         [ud removeObjectForKey:@"token"];
         [ud removeObjectForKey:@"expireAt"];
         tokenExpired = YES;
     }
+    // 登录状态有效就发起网络请求获取个人信息；登录状态无效就导航到登录界面
     if (token == nil || tokenExpired) {
         [self navToLoginWithAnimation:NO];
     } else {

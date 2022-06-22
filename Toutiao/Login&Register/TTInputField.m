@@ -1,6 +1,6 @@
 //
 //  TTInput.m
-//  NoSceneTemp
+//  Toutiao
 //
 //  Created by 肖扬 on 2022/6/6.
 //
@@ -113,7 +113,7 @@
 }
 
 - (void)setupContainer {
-    // 水平栈x轴居中
+    // 水平栈，沿x轴垂直方向居中
     _containerView.axis = UILayoutConstraintAxisHorizontal;
     _containerView.alignment = UIStackViewAlignmentCenter;
     // 圆角
