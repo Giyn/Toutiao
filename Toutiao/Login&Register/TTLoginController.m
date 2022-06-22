@@ -135,7 +135,7 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     if (redirectToPrev) {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             // 点击Action返回到登录页的上一个页面
-            [self navToUserInfo];
+            [self navToPrev];
         }];
     } else {
         action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -199,8 +199,8 @@ NSUInteger const kLoginViewPasswordFieldTag = 333;
     [navVC pushViewController:regVC animated:YES];
 }
 
-// 跳转到上一级页面
-- (void)navToUserInfo {
+// 跳转到个人信息展示页，为此navVC的rootVC
+- (void)navToPrev {
     UINavigationController *navVC = self.navigationController;
     [navVC popToViewController:navVC.viewControllers[0] animated:YES];
 }
